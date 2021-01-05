@@ -5,7 +5,7 @@ import {Button} from "react-bootstrap";
 import {documents} from "../../data";
 
 
-const SignedRecords = () => {
+const Signed = () => {
 
   // Return true, if it's training document
   const hasSubs = (row) => { return Object.keys(row).includes('sub') }
@@ -61,7 +61,6 @@ const SignedRecords = () => {
     <>
       <CaptionElement title="Signed Documents"/>
       <BootstrapTable
-        classes="docs" // custom class
         keyField="id"
         hover
         data={documents}
@@ -72,4 +71,4 @@ const SignedRecords = () => {
   );
 }
 
-export default SignedRecords;
+export default Signed;

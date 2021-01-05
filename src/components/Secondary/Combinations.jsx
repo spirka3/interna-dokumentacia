@@ -1,17 +1,18 @@
 import React, {useState} from "react";
-import {Plus, X} from 'react-bootstrap-icons';
+import {X, PlusSquare, DashSquare, XSquare} from 'react-bootstrap-icons';
 import CombinationModal from "../Modals/CombinationModal";
 
 const Combination = ({c, combinations, setCombinations}) => {
 
   const deleteCombination = () => {
-    setCombinations(combinations.filter(c2 => c2.id !== c.id)); // delete the document
+    setCombinations(combinations.filter(c2 => c2.id !== c.id)); // TODO delete the document
   };
 
   return (
-      <p>{`Branch: ${c.branch} | Division: ${c.division} | Department: ${c.department} | City: ${c.city}`}
-        <span><X size="30" color="red" onClick={deleteCombination}/></span>
-      </p>
+    // TODO prettify
+    <p>{`Branch: ${c.branch} | Division: ${c.division} | Department: ${c.department} | City: ${c.city} `}
+      <DashSquare size="25" color="red" onClick={deleteCombination}/>
+    </p>
   )
 }
 
@@ -21,9 +22,10 @@ const Combinations = ({combinations, setCombinations}) => {
 
   return (
     <>
+      <hr/>
       <span onClick={() => setShowModal(true)}>
-      <Plus size="30" color="blue" />
-      <a href="#"><strong>Add combination</strong></a>
+        <strong>Add combination {" "}</strong>
+        <PlusSquare size="25" color="green"/>
       </span>
       {combinations.map(c => {
         return (
@@ -33,19 +35,15 @@ const Combinations = ({combinations, setCombinations}) => {
             setCombinations={setCombinations}/>
         )
       })}
-      {!showModal ? null :
-        <CombinationModal
-          showModal={showModal}
-          setShowModal={setShowModal}
-          combinations={combinations}
-          setCombinations={setCombinations}
-        />
+      {showModal &&
+      <CombinationModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        combinations={combinations}
+        setCombinations={setCombinations}
+      />
       }
-
-      {/* ADD BUTTON */}
-      {/*<Form.Group as={Col}>*/}
-      {/*  <Button id="save" size="sm" variant="secondary" onClick={addCombination}> Add </Button>*/}
-      {/*</Form.Group>*/}
+      <hr/>
     </>
   )
 }
