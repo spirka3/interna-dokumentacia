@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
-import CaptionElement from "../Secondary/CaptionElement";
+import CaptionElement from "../Others/CaptionElement";
 import {Button, Row, Col} from "react-bootstrap";
 import {ButtonGroup} from "reactstrap";
 import {sm_data, employees} from "../../data";

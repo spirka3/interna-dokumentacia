@@ -1,14 +1,13 @@
 import React, {useState} from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 // import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
-import CaptionElement from "../Secondary/CaptionElement";
+import CaptionElement from "../Others/CaptionElement";
 import ConfirmModal from "../Modals/ConfirmModal";
-import TableBtn from "../Buttons/TableBtn";
+import {MissingBtn} from "../Buttons/TableBtns";
 import Empty from "./Empty";
 import {documents} from "../../data"
 
 const Missing = () => {
-
 
   // State management
   const [data, setData] = useState(documents)
@@ -18,7 +17,7 @@ const Missing = () => {
   const handleAccept = () => {
     console.log(`Accepted by ${modalInfo}`);
     setData(data.filter(p => p.id !== modalInfo.id)); // delete the document
-    setShowModal(false)
+    setShowModal(false);
   }
 
   const columns = [
@@ -34,7 +33,7 @@ const Missing = () => {
     }, {
       dataField: 'signBtn',
       text: 'Sign',
-      formatter: TableBtn,
+      formatter: MissingBtn,
       formatExtraData: {
         setFormType: setModalInfo,
         setFormData: setShowModal
@@ -51,7 +50,7 @@ const Missing = () => {
     }, {
       dataField: 'signBtn',
       text: 'Sign',
-      formatter: TableBtn,
+      formatter: MissingBtn,
       formatExtraData: {
         setFormType: setModalInfo,
         setFormData: setShowModal

@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import {useForm} from "react-hook-form";
 import {ButtonGroup} from "reactstrap";
 import MyHookForm from "./MyHookForm";
-import Combinations from "../Secondary/Combinations";
+import Combinations from "../Others/Combinations";
 
 const NewDocument = ({data}) => {
   const {register, handleSubmit} = useForm();

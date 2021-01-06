@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route, withRouter } from "react-router
 import './App.css';
 
 import Login from "./components/Forms/Login.jsx";
-import Navigation from "./components/Secondary/Navigation.jsx";
+import Navigation from "./components/Others/Navigation.jsx";
 import Missing from "./components/Tables/Missing.jsx";
 import Signed from "./components/Tables/Signed.jsx";
 import SkillMatrixPage from "./components/Pages/SkillMatrixPage.jsx";

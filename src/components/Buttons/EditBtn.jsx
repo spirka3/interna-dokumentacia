@@ -7,7 +7,7 @@ const EditBtn = (cell, row, rowIndex, {setFormData, setFormType}) => {
     setFormType("new_doc"); // TODO detect new_doc or new_training
   }
   return (
-    <Button onClick={handleClick}>
+    <Button onClick={handleClick} size="sm">
       Edit
     </Button>
   );

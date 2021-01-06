@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {Button, Col, Form, Row} from "react-bootstrap";
-import Filter from "../Secondary/Filter";
+import Filter from "../Others/Filter";
 import Found from "../Tables/Found";
 
 const FinderPage = () => {

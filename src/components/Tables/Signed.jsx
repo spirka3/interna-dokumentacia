@@ -1,23 +1,10 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
-import CaptionElement from "../Secondary/CaptionElement";
-import {Button} from "react-bootstrap";
+import CaptionElement from "../Others/CaptionElement";
+import {SignedBtn, hasSubs} from "../Buttons/TableBtns";
 import {documents} from "../../data";
 
-
 const Signed = () => {
-
-  // Return true, if it's training document
-  const hasSubs = (row) => { return Object.keys(row).includes('sub') }
-
-  const MyButton = (cell, row) => {
-    const handleClick = () => {
-      console.log('Expand')
-    }
-    return !hasSubs(row) ? row.sign : (
-      <Button onClick={handleClick}>Details </Button>
-    );
-  };
 
   const columns = [
     {
@@ -29,7 +16,7 @@ const Signed = () => {
     }, {
       dataField: 'sign',
       text: 'Sign Day',
-      formatter: MyButton,
+      formatter: SignedBtn,
     }
   ];
 

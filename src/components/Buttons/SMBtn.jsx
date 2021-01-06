@@ -3,10 +3,10 @@ import React from "react";
 
 const SMBtn = (cell, row) => {
   const handleClick = () => {
-    console.log('Expand')
+    console.log('Expand') // TODO
   }
   return(
-    <Button onClick={handleClick}>
+    <Button onClick={handleClick} size={"sm"}>
       Show SM
     </Button>
   );
