@@ -8,12 +8,16 @@ import {employees} from "../../data";
 
 const TrainingForm = ({data}) => {
 
+  // const employees = ... TODO MATO load employees
+
   const {register, handleSubmit} = useForm({
     defaultValues: data
   });
+
   const [attendees, setAttendees] = useState([])
 
   const onSubmit = (data, event) => {
+    // TODO MATO save training's data into DB (and SEND)
     event.target.id === "save"
       ? console.log("save", data)
       : console.log("save & send", data)

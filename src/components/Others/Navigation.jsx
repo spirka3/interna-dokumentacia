@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  Navbar,
-  Nav,
-  NavLink,
-} from 'react-bootstrap';
+import {Navbar, Nav, NavLink} from 'react-bootstrap';
 
 const Navigation = ({location}) => {
 
