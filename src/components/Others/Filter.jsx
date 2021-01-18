@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {Button, Col, Form, Row} from "react-bootstrap";
-import {branches, cities, combinations, departments, divisions, docs, employees, types} from "../../data";
+import {branches, cities, types} from "../../data";
 import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
 
 const Filter = () => {

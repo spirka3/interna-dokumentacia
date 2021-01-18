@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import {useForm} from "react-hook-form";
 import MyHookForm from "./MyHookForm";
 import Combinations from "../Others/Combinations";
-import {ErrorMsg} from "../Others/ErrorMsg";
+import {ErrorMessage} from "../Others/ErrorMessage";
 import {types} from "../../data";
 import {getSelectOptions} from "../../functions";
 
@@ -48,7 +48,7 @@ const DocumentForm = ({data}) => {
             <option hidden value="">Select option ...</option>
             { getSelectOptions(types) }
           </Form.Control>
-          { errors.doc_type && <ErrorMsg text={"Select a type"}/> }
+          { errors.doc_type && <ErrorMessage text={"Select a type"}/> }
         </Col>
       </Form.Group>
 

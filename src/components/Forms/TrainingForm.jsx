@@ -25,7 +25,6 @@ const TrainingForm = ({data}) => {
 
   return (
     <Form>
-
       {/* NAME */}
       <MyHookForm
         label="Training name *"

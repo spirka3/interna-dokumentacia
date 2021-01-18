@@ -6,6 +6,7 @@
 
 // TODO PATO
 - spustiť web na serveri
+- spravit triedny diagram
 - spraviť import a export
 - spraviť report pre záznam
 - dopisat a aplikovat testovacie scenáre
@@ -13,6 +14,5 @@
 // TODO MATO
 - CRUD
 - preloziť web
-- spravit triedny diagram
 - zamysliet sa nad bezpecnostou
 - tiež otestovať web cez scenáre
