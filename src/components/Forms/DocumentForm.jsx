@@ -58,6 +58,31 @@ const DocumentForm = ({data}) => {
         </Col>
       </Form.Group>
 
+      <Form.Group as={Row}>
+        <Form.Label column sm="2">Require superior sign</Form.Label>
+        <Col>
+          <Form.Check
+            type="radio"
+            id="yes"
+            label="yes"
+            value={true}
+            inline
+            name="require_superior"
+            ref={register}
+          />
+          <Form.Check
+            type="radio"
+            id="no"
+            label="no"
+            value={false}
+            name="require_superior"
+            inline
+            defaultChecked
+            ref={register}
+          />
+        </Col>
+      </Form.Group>
+
       {/* NAME */}
       <MyHookForm
         label="Document name *"
