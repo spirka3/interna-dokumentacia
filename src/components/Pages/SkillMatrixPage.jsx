@@ -50,23 +50,27 @@ const SkillMatrixPage = () => {
     return sm_data
   }
 
+  function getState(document, state){
+    return state.includes('s') ? 'es' : 'e' // FIXME treba vediet kedy ma aj superior
+  }
+
   const handleAccept = (event) => {
 
     const update = data.map(d => {
+
       let emp = d.employees.map(e => {
+
         if (e.state.includes('X')){
           let state = e.state.replace('X', '')
-          if (event === 'sign')
-            state = state.replace('s', '')
-          if (event === 'cancelDuty')
-            state = '-'
-          if (event === 'trainAgain')
-            state = state.includes('s') ? 'es' : 'e' // FIXME treba vediet kedy ma aj superior
-            // state = getState()
+          if (event === 'sign')       state = state.replace('s', '')
+          if (event === 'cancelDuty') state = '-'
+          if (event === 'trainAgain') state = getState(d, state)
           return {...e, state: state} // updated employee
         }
+
         return e  // unchanged employee
       })
+
       return {...d, employees: emp}   // updated document
     })
 

@@ -72,11 +72,6 @@ export const sm_data = [
       {
         anet_id: '1',
         state: ''
-        // state: {
-        //   id: "",
-        //   label: "",
-        //   clicked: false,
-        // }
       }, {
         anet_id: '2',
         state: 's'
