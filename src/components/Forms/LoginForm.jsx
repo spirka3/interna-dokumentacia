@@ -13,12 +13,15 @@ const LoginForm = ({onSubmit, language, changeLanguage, loginError}) => {
   }
 
   return (
-    <Container style={{maxWidth: "40%", paddingTop: "6rem"}}>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+    <Container className="d-flex justify-content-center" style={{marginTop: "8rem"}}>
+      <Form onSubmit={handleSubmit(onSubmit)} className="login-form">
 
         <h3 align="center">Login</h3>
 
-        <ButtonGroup onClick={changeLanguage} className="btn-header">
+        <ButtonGroup
+          onClick={changeLanguage}
+          className="container-fluid p-0 pb-3 pt-3 btn-group"
+        >
           <Button id="sk" className={active("sk")}>Slovak</Button>
           <Button id="cz" className={active("cz")}>Czech</Button>
           <Button id="en" className={active("en")}>English</Button>
@@ -26,7 +29,7 @@ const LoginForm = ({onSubmit, language, changeLanguage, loginError}) => {
         </ButtonGroup>
 
         {/* NAME */}
-        <Form.Group className="form-group">
+        <Form.Group className="form-group pb-3">
           <Form.Label>Name</Form.Label>
           <Form.Control
             name="login"
@@ -37,7 +40,7 @@ const LoginForm = ({onSubmit, language, changeLanguage, loginError}) => {
         </Form.Group>
 
         {/* PASS */}
-        <Form.Group className="form-group">
+        <Form.Group className="form-group pb-3">
           <Form.Label>Password</Form.Label>
           <Form.Control
             name="password"
@@ -49,7 +52,7 @@ const LoginForm = ({onSubmit, language, changeLanguage, loginError}) => {
         </Form.Group>
 
         { loginError && <ErrorMessage text={loginError}/> }
-        <Button type="submit" variant="dark" className="btn-block">Login</Button>
+        <Button type="submit" variant="dark" className="btn-block mt-3">Login</Button>
       </Form>
     </Container>
   )

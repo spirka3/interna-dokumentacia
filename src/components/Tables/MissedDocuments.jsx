@@ -8,14 +8,16 @@ import {nonExpandableDocs} from "../../functions";
 
 const MissedDocuments = ({documents}) => {
 
-  const [docs, setDocs] = useState(documents)
+  console.log("documents", documents)
+
+  // const [docs, setDocs] = useState(documents)
   const [modalInfo, setModalInfo] = useState([])
   const [showModal, setShowModal] = useState(false)
 
   const handleAccept = () => {
     // TODO MATO uloz dokument ako podpisany
     console.log(modalInfo);
-    setDocs(docs.filter(d => d.id !== modalInfo.id)); // delete the document from the hook
+    // setDocs(docs.filter(d => d.id !== modalInfo.id)); // delete the document from the hook
     setShowModal(false);  // hide modal
   }
 
@@ -41,8 +43,8 @@ const MissedDocuments = ({documents}) => {
   ];
 
   const expandDocsColumns = [{
-      dataField: 'id',
-      text: 'AnetID'
+      dataField: 'employee_id',
+      text: 'Employee ID'
     }, {
       dataField: 'full_name',
       text: 'Name'
@@ -59,12 +61,12 @@ const MissedDocuments = ({documents}) => {
   ];
 
   const expandRow = {
-    nonExpandable: nonExpandableDocs(docs),
+    nonExpandable: nonExpandableDocs(documents),
     renderer: (cell, row) => (
       <BootstrapTable
         keyField="id"
         hover
-        data={docs[row].sub}
+        data={documents[row].signatures}
         columns={expandDocsColumns}/>
     )
   };
@@ -75,7 +77,7 @@ const MissedDocuments = ({documents}) => {
       <BootstrapTable
         keyField="id"
         hover
-        data={docs}
+        data={documents}
         columns={docs_columns}
         expandRow={expandRow}
         noDataIndication={EmptyTable}

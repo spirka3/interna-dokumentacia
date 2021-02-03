@@ -1,7 +1,8 @@
-import React from "react";
+import React, {useEffect} from "react";
 import SignedDocuments from "../Tables/SignedDocuments";
 import SignedTrainings from "../Tables/SignedTrainings";
 import {docs} from "../../data";
+import {getUser, setUser} from "../../functions";
 
 const SignedRecordsPage = () => {
 

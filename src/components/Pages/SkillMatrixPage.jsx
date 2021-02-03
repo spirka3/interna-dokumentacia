@@ -1,12 +1,17 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import CaptionElement from "../Others/CaptionElement";
 import {sm_data, employees} from "../../data";
 import ToggleBtn from "../Buttons/ToggleBtn";
 import ConfirmModal from "../Modals/ConfirmModal";
 import {Legend, RowButtons, DocumentLabel} from "../Others/SkillMatrixComponents";
+import {getUser} from "../../functions";
+import {FetchError, FetchLoading} from "../Others/FetchComponents";
 
 const SkillMatrixPage = () => {
+
+  // const [error, setError] = useState(null);
+  // const [isLoaded, setIsLoaded] = useState(false);
 
   const [showModal, setShowModal] = useState(false)
   const [event, setEvent] = useState("")
@@ -15,6 +20,24 @@ const SkillMatrixPage = () => {
   const [data, setData] = useState(documents);
 
   const columns = loadColumns()
+
+  // TODO TEST
+  // useEffect(() => {
+  //   fetch(`http://localhost:7777/unsignedSignatures/${getUser().id}`, {
+  //     method: "GET"
+  //   })
+  //     .then(response => response.json())
+  //     .then(data => {
+  //         setIsLoaded(true);
+  //         setDocuments(data.documents)
+  //         setTrainings(data.online_trainings)
+  //       },
+  //       (error) => {
+  //         setIsLoaded(true);
+  //         setError(error);
+  //       }
+  //     )
+  // }, [])
 
   function loadColumns() {
     const columns = [{
@@ -81,6 +104,12 @@ const SkillMatrixPage = () => {
     // EXPORT TODO PATO
     console.log('export is not implemented')
   };
+
+  // if (error) {
+  //   return <FetchError e={`Error: ${error.message}`}/>;
+  // } else if (!isLoaded) {
+  //   return <FetchLoading/>;
+  // }
 
   return (
     <>

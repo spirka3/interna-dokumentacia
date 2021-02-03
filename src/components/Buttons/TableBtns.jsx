@@ -5,7 +5,8 @@ import {hasSubs} from "../../functions";
 export const MissedBtn = (cell, row, index, {setModalInfo, setShowModal}) => {
 
   const handleClick = () => {
-    if (!hasSubs(row)) {
+    // if (!hasSubs(row)) {
+    if (!row.require_superior) {
       console.log(row)
       setModalInfo(row);
       setShowModal(true);
@@ -14,7 +15,7 @@ export const MissedBtn = (cell, row, index, {setModalInfo, setShowModal}) => {
 
   return (
     <Button onClick={handleClick} size="sm">
-      {hasSubs(row) ? 'Details' : 'Sign'}
+      {row.require_superior ? 'Details' : 'Sign'}
     </Button>
   );
 };
@@ -23,7 +24,8 @@ export const MissedBtn = (cell, row, index, {setModalInfo, setShowModal}) => {
  * @return Sign Date or Details Button
  * */
 export const SignedBtn = (cell, row) => {
-  return !hasSubs(row)
-    ? row.sign
-    : (<Button size="sm">Details</Button>);
+
+  return row.require_superior
+    ? <Button size="sm">Details</Button>
+    : row.sign
 };

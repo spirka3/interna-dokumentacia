@@ -55,22 +55,22 @@ const LoginPage = () => {
   }
 
   const onSubmit = (data) =>{
-    defUser()
-    history.push("/")
+    // defUser()
+    // history.push("/")
 
-    // return fetch('http://localhost:7777/login', {
-    //   method:"POST"
-    //   , body:new URLSearchParams(`first_name=${data.name}&password=${data.password}`)
-    // })
-    //   .then(response => response.json())
-    //   .then(respon => {
-    //     setUser({
-    //       anet_id: respon.id,
-    //       name: respon.first_name+" "+respon.last_name,
-    //       job: respon.job_title
-    //     })
-    //     history.push("/")
-    //   }).catch(() => setLoginError("Wrong login input"));
+    return fetch('http://localhost:7777/login', {
+      method:"POST"
+      , body:new URLSearchParams(`login=${data.login}&password=${data.password}`)
+    })
+      .then(response => response.json())
+      .then(respon => {
+        setUser({
+          id: respon.id,
+          name: respon.first_name+" "+respon.last_name,
+          job: respon.job_title
+        })
+        history.push("/")
+      }).catch(() => setLoginError("Wrong login input"));
   }
 
   const findByCard = (input) => {
@@ -81,7 +81,7 @@ const LoginPage = () => {
   return (
     <>
       {getUser() !== null
-        ? <Redirect to="/missed-docs"/> // FIXME don't redirect right after click on login btn
+        ? <Redirect to="/missed-docs"/>
         : <LoginForm
             onSubmit={onSubmit}
             language={language}

@@ -152,10 +152,10 @@ const DocumentForm = ({data}) => {
       { error && <ErrorMessage text={error}/> }
 
       {/* SAVE | SEND BUTTONS */}
-      <ButtonGroup onClick={handleSubmit(onSubmit)} className="w-25 pt-1">
-        <Button id="save" type="submit" className="mr-1">Save</Button>
+      <div onClick={handleSubmit(onSubmit)} className="pt-1 btn-block text-right">
+        <Button id="save" type="submit" variant="dark" className="mr-1">Save</Button>
         <Button id="send" type="submit" variant="danger">Send</Button>
-      </ButtonGroup>
+      </div>
 
     </Form>
   )

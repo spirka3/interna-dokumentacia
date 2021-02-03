@@ -1,28 +1,40 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import MissedDocuments from "../Tables/MissedDocuments";
 import MissedTrainings from "../Tables/MissedTrainings";
-import {docs} from "../../data"
-import {getUser, setUser} from "../../functions";
+import {getUser} from "../../functions";
+import {FetchError, FetchLoading} from "../Others/FetchComponents";
 
 const MissedRecordsPage = () => {
 
-  const user = getUser()
+  const [error, setError] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  var documents = docs;
-  var trainings = [];
+  const [documents, setDocuments] = useState([]);
+  const [trainings, setTrainings] = useState([]);
 
-  // const cc = () => {
-  //   return fetch('http://localhost:7777/signatures', {
-  //     method: "GET",
-  //     body: new URLSearchParams(user.anet_id)
-  //   })
-  //     .then(response => response.json())
-  //     .then(respon => {
-  //       documents = respon.documents
-  //       trainings = respon.trainings
-  //     }).catch(
-  //     );
-  // }
+  // TODO TEST
+  useEffect(() => {
+    fetch(`http://localhost:7777/unsignedSignatures/${getUser().id}`, {
+      method: "GET"
+    })
+      .then(response => response.json())
+      .then(data => {
+          setIsLoaded(true);
+          setDocuments(data.documents);
+          setTrainings(data.online_trainings);
+        },
+        (error) => {
+          setIsLoaded(true);
+          setError(error);
+        }
+      )
+  }, []);
+
+  if (error) {
+    return <FetchError e={`Error: ${error.message}`}/>;
+  } else if (!isLoaded) {
+    return <FetchLoading/>;
+  }
 
   return (
     <>
