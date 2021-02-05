@@ -4,32 +4,62 @@ import {MissedBtn} from "../Buttons/TableBtns";
 import CaptionElement from "../Others/CaptionElement";
 import ConfirmModal from "../Modals/ConfirmModal";
 import EmptyTable from "./EmptyTable";
-import {nonExpandableDocs} from "../../functions";
+import {nonExpandableDocs, require_superior} from "../../functions";
+import {FormattedDeadline, FormattedRelease} from "../Others/DateFormatter";
+import {proxy} from "../../data";
 
 const MissedDocuments = ({documents}) => {
 
   console.log("documents", documents)
 
-  // const [docs, setDocs] = useState(documents)
   const [modalInfo, setModalInfo] = useState([])
   const [showModal, setShowModal] = useState(false)
 
   const handleAccept = () => {
     // TODO MATO uloz dokument ako podpisany
-    console.log(modalInfo);
-    // setDocs(docs.filter(d => d.id !== modalInfo.id)); // delete the document from the hook
-    setShowModal(false);  // hide modal
+    console.log('modalInfo', modalInfo);
+    console.log('signing as', require_superior(modalInfo))
+
+    if (require_superior(modalInfo) === false) {
+      console.log('employee')
+      fetchSign('/sign/', modalInfo.id)
+    } else {
+      console.log('superior')
+      fetchSign('/sign/superior/', modalInfo.id)
+    }
+
+    setShowModal(false);
+    // const doc = documents.find(d => d.id === modalInfo.id)
+    // setDocs(docs.filter(d => d.id !== modalInfo.id));
   }
 
-  const docs_columns = [{
+  const fetchSign = (url, id) => {
+    fetch(`${proxy}${url}`, {
+      method: "POST",
+      body: JSON.stringify({id: id})
+    })
+      .then(response => response.json())
+      .then(res => {
+        console.log("succeeded")
+      })
+      .catch(() => console.log("something goes wrong"))
+  }
+
+  const columns = [
+    {
       dataField: 'name',
-      text: 'Name'
+      text: 'Name',
+      sort: true
     }, {
-      dataField: 'release_date',
-      text: 'Release'
+      dataField: 'release_date.time',
+      text: 'Release',
+      formatter: FormattedRelease,
+      sort: true
     }, {
-      dataField: 'deadline',
-      text: 'Deadline'
+      dataField: 'deadline.time',
+      text: 'Deadline',
+      formatter: FormattedDeadline,
+      sort: true
     }, {
       dataField: 'signBtn',
       text: 'Sign',
@@ -42,12 +72,16 @@ const MissedDocuments = ({documents}) => {
     }
   ];
 
-  const expandDocsColumns = [{
-      dataField: 'employee_id',
+  const expandColumns = [
+    {
+      dataField: 'employee.id',
       text: 'Employee ID'
     }, {
-      dataField: 'full_name',
-      text: 'Name'
+      dataField: 'employee.first_name',
+      text: 'First name'
+    }, {
+      dataField: 'employee.last_name',
+      text: 'Last Name'
     }, {
       dataField: 'signBtn',
       text: 'Sign',
@@ -59,6 +93,11 @@ const MissedDocuments = ({documents}) => {
       headerStyle: () => { return {width: '1%'}; }
     }
   ];
+
+  const defaultExpandSorted = [{
+    dataField: 'employee.last_name',
+    order: 'desc'
+  }];
 
   const expandRow = {
     nonExpandable: nonExpandableDocs(documents),
@@ -66,10 +105,17 @@ const MissedDocuments = ({documents}) => {
       <BootstrapTable
         keyField="id"
         hover
+        classes="inner-table"
         data={documents[row].signatures}
-        columns={expandDocsColumns}/>
+        columns={expandColumns}
+        defaultSorted={ defaultExpandSorted }/>
     )
   };
+
+  const defaultSorted = [{
+    dataField: 'name',
+    order: 'desc'
+  }];
 
   return (
     <>
@@ -78,8 +124,9 @@ const MissedDocuments = ({documents}) => {
         keyField="id"
         hover
         data={documents}
-        columns={docs_columns}
+        columns={columns}
         expandRow={expandRow}
+        defaultSorted={ defaultSorted }
         noDataIndication={EmptyTable}
       />
       {showModal &&

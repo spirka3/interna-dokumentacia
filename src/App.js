@@ -34,7 +34,7 @@ function App() {
         // FIXME Redirect
         console.log("end of session")
         removeUser()
-        history.push("/")
+        // history.push("/")
         setIsTimeout(true);
       }
     });

@@ -108,8 +108,8 @@ const TrainingForm = ({data}) => {
 
       {/* SAVE | SEND BUTTONS */}
       <div onClick={handleSubmit(onSubmit)} className="pt-1 btn-block text-right">
-        <Button id="save" type="submit" variant="dark" className="mr-1">Save</Button>
-        <Button id="send" type="submit" variant="warning">Send</Button>
+        <Button id="save" type="submit" className="mr-1">Save</Button>
+        <Button id="send" type="submit" variant="danger">Send</Button>
       </div>
     </Form>
   )
