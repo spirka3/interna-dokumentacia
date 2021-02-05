@@ -4,7 +4,7 @@ import DocumentForm from "../Forms/DocumentForm";
 import TrainingForm from "../Forms/TrainingForm";
 import SavedRecords from "../Tables/SavedRecords";
 
-const AddRecordPage = (props) => {
+const AddRecordPage = () => {
 
   const [formType, setFormType] = useState('new_document');
   const [formData, setFormData] = useState({});
