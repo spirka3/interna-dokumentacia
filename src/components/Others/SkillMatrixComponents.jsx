@@ -20,12 +20,12 @@ export const RowButtons = ({setEvent, setShowModal, handleAccept, handleExport})
         <Button id="export" variant="dark" onClick={handleExport}>Export</Button>
       </Col>
       <Col className="text-right">
-        <div onClick={handleClick} className="div-btn">
-          <Button id="sign" className="mr-1">Sign</Button>
-          <Button id="cancelDuty" className="mr-1">Cancel duty</Button>
-          <Button id="trainAgain" className="mr-1">Train again</Button>
-          <Button id="cancel"> Cancel </Button>
-        </div>
+        <ButtonGroup className="div-btn" onClick={handleClick}>
+          <Button id="sign">Sign</Button>
+          <Button id="cancelDuty">Cancel duty</Button>
+          <Button id="trainAgain">Train again</Button>
+          <Button id="cancel" onClick={handleClick}>Cancel</Button>
+        </ButtonGroup>
       </Col>
     </Row>
   )

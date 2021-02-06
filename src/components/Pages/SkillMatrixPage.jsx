@@ -49,14 +49,25 @@ const SkillMatrixPage = () => {
       }
     }];
 
+    const employeeFormatted = (cell, row) => {
+      const employee = employees[row-1]
+      return (
+        <div style={{fontSize: "12px"}}>
+           {employee.name} LastName, employee.job, 100%
+       </div>
+      )
+    }
+
     let counter = 0;
 
-    // TODO MATO load inferior employees
+  // TODO MATO load inferior employees
     employees.forEach(e => {
       columns.push({
         dataField: e.anet_id,
         text: e.name,
         formatter: ToggleBtn,
+        headerFormatter: employeeFormatted,
+        headerTitle: (col, index) => employees[index-1].job,
         formatExtraData: {
           data: data,
           setData: setData,
@@ -119,6 +130,8 @@ const SkillMatrixPage = () => {
         classes="skill-matrix-table"
         data={data}
         columns={columns}
+        wrapperClasses="table-responsive"
+        rowClasses="text-nowrap"
       />
       <RowButtons
         setEvent={setEvent}

@@ -50,14 +50,9 @@ const FoundRecords = () => {
       headerStyle: () => {return {width: '1%'}}
     }, {
       dataField: 'skillMatrix',
-      text: 'SkillMatrix',
-      formatter: SMBtn,
+      text: 'Report',
+      formatter: ReportBtn,
       headerStyle: () => { return {width: '1%'} }
-    // }, {
-    //   dataField: 'skillMatrix',
-    //   text: 'Report',
-    //   formatter: ReportBtn,
-    //   headerStyle: () => { return {width: '1%'} }
     }
   ];
 
@@ -76,6 +71,8 @@ const FoundRecords = () => {
         hover
         data={docs}
         columns={columns}
+        wrapperClasses="table-responsive"
+        rowClasses="text-nowrap"
       />
       {formType === 'new_document' &&
         <EditRecordModal

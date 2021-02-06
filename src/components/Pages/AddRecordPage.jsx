@@ -17,7 +17,7 @@ const AddRecordPage = () => {
 
   return (
     <Container className="w-80">
-      <ButtonGroup onClick={handleClick} className="btn-header">
+      <ButtonGroup onClick={handleClick} className="btn-group btn-header">
         <Button id="new_document" className={active("new_document")}>Document</Button>
         <Button id="new_training" className={active("new_training")}>Online training</Button>
         <Button id="editable_docs" className={active("editable_docs")}>Saved records</Button>

@@ -2,7 +2,7 @@ import React from "react";
 
 // export const require_superior = (row) => row.signatures.length > 1 || row.signatures[0].employee !== null
 export const require_superior = (row) => {
-  return row.require_superior && row.signatures[0].employee !== null
+  return row.require_superior
 }
 
 export const recordType = (row) => {
@@ -34,4 +34,4 @@ export const removeUser = () => sessionStorage.removeItem('user')
 export const isAdmin = () => getUser() !== null && getUser().role === 'admin' // todo test
 // export const isAdmin = () => true
 
-const delay = ms => new Promise(res => setTimeout(res, ms));
+export const delay = ms => new Promise(res => setTimeout(res, ms));

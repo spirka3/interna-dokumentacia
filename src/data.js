@@ -127,6 +127,7 @@ export const dbdocs = [
     assigned_to: "5; 4; 2; 2",
     deadline: {Time: "2013-03-11T00:00:00Z", Valid: true},
     id: 1,
+    link: "www.google.com",
     name: "name_1",
     agency: "Agency name_18",
     agenda: "Agenda Agenda AgendaAgendaAgenda Agenda Agenda Agenda",

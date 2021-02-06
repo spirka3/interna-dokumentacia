@@ -33,7 +33,7 @@ const CombinationModal = ({showModal, setShowModal, combinations, setCombination
       <Modal.Footer>
         <Button onClick={handleSubmit(add)}>Add next</Button>
         <Button onClick={handleSubmit(addClose)}>Add and close</Button>
-        <Button variant="secondary" onClick={closeModal}>Close</Button>
+        <Button onClick={closeModal} variant="secondary">close</Button>
       </Modal.Footer>
       </Container>
     </Modal>

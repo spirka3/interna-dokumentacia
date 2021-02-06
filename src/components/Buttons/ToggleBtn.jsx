@@ -72,7 +72,7 @@ const ToggleBtn = (c, row, rowIndex, {data, setData, id}) => {
   }
 
   return (
-    <Button style={styledBtn} onClick={handleClick}>
+    <Button style={styledBtn} onClick={handleClick} className="btn-block">
       {getLabel()}
     </Button>
   )
