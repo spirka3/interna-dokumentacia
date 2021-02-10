@@ -12,9 +12,9 @@ import AddRecordPage from "./components/Pages/AddRecordPage.jsx";
 import FinderPage from "./components/Pages/FinderPage.jsx";
 import SettingsPage from "./components/Pages/SettingsPage.jsx";
 import LogoutPage from "./components/Pages/LogoutPage";
-import {isAdmin, getUser, removeUser} from "./functions";
+import {isAdmin, getUser, removeUser} from "./helpers/functions";
 import Container from "react-bootstrap/Container";
-import IdleTimer from "./IdleTimer";
+import IdleTimer from "./helpers/IdleTimer";
 import { useHistory } from "react-router-dom";
 
 function App() {

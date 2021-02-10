@@ -1,11 +1,11 @@
 import React from 'react';
 import {Navbar, Nav, NavLink} from 'react-bootstrap';
-import {getUser, isAdmin} from "../../functions";
+import {getUser, isAdmin} from "../../helpers/functions";
 
 const Navigation = ({location}) => {
 
   const user = getUser();
-  const admin = isAdmin(); // TODO session user.admin
+  const admin = isAdmin();
 
   const LoginNav = () => {
     return (

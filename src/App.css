@@ -47,7 +47,7 @@ body {
 .btn-group>.btn {
     background-color: #343a40 !important;
     border-color: white !important;
-    /*color: white !important;*/
+    color: white !important;
 }
 
 .btn-group>.btn:not(:last-child) {
@@ -69,10 +69,4 @@ body {
 
 .dropdown {
     margin-left: 5px !important;
-}
-
-.btn-light {
-    color: black !important;
-    background-color: white !important;
-    border-color: gray !important;
 }

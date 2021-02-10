@@ -1,12 +1,12 @@
 import React from "react";
 import {Button} from "react-bootstrap";
-import {hasSubs, require_superior} from "../../functions";
+import {require_superior} from "../../helpers/functions";
+import {FormattedSuperiorDate} from "../Others/Formatter";
 
 export const MissedBtn = (cell, row, index, {setModalInfo, setShowModal}) => {
 
   const handleClick = () => {
     if (!require_superior(row)) {
-      console.log(row)
       setModalInfo(row);
       setShowModal(true);
     }
@@ -20,8 +20,7 @@ export const MissedBtn = (cell, row, index, {setModalInfo, setShowModal}) => {
 };
 
 export const SignedBtn = (cell, row) => {
-
   return require_superior(row)
     ? <Button size="sm">Details</Button>
-    : row.sign
+    : FormattedSuperiorDate(cell, row.signatures[0])
 };

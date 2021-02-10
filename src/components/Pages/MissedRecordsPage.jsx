@@ -1,14 +1,13 @@
 import React from "react";
 import MissedDocuments from "../Tables/MissedDocuments";
 import MissedTrainings from "../Tables/MissedTrainings";
-import {getUser} from "../../functions";
+import {getUser} from "../../helpers/functions";
 import {FetchError, FetchLoading} from "../Others/FetchComponents";
-import useDataApi from "../../hooks/useDataApi";
-
+import useDataApi from "../../helpers/useDataApi";
 
 const MissedRecordsPage = () => {
 
-  const URL = `http://localhost:7777/unsigned/signatures/${getUser().id}`;
+  const URL = `/unsigned/signatures/${getUser().id}`;
 
   const [data, isLoaded, error] = useDataApi(URL);
 
@@ -20,7 +19,6 @@ const MissedRecordsPage = () => {
 
   return (
     <>
-      {/*TODO order by deadline */}
       <MissedDocuments documents={data.documents}/>
       <MissedTrainings trainings={data.online_trainings}/>
     </>

@@ -2,12 +2,13 @@ import React, {useState} from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import EditBtn from "../Buttons/EditBtn";
 import SMBtn from "../Buttons/SMBtn";
-import {docs} from "../../data";
+import {docs} from "../../helpers/data";
 import DocumentForm from "../Forms/DocumentForm";
 import TrainingForm from "../Forms/TrainingForm";
 import SavedRecords from "./SavedRecords";
 import EditRecordModal from "../Modals/EditRecordModal";
 import ReportBtn from "../Buttons/ReportBtn";
+import {fitBtn} from "../../helpers/functions";
 
 const FoundRecords = () => {
 
@@ -52,7 +53,7 @@ const FoundRecords = () => {
       dataField: 'skillMatrix',
       text: 'Report',
       formatter: ReportBtn,
-      headerStyle: () => { return {width: '1%'} }
+      headerStyle: fitBtn()
     }
   ];
 

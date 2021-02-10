@@ -2,45 +2,58 @@ import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import CaptionElement from "../Others/CaptionElement";
 import {SignedBtn} from "../Buttons/TableBtns";
-import {nonExpandableDocs} from "../../functions";
+import {nonExpandableDocs, orderBy} from "../../helpers/functions";
 import EmptyTable from "./EmptyTable";
+import {FormattedRelease, FormattedSuperiorDate, NameWithLink} from "../Others/Formatter";
 
 const SignedDocuments = ({documents}) => {
 
+  console.log('documents', documents)
   const columns = [{
-      dataField: 'name',
-      text: 'Name'
-    }, {
-      dataField: 'release',
-      text: 'Release'
-    }, {
-      dataField: 'sign',
-      text: 'Sign Day',
-      formatter: SignedBtn
-    }
-  ];
+    dataField: 'name',
+    text: 'Name',
+    sort: true,
+    formatter: NameWithLink
+  }, {
+    dataField: 'release',
+    text: 'Release',
+    sort: true, // FIXME
+    formatter: FormattedRelease
+  }, {
+    dataField: 'signature',
+    text: 'Signed date',
+    formatter: SignedBtn
+  }];
 
-  const expandColumns = [{
-      dataField: 'anet_id',
-      text: 'AnetID'
-    }, {
-      dataField: 'name',
-      text: 'Name'
-    }, {
-      dataField: 'sign',
-      text: 'Sign Day'
-    }
-  ];
+const expandColumns = [{
+    dataField: 'employee.id',
+    text: 'Employee ID',
+    sort: true
+  }, {
+    dataField: 'employee.first_name',
+    text: 'First name',
+    sort: true
+  }, {
+    dataField: 'employee.last_name',
+    text: 'Last Name',
+    sort: true
+  }, {
+    dataField: 's_date.time',
+    text: 'Sign date',
+    formatter: FormattedSuperiorDate
+  }];
 
   const expandRow = {
     nonExpandable: nonExpandableDocs(documents),
     renderer: (cell, row) => (
       <BootstrapTable
         keyField="id"
+        classes="inner-table"
         hover
-        data={documents[row].sub}
-        bordered={ false }
-        columns={expandColumns}/>
+        data={documents[row].signatures}
+        columns={expandColumns}
+        defaultSorted={orderBy('employee.last_name')}
+      />
     )
   };
 
@@ -54,6 +67,7 @@ const SignedDocuments = ({documents}) => {
         columns={columns}
         expandRow={expandRow}
         noDataIndication={EmptyTable}
+        defaultSorted={orderBy('release', 'desc')} // FIXME
       />
     </>
   );

@@ -4,38 +4,28 @@ import {MissedBtn} from "../Buttons/TableBtns";
 import CaptionElement from "../Others/CaptionElement";
 import ConfirmModal from "../Modals/ConfirmModal";
 import EmptyTable from "./EmptyTable";
-import {nonExpandableDocs, require_superior, delay} from "../../functions";
-import {FormattedDeadline, FormattedRelease} from "../Others/DateFormatter";
-import {proxy} from "../../data";
+import {fitBtn, nonExpandableDocs, orderBy, require_superior} from "../../helpers/functions";
+import {FormattedDeadline, FormattedRelease, NameWithLink} from "../Others/Formatter";
 
 const MissedDocuments = ({documents}) => {
-
-  console.log("documents", documents)
 
   const [docs, setDocs] = useState(documents);
   const [showModal, setShowModal] = useState(false)
   const [modalInfo, setModalInfo] = useState({})
 
   const handleAccept = async () => {
-    console.log('modalInfo', modalInfo);
-    console.log('signing as', require_superior(modalInfo))
-
-    // const update = docs.filter(d => d.signatures[0].id !== 1114)
-    // console.log('update', update)
-    // setDocs(update);
-    // await delay(5000).then(r => console.log("dayPeriod"))
-    // console.log("hu")
-    // console.log('docs', docs)
-    //
-    // return
-
     if (require_superior(modalInfo) === false) {
-      fetchSign('/sign', modalInfo.signatures[0].id)
+      const signature_id = modalInfo.signatures[0].id
+      fetchSign('/sign', signature_id)
+      setDocs(docs.filter(d => d.signatures[0].id !== signature_id)) // TODO ak sa podaril fetch, inak errorMessage
     } else {
-      fetchSign('/sign/superior', modalInfo.id)
-      setDocs(docs.filter(d => d.id !== modalInfo.id)); // TODO ME
+      const signature_id = modalInfo.id
+      fetchSign('/sign/superior', signature_id)
+      const update = docs.map(d => {
+        return {...d, signatures: d.signatures.filter(s => s.id !== signature_id)}
+      })
+      setDocs(update.filter(d => d.signatures.length)); // TODO ak sa podaril fetch
     }
-
     setShowModal(false);
   }
 
@@ -46,7 +36,7 @@ const MissedDocuments = ({documents}) => {
    * */
   const fetchSign = (url, id) => {
     console.log('fetch to', url, id)
-    fetch(`${proxy}${url}`, {
+    fetch(url, {
       method: "POST",
       body: new URLSearchParams(`id=${id}`)
     })
@@ -58,32 +48,31 @@ const MissedDocuments = ({documents}) => {
       .catch(() => console.log("something goes wrong"))
   }
 
-  const columns = [
-    {
-      dataField: 'name',
-      text: 'Name',
-      sort: true
-    }, {
-      dataField: 'release_date.time',
-      text: 'Release',
-      formatter: FormattedRelease,
-      sort: true // FIXME not work
-    }, {
-      dataField: 'deadline.time',
-      text: 'Deadline',
-      formatter: FormattedDeadline,
-      sort: true // FIXME not work
-    }, {
-      dataField: 'signBtn',
-      text: 'Sign',
-      formatter: MissedBtn,
-      formatExtraData: {
-        setModalInfo: setModalInfo,
-        setShowModal: setShowModal
-      },
-      headerStyle: () => { return {width: '1%'} }
-    }
-  ];
+  const columns = [{
+    dataField: 'name',
+    text: 'Name',
+    sort: true,
+    formatter: NameWithLink
+  }, {
+    dataField: 'release_date',
+    text: 'Release',
+    sort: true, // FIXME
+    formatter: FormattedRelease
+  }, {
+    dataField: 'deadline',
+    text: 'Deadline',
+    sort: true, // FIXME
+    formatter: FormattedDeadline
+  }, {
+    dataField: 'signBtn',
+    text: 'Sign',
+    formatter: MissedBtn,
+    formatExtraData: {
+      setModalInfo: setModalInfo,
+      setShowModal: setShowModal
+    },
+    headerStyle: fitBtn()
+  }];
 
   const expandColumns = [
     {
@@ -106,15 +95,9 @@ const MissedDocuments = ({documents}) => {
         setModalInfo: setModalInfo,
         setShowModal: setShowModal
       },
-      headerStyle: () => { return {width: '1%'} }
+      headerStyle: fitBtn()
     }
   ];
-
-  // const getData = (row) => {
-  //   console.log('row', row)
-  //   console.log('inner-row', documents[row].signatures)
-  //   return documents[row].signatures
-  // }
 
   const expandRow = {
     nonExpandable: nonExpandableDocs(documents),
@@ -123,9 +106,10 @@ const MissedDocuments = ({documents}) => {
         keyField="id"
         classes="inner-table"
         hover
-        data={documents[row].signatures}
+        data={docs[row].signatures}
         columns={expandColumns}
-        defaultSorted={[{dataField: 'employee.last_name', order: 'asc'}]}/>
+        defaultSorted={orderBy('employee.last_name')}
+      />
     )
   };
 
@@ -135,10 +119,10 @@ const MissedDocuments = ({documents}) => {
       <BootstrapTable
         keyField="id"
         hover
-        data={documents}
+        data={docs}
         columns={columns}
         expandRow={expandRow}
-        defaultSorted={[{dataField: 'deadline', order: 'asc'}]}
+        defaultSorted={orderBy('deadline')} // TODO TEST
         noDataIndication={EmptyTable}
       />
       {showModal &&

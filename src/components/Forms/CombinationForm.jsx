@@ -1,7 +1,7 @@
 import React from "react";
 import {Form, Col, Row} from "react-bootstrap";
-import {branches, divisions, departments, cities} from "../../data";
-import {getSelectOptions} from "../../functions";
+import {branches, divisions, departments, cities} from "../../helpers/data";
+import {getSelectOptions} from "../../helpers/functions";
 
 const CombinationForm = ({register}) => {
 

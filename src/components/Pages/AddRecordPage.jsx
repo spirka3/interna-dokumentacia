@@ -13,6 +13,51 @@ const AddRecordPage = () => {
     setFormType(event.target.id)
   };
 
+  const handleDatabase = (inserting, type, data, action) => {
+    let id = null
+    if (inserting) {
+      id = insertRecord(type, data) // TODO insert
+    } else {
+      id = updateRecord(type, data) // TODO update
+    }
+    if (action === "send"){
+      sendRecord(type, id) // TODO send
+    }
+    return null // vratit vysledok ci sa to podarilo
+  }
+
+  const insertRecord = (record, data) => { // TODO test
+    return fetch(`/${record}/create`, {
+      method: "POST",
+      body: JSON.stringify(data)
+    })
+      .then(response => response.json())
+      .then(res => {
+        console.log(res)
+        return res; // id
+      })
+      .catch((e) => console.log(e))
+  }
+
+  const sendRecord = (record, id) => { // TODO test
+    return fetch(`/${record}/confirm`, {
+      method: "POST",
+      body: new URLSearchParams(`${record}=${id}`)
+    })
+      .then(response => response.json())
+      .then(res => {
+        console.log(res)
+        return res;
+      })
+      .catch((e) => console.log(e))
+  }
+
+  const updateRecord = (record, data, id) => { // TODO
+    return fetch(`/${record}/update`, {
+      // ...
+    })
+  }
+
   const active = id => formType === id && 'active'
 
   return (
@@ -22,11 +67,23 @@ const AddRecordPage = () => {
         <Button id="new_training" className={active("new_training")}>Online training</Button>
         <Button id="editable_docs" className={active("editable_docs")}>Saved records</Button>
       </ButtonGroup>
-      {formType === 'new_document'
-        ? <DocumentForm data={formData}/>
-        : formType === 'new_training'
-          ? <TrainingForm data={formData}/>
-          : <SavedRecords setFormType={setFormType} setFormData={setFormData}/>
+      {formType === 'new_document' &&
+        <DocumentForm
+          data={formData}
+          handleDatabase={handleDatabase}
+        />
+      }
+      {formType === 'new_training' && // elif
+        <TrainingForm
+          data={formData}
+          handleDatabase={handleDatabase}
+        />
+      }
+      {formType === 'editable_docs' && // elif
+        <SavedRecords
+          setFormType={setFormType}
+          setFormData={setFormData}
+        />
       }
     </Container>
   )

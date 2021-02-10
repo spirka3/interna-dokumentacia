@@ -3,7 +3,7 @@ import {Redirect} from "react-router";
 import useSessionStorage from "@rooks/use-sessionstorage";
 import LoginForm from "../Forms/LoginForm";
 import { useHistory } from "react-router-dom";
-import {proxy} from "../../data";
+import {proxy} from "../../helpers/data";
 
 const LoginPage = () => {
 
@@ -13,31 +13,65 @@ const LoginPage = () => {
   const [user, setUser] = useSessionStorage("user", undefined);
   const [loginError, setLoginError] = useState("");
 
-  let time = 0;
-  let lastInput = '';
   let cardInput = '';
-  const isCardInput = () => Date.now() - time < 30
+  const maxCardInputTimeDifference = 40;
+  const cardInputLength = 10;
+  let t = cardInputTimeout();
+  clearTimeout(t);
+
+  function cardInputTimeout() {
+    return setTimeout(checkInput, maxCardInputTimeDifference);
+  }
+
+  function isLetter(e) {
+    let aKeycode = 65;
+    let zKeycode = 90;
+
+    return e.keyCode >= aKeycode && e.keyCode <= zKeycode
+  }
+
+  function isNumber(e) {
+    let zeroKeycode = 48;
+    let nineKeycode = 57;
+
+    return e.keyCode >= zeroKeycode && e.keyCode <= nineKeycode
+  }
+
+  function isValiable(e) {
+    return isLetter(e) || isNumber(e)
+  }
+
+  function emptyCardInput() {
+    cardInput = '';
+  }
+
+  function checkCard(cardInput) {
+    let user = findByCard(cardInput);
+    if(user !== undefined) {
+      console.log(`${user.anet_id}`);
+      //Here goes login based on user
+    }
+  }
+
+  function checkInput() {
+    if(cardInput.length === cardInputLength) {
+      console.log(`checking card ${cardInput}`);
+      checkCard(cardInput);
+      emptyCardInput();
+    } else {
+      emptyCardInput();
+      console.log('emptying input');
+    }
+  }
 
   const event = (e) => {
-    console.log(`keyPressed ${e.key}`)
-
-    if(isCardInput()) {
-      if(lastInput !== '') {
-        cardInput = lastInput;
-        lastInput = '';
-      }
-      cardInput += e.key;
-      findByCard(cardInput);
-      if(user !== undefined) {
-        console.log('Found Employee', user);
-      }
-    } else {
-      cardInput = '';
-      lastInput = e.key;
+    //console.log(`${e.key} ${e.keyCode} ${String.fromCharCode(e.keyCode)}`)
+    let engInput = String.fromCharCode(e.keyCode)
+    if(isValiable(e)) {
+      cardInput += engInput;
+      clearTimeout(t);
+      t = cardInputTimeout();
     }
-
-    time = Date.now();
-    console.log('cardInput', cardInput);
   }
 
   useEffect(() => {
@@ -85,11 +119,11 @@ const LoginPage = () => {
       {user !== null
         ? <Redirect to="/missed-docs"/>
         : <LoginForm
-            onSubmit={onSubmit}
-            language={language}
-            setLanguage={setLanguage}
-            loginError={loginError}
-          />
+          onSubmit={onSubmit}
+          language={language}
+          setLanguage={setLanguage}
+          loginError={loginError}
+        />
       }
     </>
   )

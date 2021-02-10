@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import {proxy} from "./data";
 
 const useDataApi = url => {
 
@@ -8,7 +9,7 @@ const useDataApi = url => {
 
   useEffect(() => {
     console.log('url', url)
-    fetch(url, { method: "GET"} )
+    fetch(proxy + url, { method: "GET"} )
       .then(response => response.json())
       .then(res => {
           setIsLoaded(true);

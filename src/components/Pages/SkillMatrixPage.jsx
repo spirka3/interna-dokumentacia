@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import CaptionElement from "../Others/CaptionElement";
-import {sm_data, employees} from "../../data";
+import {sm_data, employees} from "../../helpers/data";
 import ToggleBtn from "../Buttons/ToggleBtn";
 import ConfirmModal from "../Modals/ConfirmModal";
-import {Legend, RowButtons, DocumentLabel} from "../Others/SkillMatrixComponents";
-import {getUser} from "../../functions";
+import {Legend, RowButtons} from "../Others/SkillMatrixComponents";
+import {fitBtn, getUser} from "../../helpers/functions";
 import {FetchError, FetchLoading} from "../Others/FetchComponents";
+import {DocumentLabel, FormattedEmployee} from "../Others/Formatter";
 
 const SkillMatrixPage = () => {
 
@@ -43,20 +44,8 @@ const SkillMatrixPage = () => {
     const columns = [{
       dataField: 'name',
       text: 'Document Name',
-      formatter: DocumentLabel,
-      formatExtraData: {
-        data: data
-      }
+      formatter: DocumentLabel
     }];
-
-    const employeeFormatted = (cell, row) => {
-      const employee = employees[row-1]
-      return (
-        <div style={{fontSize: "12px"}}>
-           {employee.name} LastName, employee.job, 100%
-       </div>
-      )
-    }
 
     let counter = 0;
 
@@ -66,14 +55,14 @@ const SkillMatrixPage = () => {
         dataField: e.anet_id,
         text: e.name,
         formatter: ToggleBtn,
-        headerFormatter: employeeFormatted,
+        headerFormatter: FormattedEmployee,
         headerTitle: (col, index) => employees[index-1].job,
         formatExtraData: {
           data: data,
           setData: setData,
           id: (counter++ % employees.length)
         },
-        headerStyle: () => { return {width: '1%'} }
+        headerStyle: fitBtn()
       })
     })
 
@@ -140,12 +129,12 @@ const SkillMatrixPage = () => {
       />
       <Legend/>
       {showModal &&
-      <ConfirmModal
-        showModal={showModal}
-        setShowModal={setShowModal}
-        modalInfo={{name:"test"}}
-        handleAccept={() => handleAccept(event)}
-      />
+        <ConfirmModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          modalInfo={{name:"test"}}
+          handleAccept={() => handleAccept(event)}
+        />
       }
     </>
   );
