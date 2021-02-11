@@ -7,7 +7,7 @@ export const MissedBtn = (cell, row, index, {setModalInfo, setShowModal}) => {
 
   const handleClick = () => {
     if (!require_superior(row)) {
-      setModalInfo(row);
+      setModalInfo(`Do you really want to sign the ${row.name}?`);
       setShowModal(true);
     }
   }

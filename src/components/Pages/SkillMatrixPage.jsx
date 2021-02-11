@@ -10,9 +10,10 @@ import {DocumentLabel, FormattedEmployee} from "../Others/Formatter";
 
 const SkillMatrixPage = () => {
 
-  // const [showLegend, setShowLegend] = useState(false)
+  const [showLegend, setShowLegend] = useState(false)
   const [showModal, setShowModal] = useState(false)
-  const [event, setEvent] = useState("")
+  const [modalInfo, setModalInfo] = useState({})
+  const [action, setAction] = useState("")
 
   const documents = loadDocuments()
   const [data, setData] = useState(documents);
@@ -31,7 +32,7 @@ const SkillMatrixPage = () => {
   // TODO MATO load inferior employees
     employees.forEach(e => {
       columns.push({
-        dataField: e.anet_id,
+        dataField: e.id,
         text: e.name,
         formatter: ToggleBtn,
         headerFormatter: FormattedEmployee,
@@ -57,7 +58,7 @@ const SkillMatrixPage = () => {
     return state.includes('s') ? 'es' : 'e' // FIXME treba vediet kedy ma aj superior podpisovat
   }
 
-  const handleAccept = (event) => {
+  const handleAccept = () => {
 
     const update = data.map(d => {
 
@@ -65,9 +66,9 @@ const SkillMatrixPage = () => {
 
         if (e.state.includes('X')){
           let state = e.state.replace('X', '')
-          if (event === 'sign')       state = state.replace('s', '')
-          if (event === 'cancelDuty') state = '-'
-          if (event === 'trainAgain') state = getState(d, state)
+          if (action === 'sign')       state = state.replace('s', '')
+          if (action === 'cancelDuty') state = '-'
+          if (action === 'trainAgain') state = getState(d, state)
           return {...e, state: state} // updated employee
         }
 
@@ -102,20 +103,23 @@ const SkillMatrixPage = () => {
         rowClasses="text-nowrap"
       />
       <RowButtons
-        setEvent={setEvent}
+        setAction={setAction}
+        setModalInfo={setModalInfo}
         setShowModal={setShowModal}
+        handleAccept={handleAccept}
         handleExport={handleExport}
+        showLegend={showLegend}
+        setShowLegend={setShowLegend}
       />
-      {/*<Button onClick={() => setShowLegend(!showLegend)} size="sm">{showLegend ? 'Hide legend' : 'Show legend'}</Button>*/}
       {/*{showLegend &&*/}
-      <Legend/>
+        <Legend/>
       {/*}*/}
       {showModal &&
         <ConfirmModal
           showModal={showModal}
           setShowModal={setShowModal}
-          modalInfo={{name:"test"}}
-          handleAccept={() => handleAccept(event)}
+          modalInfo={modalInfo}
+          handleAccept={handleAccept}
         />
       }
     </>

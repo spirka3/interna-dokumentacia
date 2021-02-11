@@ -16,7 +16,7 @@ const ConfirmModal = ({showModal, setShowModal, modalInfo, handleAccept}) => {
         <Modal.Title>Confirm</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>Do you really want to sign the {modalInfo.name}?</p>
+        <p>{modalInfo}</p>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="danger" onClick={onAccept}>Accept</Button>

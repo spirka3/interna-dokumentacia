@@ -4,19 +4,26 @@ import {ExclamationTriangle} from "react-bootstrap-icons";
 import Container from "react-bootstrap/Container";
 import {employees} from "../../helpers/data";
 
-export const RowButtons = ({setEvent, setShowModal, handleAccept, handleExport}) => {
+export const RowButtons = ({setAction, setModalInfo, setShowModal, handleAccept, showLegend, setShowLegend}) => {
 
   const handleClick = (e) => {
-    if (e.target.id === "cancel") {
+    const action = e.target.id
+    setAction(action)
+    if (action === "cancel") {
       handleAccept()
     } else {
+      setModalInfo(`Do you really want to ${action} selected signatures?`)
       setShowModal(true)
     }
-    setEvent(e.target.id)
   }
 
   return (
-    <Row>
+    <Row className="mb-3">
+      {/*<Col className="text-left">*/}
+      {/*  <ButtonGroup className="div-btn" size="sm">*/}
+      {/*    <Button onClick={() => setShowLegend(!showLegend)} size="sm">{showLegend ? 'Hide legend' : 'Show legend'}</Button>*/}
+      {/*  </ButtonGroup>*/}
+      {/*</Col>*/}
       <Col className="text-right">
         <ButtonGroup className="div-btn" size="sm" onClick={handleClick}>
           <Button id="sign">Sign</Button>
