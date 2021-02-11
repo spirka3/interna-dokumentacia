@@ -90,7 +90,7 @@ const LoginPage = () => {
   const fetchLoginByPass = (data) => {
     fetch('/login', {
       method: "POST",
-      body: new URLSearchParams(`login=${data.login}&password=${data.password}`)
+      body: new URLSearchParams(`email=${data.email}&password=${data.password}`)
     })
       .then(response => response.json())
       .then(res => {

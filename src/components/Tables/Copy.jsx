@@ -22,7 +22,7 @@ const MissedDocuments = ({documents}) => {
       fetchSign('/sign', signature_id)
       setDocs(docs.filter(d => d.signatures[0].id !== signature_id)) // TODO ak sa podaril fetch, inak errorMessage
     } else {
-      const signature_id = modalExpandInfo.id
+      const signature_id = modalInfo.id
       fetchSign('/sign/superior', signature_id)
       const update = docs.map(d => {
         return {...d, signatures: d.signatures.filter(s => s.id !== signature_id)}

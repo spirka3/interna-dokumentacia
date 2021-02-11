@@ -79,7 +79,7 @@ function App() {
         <Switch>
           {admin &&
           <>
-            <Private path="/skill-matrix" component={SkillMatrixPage} />
+            {/*<Private path="/skill-matrix" component={SkillMatrixPage} />*/}
             <Private path="/finder" component={FinderPage} />
           </>
           }

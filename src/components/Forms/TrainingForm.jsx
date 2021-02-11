@@ -17,8 +17,8 @@ const TrainingForm = ({formData, handleDatabase}) => {
   },[]) // Only once
 
   const {register, handleSubmit, errors, reset} = useForm({
-    // defaultValues: {...dbdocs[1], date: get_current_date(), employees: employees[0]} // test data
-    defaultValues: {...formData, date: get_current_date()}
+    defaultValues: {...dbdocs[1], date: get_current_date()} // test data
+    // defaultValues: {...formData, date: get_current_date()}
   });
 
   const [errorMsg, setErrorMsg] = useState()
@@ -33,11 +33,23 @@ const TrainingForm = ({formData, handleDatabase}) => {
       return
     }
 
-    data = {...data, employees: attendees} // TODO poslat správne zamestnancov do DB
+    data = {...data, employees: attendees.map(a=>a.id)} // TODO poslat správne zamestnancov do DB
     console.log('data', data);
 
     const action = event.target.id
-    const result = handleDatabase('/document', data, action)
+    // const result = handleDatabase('/training', data, action)
+    const result = true
+
+    fetch('/training/save', {
+      method: "POST",
+      body: JSON.stringify(data)
+    })
+      // .then(response => response.json())
+      .then(res => {
+        console.log(res)
+        return res; // id
+      })
+      .catch((e) => console.log(e))
 
     if (result) { // if successful TODO
       setSuccessMsg(`${action} was successful`)
@@ -113,7 +125,7 @@ const TrainingForm = ({formData, handleDatabase}) => {
           <Typeahead
             id="basic-typeahead-single"
             name="employees"
-            labelKey={option => `${option.name} [${option.anet_id}]`}
+            labelKey={option => `${option.name} [${option.id}]`}
             multiple
             onChange={addAttendees}
             options={employees}

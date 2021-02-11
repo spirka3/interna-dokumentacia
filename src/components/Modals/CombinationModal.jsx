@@ -15,7 +15,7 @@ const CombinationModal = ({showModal, setShowModal, combinations, setCombination
 
   const add = () => {
     setEmptyCombinations([false])
-    setCombinations([...combinations, combination]);
+    setCombinations([...combinations, {...combination, id: combinations.length}]);
   }
 
   const addClose = () => {

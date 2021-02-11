@@ -17,11 +17,8 @@ export const RowButtons = ({setEvent, setShowModal, handleAccept, handleExport})
 
   return (
     <Row>
-      <Col xs="2">
-        <Button id="export" variant="dark" onClick={handleExport}>Export</Button>
-      </Col>
       <Col className="text-right">
-        <ButtonGroup className="div-btn" onClick={handleClick}>
+        <ButtonGroup className="div-btn" size="sm" onClick={handleClick}>
           <Button id="sign">Sign</Button>
           <Button id="cancelDuty">Cancel duty</Button>
           <Button id="trainAgain">Train again</Button>
@@ -39,15 +36,19 @@ export const Legend = () => {
       background: color,
       borderColor: color,
       color: textColor,
-      width: "100px"
+      width: "80px",
+      height: "20px",
+      fontSize: '.7rem',
+      fontWeight: 'bold',
+      padding: '0'
     }
-    return <p><span><Button style={style} size="sm">{label}</Button>{` ${text}`}</span></p>
+    return <p><span><Button style={style}>{label}</Button>{` ${text}`}</span></p>
   }
 
   return (
-    <Card style={{ width: '35rem', marginTop: '8rem' }}>
+    <Card style={{ width: '30rem', marginTop: '8rem', fontSize: '.7rem', marginBottom: '.75rem' }}>
       <Card.Body>
-        <Card.Subtitle className="mb-2 text-muted">Legend:</Card.Subtitle>
+        <Card.Subtitle className="mb-3 text-muted">Legend:</Card.Subtitle>
         <Card.Text>
           <Badge label="no need" text="Zamestnanec bol odznačený z potreby oboznámenia" color="gray"/>
           <Badge label="miss e+s" text="Ani zamestnanec ani nadriadený ešte nepotvrdili" color="tomato"/>
@@ -57,7 +58,7 @@ export const Legend = () => {
           <Badge label="not sent" text="Este neodoslane" color="cornflowerblue"/>
           <p><ExclamationTriangle style={{color: "red", marginBottom: "4px"}}/>{' '}Uplynul deadline a chýbajú podpisy</p>
           {/* TODO hviezdicka */}
-          <p>hviezdička <strong style={{fontSize: '1.2rem'}}>*</strong> znamena, ze zamestnanec sa opakovane preškoluje</p>
+          <p>hviezdička <strong>*</strong> znamena, ze zamestnanec sa opakovane preškoluje</p>
         </Card.Text>
       </Card.Body>
     </Card>

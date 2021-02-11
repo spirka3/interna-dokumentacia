@@ -15,7 +15,8 @@ const AddRecordPage = () => {
 
   const handleDatabase = (type, data, action) => {
     let id
-    if (formData === undefined) {
+    // if (formData === undefined) {
+    if (true) {
       id = insertRecord(type, data) // TODO insert
     } else {
       id = updateRecord(type, data) // TODO update
@@ -27,6 +28,7 @@ const AddRecordPage = () => {
   }
 
   const insertRecord = (record, data) => { // TODO test
+    console.log('data', data)
     return fetch(`/${record}/create`, {
       method: "POST",
       body: JSON.stringify(data)

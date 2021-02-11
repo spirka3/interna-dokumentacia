@@ -5,7 +5,7 @@ import Select from 'react-select'
 import {setOf} from "../../helpers/functions";
 import {Typeahead} from "react-bootstrap-typeahead";
 
-const Filter = ({filter, setFilter}) => {
+const Filter = () => {
 
   let combi = combinations
 
@@ -24,6 +24,17 @@ const Filter = ({filter, setFilter}) => {
   const [departments, setDepartments] = useState(setOf(combi.map(c => c.department)));
   const [cities, setCities] = useState(setOf(combi.map(c => c.city)));
   // const [recordName, setRecordName] = useState()
+
+  const [filter, setFilter] = useState({
+    type: [],
+    branch: [],
+    city: [],
+    department: [],
+    division: [],
+    record: [],
+    employeeName: '',
+    recordName: ''
+  });
 
   const isEmptyFilter = () => {
     return !filter.branch.length &&
@@ -145,7 +156,7 @@ const Filter = ({filter, setFilter}) => {
 
   return (
     <Form className="pb-4" onSubmit={onSubmit}>
-      <Row className='pb-1'>
+      <Row>
         {/*// TODO ME labels a osamostatnit */}
         <Col>Types</Col>
         <Col>Branches</Col>

@@ -23,16 +23,27 @@ const DocumentForm = ({formData, handleDatabase}) => {
   useEffect(() => setError(""), emptyCombinations)
 
   const onSubmit = (data, event) => {
-    if (emptyCombinations[0] || combinations.length === 0){
-      setError("At least one combination is required")
-      return
-    }
+    // if (emptyCombinations[0] || combinations.length === 0){
+    //   setError("At least one combination is required")
+    //   return
+    // }
 
-    data = {...data, combinations: resolveCombinations()}
-    console.log('data', data);
+    // data = {...data, assigned_to: resolveCombinations()}
+    console.log('data', JSON.stringify(data));
 
     const action = event.target.id
-    const result = handleDatabase('/document', data, action)
+    // const result = handleDatabase('/document', data, action)
+    const result = false
+
+    fetch('/document/create', {
+      method: "POST",
+      body: JSON.stringify(data),
+    })
+      // .then(response => response.json())
+      .then(res => {
+        console.log('res', res)
+      })
+      .catch((e) => console.log('error', e))
 
     if (result) { // if successful TODO
       setSuccessMessage(`${action} was successful`)
@@ -43,64 +54,49 @@ const DocumentForm = ({formData, handleDatabase}) => {
   }
 
   const resolveCombinations = () => {
-    console.log('combinations', combinations);
     let combs = flatBranch()
     combs = flatDivision(combs)
     combs = flatDepartment(combs)
     combs = flatCity(combs)
-    const res = stringify(combs)
-    console.log('res', res.join('&'))
-    return res
-    // TODO ME poslat správne kombinacie do DB
+    return stringify(combs).join('&')
   }
+
+  const getID = (field) => field.length ? field[0].value : '.'
 
   const stringify = (combs) => {
-    const res = []
-    let str = ''
-    combs.forEach(c => {
-      str = `${c.branch.length ? c.branch[0].value : '.'},${c.city.length ? c.city[0].value : '.'},${c.department.length ? c.department[0].value : '.'},${c.division.length ? c.division[0].value : '.'}`
-      console.log('str', str)
-      res.push(str)
+    return combs.map(c => {
+      return `${getID(c.branch)},${getID(c.city)},${getID(c.department)},${getID(c.division)}`
     })
-    return res
   }
-
   const flatBranch = () => {
     const res = []
     combinations.forEach(c => {
-      c.branch.forEach(b => {
-        res.push({...c, branch: [b]})
-      })
+      if (!c.branch.length) res.push(c)
+      c.branch.forEach(b => res.push({...c, branch: [b]}))
     })
     return res
   }
-
   const flatDivision = (combs) => {
     const res = []
     combs.forEach(c => {
-      c.division.forEach(f => {
-        res.push({...c, division: [f]})
-      })
+      if (!c.division.length) res.push(c)
+      c.division.forEach(f => res.push({...c, division: [f]}))
     })
     return res
   }
-
   const flatDepartment = (combs) => {
     const res = []
     combs.forEach(c => {
-      c.department.forEach(f => {
-        res.push({...c, department: [f]})
-      })
+      if (!c.department.length) res.push(c)
+      c.department.forEach(f => res.push({...c, department: [f]}))
     })
     return res
   }
-
   const flatCity = (combs) => {
     const res = []
     combs.forEach(c => {
-      c.city.forEach(f => {
-        res.push({...c, city: [f]})
-      })
+      if (!c.city.length) res.push(c)
+      c.city.forEach(f => res.push({...c, city: [f]}))
     })
     return res
   }
@@ -134,7 +130,7 @@ const DocumentForm = ({formData, handleDatabase}) => {
             value={false}
             name="require_superior"
             inline
-            defaultChecked
+            defaultChecked // TODO ME
             ref={register}
           />
         </Col>

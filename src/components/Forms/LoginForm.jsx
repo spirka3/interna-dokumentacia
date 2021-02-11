@@ -26,8 +26,8 @@ const LoginForm = ({onSubmit, language, setLanguage, loginError}) => {
         <Form.Group>
           <Form.Label>Name</Form.Label>
           <Form.Control
-            name="login"
-            placeholder="Enter login name"
+            name="email"
+            placeholder="Enter email"
             ref={register}
             required
           />
@@ -38,7 +38,7 @@ const LoginForm = ({onSubmit, language, setLanguage, loginError}) => {
           <Form.Control
             name="password"
             type="password"
-            placeholder="Enter login password"
+            placeholder="Enter password"
             ref={register}
             required
           />

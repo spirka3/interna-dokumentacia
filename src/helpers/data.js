@@ -5,37 +5,37 @@ import {get_current_date} from "./functions";
  */
 
 export const employees = [{
-  anet_id: '1',
+  id: '1',
   name: 'Janko',
   pass: 'ja',
   job: 'Job1',
   complete: '70%'
 }, {
-  anet_id: '2',
+  id: '2',
   name: 'Julka',
   pass: 'ty',
   job: 'Job2',
   complete: '100%'
 }, {
-  anet_id: '3',
+  id: '3',
   name: 'Jaroslav',
   pass: 'on',
   job: 'Job3',
   complete: '44%'
 }, {
-  anet_id: '4',
+  id: '4',
   name: 'Jozef',
   pass: 'ty',
   job: 'Job4',
   complete: '53%'
 }, {
-  anet_id: '5',
+  id: '5',
   name: 'Juraj',
   pass: 'on',
   job: 'Job5',
   complete: '83%'
 }, {
-  anet_id: '6',
+  id: '6',
   name: 'Janka',
   pass: 'on',
   job: 'Job6',
@@ -50,10 +50,9 @@ export const doc_form = {
   deadline: get_current_date(),
   order_number: 1,
   version: "1",
-  prev_version_id: 1,
   assigned_to: "b; u; b; u",
   type: 'A',
-  require_superior: true
+  require_superior: false
 }
 
 export const docs = [{

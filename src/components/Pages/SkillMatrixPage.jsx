@@ -93,7 +93,6 @@ const SkillMatrixPage = () => {
 
   return (
     <>
-      <CaptionElement title="Strečno"/>
       <BootstrapTable
         keyField="id"
         classes="skill-matrix-table"

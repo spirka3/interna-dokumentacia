@@ -14,7 +14,7 @@ const Navigation = ({location}) => {
         <NavLink href="/signed-docs">Signed records</NavLink>
         {admin &&
           <>
-          <NavLink href="/skill-matrix">SkillMatrix</NavLink>
+          {/*<NavLink href="/skill-matrix">SkillMatrix</NavLink>*/}
           <NavLink href="/add-record">Add Record</NavLink>
           <NavLink href='/finder'>Finder</NavLink>
           <NavLink href='/settings'>Settings</NavLink>
