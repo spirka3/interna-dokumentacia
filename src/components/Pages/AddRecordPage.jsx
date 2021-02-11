@@ -7,15 +7,15 @@ import SavedRecords from "../Tables/SavedRecords";
 const AddRecordPage = () => {
 
   const [formType, setFormType] = useState('new_document');
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState();
 
   const handleClick = (event) => {
     setFormType(event.target.id)
   };
 
-  const handleDatabase = (inserting, type, data, action) => {
-    let id = null
-    if (inserting) {
+  const handleDatabase = (type, data, action) => {
+    let id
+    if (formData === undefined) {
       id = insertRecord(type, data) // TODO insert
     } else {
       id = updateRecord(type, data) // TODO update

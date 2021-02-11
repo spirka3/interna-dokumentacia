@@ -26,17 +26,17 @@ body {
     background-color: #ececec;
 }
 
-/*.skill-matrix-table td:not(:first-child){*/
-/*    padding: 0 !important;*/
-/*}*/
-
 .skill-matrix-table td {
     padding: 0 !important;
 }
 
 .skill-matrix-table td:first-child {
     padding: 10px 0 0 10px !important;
-    line-height: 20px !important;
+    width: 400px !important;
+}
+
+.skill-matrix-table td:first-child {
+    /*display: flex;*/
 }
 
 /*.sticky-nav {*/
@@ -65,6 +65,19 @@ body {
     background-color: #f3c404f2 !important;
     border-color: white !important;
     color: black !important;
+}
+
+.large-container {
+    margin: 2% 3%;
+}
+
+.filter>.col {
+    padding-left: 0;
+    padding-right: .3rem;
+}
+
+.filter {
+     margin: 0 !important;
 }
 
 .dropdown {

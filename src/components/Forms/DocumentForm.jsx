@@ -4,20 +4,18 @@ import {useForm} from "react-hook-form";
 import MyHookForm from "./MyHookForm";
 import Combinations from "../Others/Combinations";
 import {ErrorAlert} from "../Others/ErrorAlert";
-import {doc_form, types} from "../../helpers/data";
+import {doc_form, types as t} from "../../helpers/data";
 import {getSelectOptions} from "../../helpers/functions";
 import {SuccessAlert} from "../Others/SuccessAlert";
 
-const DocumentForm = ({form_data, handleDatabase}) => {
-  console.log('form_data', form_data)
-
-  const types = types
-
+const DocumentForm = ({form_data: formData, handleDatabase}) => {
+  console.log('form_data', formData)
   const {register, handleSubmit, errors, reset} = useForm({
-    // defaultValues: {...form_data, deadline: 14}
+    // defaultValues: {...formData, deadline: 14}
     defaultValues: {...doc_form} // test data
   });
 
+  const types = t // TODO
   const [error, setError] = useState()
   const [successMessage, setSuccessMessage] = useState()
   const [combinations, setCombinations] = useState([])
@@ -33,11 +31,10 @@ const DocumentForm = ({form_data, handleDatabase}) => {
     data = {...data, combinations: combinations} // TODO poslat správne kombinacie do DB
     console.log('data', data);
 
-    const inserting = form_data === undefined
     const action = event.target.id
-    const result = handleDatabase(inserting, '/document', data, action)
+    const result = handleDatabase('/document', data, action)
 
-    if (result) { // if successful
+    if (result) { // if successful TODO
       setSuccessMessage(`${action} was successful`)
       reset({})
     } else {
@@ -47,7 +44,6 @@ const DocumentForm = ({form_data, handleDatabase}) => {
 
   return (
     <Form onChange={()=>setSuccessMessage("")}>
-
        {/* TYPE OF DOCUMENT */}
       <Form.Group as={Row}>
         <Form.Label column sm="2">Type*</Form.Label>
@@ -133,7 +129,6 @@ const DocumentForm = ({form_data, handleDatabase}) => {
         placeholder="Enter note"
         register={register}
       />
-
       {/* COMBINATIONS */}
       <Combinations combinations={combinations} setCombinations={setCombinations} setReq={setEmptyCombinations}/>
 
@@ -146,6 +141,9 @@ const DocumentForm = ({form_data, handleDatabase}) => {
       <div onClick={handleSubmit(onSubmit)} className="pt-1 btn-block text-right">
         <Button id="save" type="submit" className="mr-1">Save</Button>
         <Button id="send" type="submit" variant="danger">Send</Button>
+        {formData !== undefined &&
+          <Button id="sendNewVersion" type="submit" variant="danger">Send as new version</Button>
+        }
       </div>
     </Form>
   )

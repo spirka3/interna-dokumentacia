@@ -9,16 +9,16 @@ import {get_current_date} from "../../helpers/functions";
 import {ErrorAlert} from "../Others/ErrorAlert";
 import {SuccessAlert} from "../Others/SuccessAlert";
 
-const TrainingForm = ({form_data, handleDatabase}) => {
-
+const TrainingForm = ({form_data: formData, handleDatabase}) => {
+  console.log('form_data', formData)
   // let employees = ...
   useEffect(()=>{
     // TODO MATO load employees
   },[]) // Only once
 
   const {register, handleSubmit, errors, reset} = useForm({
-    // defaultValues: {...form_data, date: date}
     defaultValues: {...dbdocs[1], date: get_current_date(), employees: employees[0]} // test data
+    // defaultValues: {...form_data, date: date}
   });
 
   const [errorMsg, setErrorMsg] = useState()
@@ -26,7 +26,6 @@ const TrainingForm = ({form_data, handleDatabase}) => {
   const [attendees, setAttendees] = useState([])
   const [emptyAttendees, setEmptyAttendees] = useState([true])
   useEffect(() => setErrorMsg(""), emptyAttendees)
-
 
   const onSubmit = (data, event) => {
     if (emptyAttendees[0] || attendees.length === 0){
@@ -37,9 +36,8 @@ const TrainingForm = ({form_data, handleDatabase}) => {
     data = {...data, employees: attendees} // TODO poslat správne zamestnancov do DB
     console.log('data', data);
 
-    const inserting = form_data === undefined
     const action = event.target.id
-    const result = handleDatabase(inserting, '/document', data, action)
+    const result = handleDatabase('/document', data, action)
 
     if (result) { // if successful TODO
       setSuccessMsg(`${action} was successful`)
@@ -121,7 +119,6 @@ const TrainingForm = ({form_data, handleDatabase}) => {
             options={employees}
             placeholder="Choose an employees..."
             selected={attendees}
-            ref={register}
           />
         </Col>
       </Form.Group>

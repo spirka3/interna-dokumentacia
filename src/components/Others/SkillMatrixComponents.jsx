@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, ButtonGroup, Col, Row, Badge} from "react-bootstrap";
+import {Button, ButtonGroup, Col, Row, Badge, Card} from "react-bootstrap";
 import {ExclamationTriangle} from "react-bootstrap-icons";
 import Container from "react-bootstrap/Container";
 import {employees} from "../../helpers/data";
@@ -45,17 +45,21 @@ export const Legend = () => {
   }
 
   return (
-    <div style={{marginTop: "8rem"}}>
-      <h5 className="pb-2">Legend:</h5>
-      <Badge label="no need" text="Zamestnanec bol odznačený z potreby oboznámenia" color="gray"/>
-      <Badge label="miss e+s" text="Ani zamestnanec ani nadriadený ešte nepotvrdili" color="tomato"/>
-      <Badge label="miss e" text="Zamestnanec nepotvrdil" color="orange"/>
-      <Badge label="miss s" text="Nadriadený nepotvrdil" color="gold" textColor="white"/>
-      <Badge label="well done" text="Dokument je potvrdený" color="green"/>
-      <Badge label="not sent" text="Este neodoslane" color="cornflowerblue"/>
-      {/*<p><Button style={style("cornflowerblue")} size="sm">not sent</Button>{' '}Este neodoslane</p>*/}
-      <p>hviezdička <strong>*</strong> znamena, ze zamestnanec sa opakovane preškoluje</p>  // TODO
-      <p><ExclamationTriangle style={{color: "red"}}/>{' '}Uplynul deadline a chýbajú podpisy</p>
-    </div>
+    <Card style={{ width: '35rem', marginTop: '8rem' }}>
+      <Card.Body>
+        <Card.Subtitle className="mb-2 text-muted">Legend:</Card.Subtitle>
+        <Card.Text>
+          <Badge label="no need" text="Zamestnanec bol odznačený z potreby oboznámenia" color="gray"/>
+          <Badge label="miss e+s" text="Ani zamestnanec ani nadriadený ešte nepotvrdili" color="tomato"/>
+          <Badge label="miss e" text="Zamestnanec nepotvrdil" color="orange"/>
+          <Badge label="miss s" text="Nadriadený nepotvrdil" color="gold" textColor="white"/>
+          <Badge label="well done" text="Dokument je potvrdený" color="green"/>
+          <Badge label="not sent" text="Este neodoslane" color="cornflowerblue"/>
+          <p><ExclamationTriangle style={{color: "red", marginBottom: "4px"}}/>{' '}Uplynul deadline a chýbajú podpisy</p>
+          {/* TODO hviezdicka */}
+          <p>hviezdička <strong>*</strong> znamena, ze zamestnanec sa opakovane preškoluje</p>
+        </Card.Text>
+      </Card.Body>
+    </Card>
   )
 }

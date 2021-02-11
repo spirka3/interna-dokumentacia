@@ -254,24 +254,32 @@ export const allInOne = {
 export const combinations = [{
   type: { value: 'A', label: 'A' },
   branch: { value: 'A1', label: 'A1' },
+  division: { value: 'D1', label: 'D1' },
+  department: { value: 'D1', label: 'D1' },
   city: { value: 'C1', label: 'C1' },
 },{
   type: { value: 'A', label: 'A' },
   branch: { value: 'A1', label: 'A1' },
+  division: { value: 'Da1', label: 'Da1' },
+  department: { value: 'Da1', label: 'Da1' },
   city: { value: 'C2', label: 'C2'},
 },{
   type: { value: 'B', label: 'B' },
   branch: { value: 'B2', label: 'B2' },
+  division: { value: 'D1', label: 'D1' },
+  department: { value: 'D2', label: 'D2' },
   city: { value: 'C3', label: 'C3' },
 },{
   type: { value: 'B', label: 'B' },
   branch: { value: 'B1', label: 'B1' },
+  division: { value: 'D1', label: 'D1' },
+  department: { value: 'D1', label: 'D1' },
   city: { value: 'C1', label: 'C1' },
 }];
 
 export const types = [...new Set(combinations.map(c => c.type.value))];
-export const branches = [...new Set(combinations.map(c => c.branch))];
-export const cities = [...new Set(combinations.map(c => c.city))];
+export const branches = [...new Set(combinations.map(c => c.branch.value))];
+export const cities = [...new Set(combinations.map(c => c.city.value))];
 export const divisions = ["D1", "D2", "D3"];
 export const departments = ["Dep1", "Dep2", "Dep3"];
 

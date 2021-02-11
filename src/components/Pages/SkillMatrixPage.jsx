@@ -8,6 +8,7 @@ import {Legend, RowButtons} from "../Others/SkillMatrixComponents";
 import {fitBtn, getUser} from "../../helpers/functions";
 import {FetchError, FetchLoading} from "../Others/FetchComponents";
 import {DocumentLabel, FormattedEmployee} from "../Others/Formatter";
+import {Button} from "react-bootstrap";
 
 const SkillMatrixPage = () => {
 
@@ -15,6 +16,7 @@ const SkillMatrixPage = () => {
   // const [isLoaded, setIsLoaded] = useState(false);
 
   const [showModal, setShowModal] = useState(false)
+  const [showLegend, setShowLegend] = useState(false)
   const [event, setEvent] = useState("")
 
   const documents = loadDocuments()
@@ -127,7 +129,10 @@ const SkillMatrixPage = () => {
         setShowModal={setShowModal}
         handleExport={handleExport}
       />
-      <Legend/>
+      {/*<Button onClick={() => setShowLegend(!showLegend)} size="sm">{showLegend ? 'Hide legend' : 'Show legend'}</Button>*/}
+      {/*{showLegend &&*/}
+        <Legend/>
+      {/*}*/}
       {showModal &&
         <ConfirmModal
           showModal={showModal}
@@ -139,4 +144,5 @@ const SkillMatrixPage = () => {
     </>
   );
 };
+
 export default SkillMatrixPage;

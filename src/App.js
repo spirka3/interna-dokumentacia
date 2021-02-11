@@ -68,14 +68,24 @@ function App() {
             <Private path="/signed-docs" component={SignedRecordsPage} />
             {admin &&
               <>
-              <Private path="/skill-matrix" component={SkillMatrixPage} />
-              <Private path="/add-record" component={AddRecordPage} />
-              <Private path="/finder" component={FinderPage} />
-              <Private path="/settings" component={SettingsPage} />
+              {/*<Private path="/skill-matrix" component={SkillMatrixPage} />*/}
+                <Private path="/add-record" component={AddRecordPage} />
+                {/*<Private path="/finder" component={FinderPage} />*/}
+                <Private path="/settings" component={SettingsPage} />
               </>
             }
           </Switch>
         </Container>
+        <div className="large-container">
+        <Switch>
+          {admin &&
+          <>
+            <Private path="/skill-matrix" component={SkillMatrixPage} />
+            <Private path="/finder" component={FinderPage} />
+          </>
+          }
+        </Switch>
+        </div>
       </>
     </Router>
   );
