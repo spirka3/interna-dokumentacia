@@ -8,11 +8,11 @@ import {doc_form, types as t} from "../../helpers/data";
 import {getSelectOptions} from "../../helpers/functions";
 import {SuccessAlert} from "../Others/SuccessAlert";
 
-const DocumentForm = ({form_data: formData, handleDatabase}) => {
+const DocumentForm = ({formData, handleDatabase}) => {
   console.log('form_data', formData)
   const {register, handleSubmit, errors, reset} = useForm({
-    // defaultValues: {...formData, deadline: 14}
-    defaultValues: {...doc_form} // test data
+    defaultValues: {...formData, deadline: 14}
+    // defaultValues: {...doc_form} // test data
   });
 
   const types = t // TODO

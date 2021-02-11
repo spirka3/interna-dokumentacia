@@ -5,42 +5,19 @@ import {sm_data, employees} from "../../helpers/data";
 import ToggleBtn from "../Buttons/ToggleBtn";
 import ConfirmModal from "../Modals/ConfirmModal";
 import {Legend, RowButtons} from "../Others/SkillMatrixComponents";
-import {fitBtn, getUser} from "../../helpers/functions";
-import {FetchError, FetchLoading} from "../Others/FetchComponents";
+import {fitBtn} from "../../helpers/functions";
 import {DocumentLabel, FormattedEmployee} from "../Others/Formatter";
-import {Button} from "react-bootstrap";
 
 const SkillMatrixPage = () => {
 
-  // const [error, setError] = useState(null);
-  // const [isLoaded, setIsLoaded] = useState(false);
-
+  // const [showLegend, setShowLegend] = useState(false)
   const [showModal, setShowModal] = useState(false)
-  const [showLegend, setShowLegend] = useState(false)
   const [event, setEvent] = useState("")
 
   const documents = loadDocuments()
   const [data, setData] = useState(documents);
 
   const columns = loadColumns()
-
-  // TODO TEST
-  // useEffect(() => {
-  //   fetch(`http://localhost:7777/unsignedSignatures/${getUser().id}`, {
-  //     method: "GET"
-  //   })
-  //     .then(response => response.json())
-  //     .then(data => {
-  //         setIsLoaded(true);
-  //         setDocuments(data.documents)
-  //         setTrainings(data.online_trainings)
-  //       },
-  //       (error) => {
-  //         setIsLoaded(true);
-  //         setError(error);
-  //       }
-  //     )
-  // }, [])
 
   function loadColumns() {
     const columns = [{
@@ -70,13 +47,14 @@ const SkillMatrixPage = () => {
 
     return columns
   }
+
   function loadDocuments() {
     // TODO MATO load documents
     return sm_data
   }
 
   function getState(document, state){
-    return state.includes('s') ? 'es' : 'e' // FIXME treba vediet kedy ma aj superior
+    return state.includes('s') ? 'es' : 'e' // FIXME treba vediet kedy ma aj superior podpisovat
   }
 
   const handleAccept = (event) => {
@@ -131,7 +109,7 @@ const SkillMatrixPage = () => {
       />
       {/*<Button onClick={() => setShowLegend(!showLegend)} size="sm">{showLegend ? 'Hide legend' : 'Show legend'}</Button>*/}
       {/*{showLegend &&*/}
-        <Legend/>
+      <Legend/>
       {/*}*/}
       {showModal &&
         <ConfirmModal

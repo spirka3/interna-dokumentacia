@@ -31,10 +31,9 @@ function App() {
         setIsTimeout(true);
       },
       onExpired: () => {
-        // FIXME Redirect
-        console.log("end of session")
+        console.log("end of session") // TODO TEST
         removeUser()
-        // history.push("/")
+        history.push("/")
         setIsTimeout(true);
       }
     });

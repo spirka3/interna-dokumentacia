@@ -4,12 +4,9 @@ import {recordType} from "../../helpers/functions";
 
 const EditBtn = (cell, row, rowIndex, {setFormData, setFormType}) => {
 
-  const handleClick = async () => {
-    // FIXME do not redirect after click on document
+  const handleClick = () => {
     setFormData(row);
-    console.log("edit")
-    console.log(row)
-    recordType(row) === "document" ? setFormType("new_document") : setFormType("new_training");
+    setFormType(`new_${recordType(row)}`)
   }
 
   return (

@@ -1,7 +1,6 @@
 import React from "react";
 import {Button} from "react-bootstrap";
 
-// FIXME JANO
 const ToggleBtn = (c, row, rowIndex, {data, setData, id}) => {
 
   const document = data[rowIndex]
@@ -51,7 +50,6 @@ const ToggleBtn = (c, row, rowIndex, {data, setData, id}) => {
   const getTextColor = (state) => state === "s" ? "black" : "white"
 
   const getLabel = () => {
-    // TODO create better labels
     const labels = [
       {state: "-", label: "no need"},
       {state: "es", label: "miss e+s"},

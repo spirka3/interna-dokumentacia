@@ -3,7 +3,6 @@ import {Redirect} from "react-router";
 import useSessionStorage from "@rooks/use-sessionstorage";
 import LoginForm from "../Forms/LoginForm";
 import { useHistory } from "react-router-dom";
-import {proxy} from "../../helpers/data";
 
 const LoginPage = () => {
 
@@ -89,7 +88,7 @@ const LoginPage = () => {
   }
 
   const fetchLoginByPass = (data) => {
-    fetch(`${proxy}/login`, {
+    fetch('/login', {
       method: "POST",
       body: new URLSearchParams(`login=${data.login}&password=${data.password}`)
     })
@@ -102,7 +101,7 @@ const LoginPage = () => {
   }
 
   const fetchLoginByCard = (input) => {
-    fetch(`${proxy}/kiosk`, {
+    fetch('/kiosk', {
       method: "POST",
       body: new URLSearchParams(`card=${input}`)
     })

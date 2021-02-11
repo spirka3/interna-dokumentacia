@@ -122,7 +122,7 @@ const MissedDocuments = ({documents}) => {
         data={docs}
         columns={columns}
         expandRow={expandRow}
-        defaultSorted={orderBy('deadline')} // TODO TEST
+        defaultSorted={orderBy('deadline')}
         noDataIndication={EmptyTable}
       />
       {showModal &&

@@ -7,7 +7,7 @@ import SavedRecords from "../Tables/SavedRecords";
 const AddRecordPage = () => {
 
   const [formType, setFormType] = useState('new_document');
-  const [formData, setFormData] = useState();
+  const [formData, setFormData] = useState({});
 
   const handleClick = (event) => {
     setFormType(event.target.id)
@@ -69,13 +69,13 @@ const AddRecordPage = () => {
       </ButtonGroup>
       {formType === 'new_document' &&
         <DocumentForm
-          data={formData}
+          formData={formData}
           handleDatabase={handleDatabase}
         />
       }
       {formType === 'new_training' && // elif
         <TrainingForm
-          data={formData}
+          formData={formData}
           handleDatabase={handleDatabase}
         />
       }

@@ -1,19 +1,24 @@
-import React from "react";
+import React, {useState} from "react";
 import {Button, Container, Form, Modal} from "react-bootstrap";
 import {useForm} from "react-hook-form";
 import CombinationForm from "../Forms/CombinationForm";
 
 const CombinationModal = ({showModal, setShowModal, combinations, setCombinations, setReq}) => {
 
-  const {register, handleSubmit} = useForm();
+  const [combination, setCombination] = useState({
+    branch: [],
+    city: [],
+    department: [],
+    division: []
+  });
 
-  const add = (data) => {
+  const add = () => {
     setReq([false])
-    setCombinations([...combinations, data]);
+    setCombinations([...combinations, combination]);
   }
 
-  const addClose = (data) => {
-    add(data)
+  const addClose = () => {
+    add()
     closeModal();
   }
 
@@ -28,11 +33,11 @@ const CombinationModal = ({showModal, setShowModal, combinations, setCombination
         <Modal.Title>Add new combination</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <CombinationForm register={register()}/>
+        <CombinationForm combination={combination} setCombination={setCombination}/>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={handleSubmit(add)}>Add next</Button>
-        <Button onClick={handleSubmit(addClose)}>Add and close</Button>
+        <Button onClick={add}>Add next</Button>
+        <Button onClick={addClose}>Add and close</Button>
         <Button onClick={closeModal} variant="secondary">close</Button>
       </Modal.Footer>
       </Container>

@@ -46,6 +46,9 @@ export const isAdmin = () => getUser() !== null && getUser().role === 'admin'
 // ???
 
 
+// Filter
+
+
 // Helpers
 export const delay = ms => new Promise(res => setTimeout(res, ms));
 

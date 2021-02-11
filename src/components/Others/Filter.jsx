@@ -7,18 +7,18 @@ import {Typeahead} from "react-bootstrap-typeahead";
 
 const Filter = () => {
 
+  let combi = combinations
+
+  const types = setOf(combi.map(c => c.type))
   const records = [
     { value: 'documents', label: 'documents' },
     { value: 'document-training', label: 'document-training' },
     { value: 'online-training', label: 'online-training' }
   ]
 
-  let combi = combinations
-
   const [select, setSelect] = useState()
   const [toggle, setToggle] = useState([false])
 
-  const [types, setTypes] = useState(setOf(combi.map(c => c.type)));
   const [branches, setBranches] = useState(setOf(combi.map(c => c.branch)));
   const [divisions, setDivisions] = useState(setOf(combi.map(c => c.division)));
   const [departments, setDepartments] = useState(setOf(combi.map(c => c.department)));
@@ -37,7 +37,10 @@ const Filter = () => {
   });
 
   const isEmptyFilter = () => {
-    return !filter.type.length && !filter.branch.length && !filter.city.length
+    return !filter.branch.length &&
+      !filter.division.length &&
+      !filter.department.length &&
+      !filter.city.length
   }
 
   useEffect(() => {
@@ -52,7 +55,6 @@ const Filter = () => {
 
   const handleType = async (data) => {
     setFilter({...filter, type: data})
-    commitChanges('type')
   };
 
   const handleBranch = (data) => {
@@ -105,15 +107,6 @@ const Filter = () => {
     let update = combi
     let values = []
 
-    // types
-    values = data.type.map(d => d.value)
-    if (values.length) {
-      update = update.filter(c => values.includes(c.type.value))
-    } else {
-      setType(update)
-      console.log("any types")
-    }
-
     // branches
     values = filter.branch.map(d => d.value)
     if (values.length) {
@@ -150,14 +143,12 @@ const Filter = () => {
       console.log("any cities")
     }
 
-    if (select !== 'type') setType(update)
     if (select !== 'branch') setBranch(update)
     if (select !== 'division') setDivision(update)
     if (select !== 'department') setDepartment(update)
     if (select !== 'city') setCity(update)
   }
 
-  function setType(combs) {setTypes(setOf(combs.map(c => c.type)))}
   function setBranch(combs) {setBranches(setOf(combs.map(c => c.branch)))}
   function setDivision(combs) {setDivisions(setOf(combs.map(c => c.division)))}
   function setDepartment(combs) {setDepartments(setOf(combs.map(c => c.department)))}

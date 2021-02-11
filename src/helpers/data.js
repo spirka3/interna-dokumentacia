@@ -4,8 +4,6 @@ import {get_current_date} from "./functions";
  * toto som čisto len testovacie dáta, náhradou za databázu
  */
 
-export const proxy = "http://localhost:7777"
-
 export const employees = [{
   anet_id: '1',
   name: 'Janko',
@@ -54,6 +52,7 @@ export const doc_form = {
   version: "1",
   prev_version_id: 1,
   assigned_to: "b; u; b; u",
+  type: 'A',
   require_superior: true
 }
 
@@ -119,8 +118,6 @@ export const dbdocs = [{
   place: "Trnava",
   duration: 30,
   release_date: {Time: "2017-06-24T00:00:00Z", Valid: true},
-  require_superior: true,
-  version: "v3"
 }, {
   assigned_to: "5; 4; 2; 2",
   deadline: {Time: "2017-04-23T00:00:00Z", Valid: true},
@@ -133,20 +130,15 @@ export const dbdocs = [{
   duration: 120,
   prev_version_id: 0,
   release_date: {Time: "2017-10-23T00:00:00Z", Valid: true},
-  require_superior: false
 }, {
   assigned_to: "5; 4; 2; 2",
   deadline: {Time: "2013-03-11T00:00:00Z", Valid: true},
   id: 1,
   link: "www.google.com",
   name: "name_1",
-  agency: "Agency name_888",
-  agenda: "Agenda Agenda AgendaAgendaAgenda Agenda Agenda Agenda",
-  lector: "Marek",
-  place: "Ruzomberok",
-  duration: 60,
   release_date: {Time: "2017-10-23T00:00:00Z", Valid: true},
-  require_superior: false
+  require_superior: false,
+  version: "v3"
 }];
 
 export const pobocky = ["prva pobocka", "druha pobocka", "tretia pobocka"]
@@ -225,32 +217,6 @@ export const sm_data = [{
   }]
 }];
 
-export const allInOne = {
-  types: ["A", "B", "C"],
-  branches: ["B1", "B2", "B3"],
-  divisions: ["D1", "D2", "D3"],
-  departments: ["Dep1", "Dep2", "Dep3"],
-  cities: ["C1", "C2", "C3"]
-};
-
-// export const combinations = [{
-//   type: "A",
-//   branch: "A1",
-//   city: "C1"
-// },{
-//   type: "A",
-//   branch: "A2",
-//   city: "C1"
-// },{
-//   type: "B",
-//   branch: "B2",
-//   city: "C2"
-// },{
-//   type: "B",
-//   branch: "B2",
-//   city: "C1"
-// }];
-
 export const combinations = [{
   type: { value: 'A', label: 'A' },
   branch: { value: 'A1', label: 'A1' },
@@ -278,8 +244,8 @@ export const combinations = [{
 }];
 
 export const types = [...new Set(combinations.map(c => c.type.value))];
-export const branches = [...new Set(combinations.map(c => c.branch.value))];
-export const cities = [...new Set(combinations.map(c => c.city.value))];
-export const divisions = ["D1", "D2", "D3"];
-export const departments = ["Dep1", "Dep2", "Dep3"];
+export const branches = [...new Set(combinations.map(c => c.branch))];
+export const divisions = [...new Set(combinations.map(c => c.division))];
+export const departments = [...new Set(combinations.map(c => c.department))];
+export const cities = [...new Set(combinations.map(c => c.city))];
 

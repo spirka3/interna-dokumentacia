@@ -9,7 +9,7 @@ import {get_current_date} from "../../helpers/functions";
 import {ErrorAlert} from "../Others/ErrorAlert";
 import {SuccessAlert} from "../Others/SuccessAlert";
 
-const TrainingForm = ({form_data: formData, handleDatabase}) => {
+const TrainingForm = ({formData, handleDatabase}) => {
   console.log('form_data', formData)
   // let employees = ...
   useEffect(()=>{
@@ -17,8 +17,8 @@ const TrainingForm = ({form_data: formData, handleDatabase}) => {
   },[]) // Only once
 
   const {register, handleSubmit, errors, reset} = useForm({
-    defaultValues: {...dbdocs[1], date: get_current_date(), employees: employees[0]} // test data
-    // defaultValues: {...form_data, date: date}
+    // defaultValues: {...dbdocs[1], date: get_current_date(), employees: employees[0]} // test data
+    defaultValues: {...formData, date: get_current_date()}
   });
 
   const [errorMsg, setErrorMsg] = useState()
