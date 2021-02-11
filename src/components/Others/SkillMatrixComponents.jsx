@@ -41,7 +41,7 @@ export const Legend = () => {
       color: textColor,
       width: "100px"
     }
-    return <p><Button style={style} size="sm">{label}</Button>{` ${text}`}</p>
+    return <p><span><Button style={style} size="sm">{label}</Button>{` ${text}`}</span></p>
   }
 
   return (
@@ -57,7 +57,7 @@ export const Legend = () => {
           <Badge label="not sent" text="Este neodoslane" color="cornflowerblue"/>
           <p><ExclamationTriangle style={{color: "red", marginBottom: "4px"}}/>{' '}Uplynul deadline a chýbajú podpisy</p>
           {/* TODO hviezdicka */}
-          <p>hviezdička <strong>*</strong> znamena, ze zamestnanec sa opakovane preškoluje</p>
+          <p>hviezdička <strong style={{fontSize: '1.2rem'}}>*</strong> znamena, ze zamestnanec sa opakovane preškoluje</p>
         </Card.Text>
       </Card.Body>
     </Card>

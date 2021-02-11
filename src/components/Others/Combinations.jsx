@@ -6,14 +6,14 @@ import EmptyTable from "../Tables/EmptyTable";
 import Button from "react-bootstrap/Button";
 import {fitBtn} from "../../helpers/functions";
 
-const Combinations = ({combinations, setCombinations, setReq}) => {
+const Combinations = ({combinations, setCombinations, setEmptyCombinations}) => {
 
   const [showModal, setShowModal] = useState(false)
 
   console.log('combinations', combinations)
 
   const deleteCombination = (c) => {
-    setCombinations(combinations.filter(c2 => c2.id !== c.id)); // delete the combination
+    setCombinations(combinations.filter(c2 => c2.id !== c.id)); // TODO ME delete the combination
   };
 
   const DeleteIcon = (cell, c) => {
@@ -76,7 +76,7 @@ const Combinations = ({combinations, setCombinations, setReq}) => {
           setShowModal={setShowModal}
           combinations={combinations}
           setCombinations={setCombinations}
-          setReq={setReq}
+          setEmptyCombinations={setEmptyCombinations}
         />
       }
       <hr/>

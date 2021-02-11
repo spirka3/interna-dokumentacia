@@ -33,7 +33,7 @@ function App() {
       onExpired: () => {
         console.log("end of session") // TODO TEST
         removeUser()
-        history.push("/")
+        // history.push("/")
         setIsTimeout(true);
       }
     });

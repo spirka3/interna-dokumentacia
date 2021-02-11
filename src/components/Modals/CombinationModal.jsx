@@ -3,9 +3,10 @@ import {Button, Container, Form, Modal} from "react-bootstrap";
 import {useForm} from "react-hook-form";
 import CombinationForm from "../Forms/CombinationForm";
 
-const CombinationModal = ({showModal, setShowModal, combinations, setCombinations, setReq}) => {
+const CombinationModal = ({showModal, setShowModal, combinations, setCombinations, setEmptyCombinations}) => {
 
   const [combination, setCombination] = useState({
+    id: '', // TODO ME
     branch: [],
     city: [],
     department: [],
@@ -13,7 +14,7 @@ const CombinationModal = ({showModal, setShowModal, combinations, setCombination
   });
 
   const add = () => {
-    setReq([false])
+    setEmptyCombinations([false])
     setCombinations([...combinations, combination]);
   }
 

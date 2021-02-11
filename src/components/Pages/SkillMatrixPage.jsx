@@ -35,7 +35,7 @@ const SkillMatrixPage = () => {
         text: e.name,
         formatter: ToggleBtn,
         headerFormatter: FormattedEmployee,
-        headerTitle: (col, index) => employees[index-1].job,
+        headerTitle: (col, row) => employees[row-1].job,
         formatExtraData: {
           data: data,
           setData: setData,

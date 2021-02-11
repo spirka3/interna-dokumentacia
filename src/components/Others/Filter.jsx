@@ -53,7 +53,7 @@ const Filter = () => {
     console.log('handleSubmit', filter) // TODO filter
   };
 
-  const handleType = async (data) => {
+  const handleType = (data) => {
     setFilter({...filter, type: data})
   };
 
@@ -157,6 +157,7 @@ const Filter = () => {
   return (
     <Form className="pb-4" onSubmit={onSubmit}>
       <Row className='pb-2'>
+        {/*// TODO ME labels a osamostatnit */}
         <Col><Select isMulti={true} placeholder="Types" options={types} onChange={handleType}/></Col>
         <Col><Select isMulti={true} placeholder="Branches" options={branches} onChange={handleBranch}/></Col>
         <Col><Select isMulti={true} placeholder="Divisions" options={divisions} onChange={handleDivision}/></Col>

@@ -1,5 +1,5 @@
-import {Form, Row, Col, Button} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
+import {Form, Row, Col, Button} from "react-bootstrap";
 import {useForm} from "react-hook-form";
 import MyHookForm from "./MyHookForm";
 import Combinations from "../Others/Combinations";
@@ -11,11 +11,11 @@ import {SuccessAlert} from "../Others/SuccessAlert";
 const DocumentForm = ({formData, handleDatabase}) => {
   console.log('form_data', formData)
   const {register, handleSubmit, errors, reset} = useForm({
-    defaultValues: {...formData, deadline: 14}
-    // defaultValues: {...doc_form} // test data
+    // defaultValues: {...formData, deadline: 14}
+    defaultValues: {...doc_form} // test data
   });
 
-  const types = t // TODO
+  const types = t // TODO define as array [asi z DB]
   const [error, setError] = useState()
   const [successMessage, setSuccessMessage] = useState()
   const [combinations, setCombinations] = useState([])
@@ -28,7 +28,7 @@ const DocumentForm = ({formData, handleDatabase}) => {
       return
     }
 
-    data = {...data, combinations: combinations} // TODO poslat správne kombinacie do DB
+    data = {...data, combinations: resolveCombinations()}
     console.log('data', data);
 
     const action = event.target.id
@@ -40,6 +40,69 @@ const DocumentForm = ({formData, handleDatabase}) => {
     } else {
       setError(`${action} failed`)
     }
+  }
+
+  const resolveCombinations = () => {
+    console.log('combinations', combinations);
+    let combs = flatBranch()
+    combs = flatDivision(combs)
+    combs = flatDepartment(combs)
+    combs = flatCity(combs)
+    const res = stringify(combs)
+    console.log('res', res.join('&'))
+    return res
+    // TODO ME poslat správne kombinacie do DB
+  }
+
+  const stringify = (combs) => {
+    const res = []
+    let str = ''
+    combs.forEach(c => {
+      str = `${c.branch.length ? c.branch[0].value : '.'},${c.city.length ? c.city[0].value : '.'},${c.department.length ? c.department[0].value : '.'},${c.division.length ? c.division[0].value : '.'}`
+      console.log('str', str)
+      res.push(str)
+    })
+    return res
+  }
+
+  const flatBranch = () => {
+    const res = []
+    combinations.forEach(c => {
+      c.branch.forEach(b => {
+        res.push({...c, branch: [b]})
+      })
+    })
+    return res
+  }
+
+  const flatDivision = (combs) => {
+    const res = []
+    combs.forEach(c => {
+      c.division.forEach(f => {
+        res.push({...c, division: [f]})
+      })
+    })
+    return res
+  }
+
+  const flatDepartment = (combs) => {
+    const res = []
+    combs.forEach(c => {
+      c.department.forEach(f => {
+        res.push({...c, department: [f]})
+      })
+    })
+    return res
+  }
+
+  const flatCity = (combs) => {
+    const res = []
+    combs.forEach(c => {
+      c.city.forEach(f => {
+        res.push({...c, city: [f]})
+      })
+    })
+    return res
   }
 
   return (
@@ -129,8 +192,13 @@ const DocumentForm = ({formData, handleDatabase}) => {
         placeholder="Enter note"
         register={register}
       />
+
       {/* COMBINATIONS */}
-      <Combinations combinations={combinations} setCombinations={setCombinations} setReq={setEmptyCombinations}/>
+      <Combinations
+        combinations={combinations}
+        setCombinations={setCombinations}
+        setEmptyCombinations={setEmptyCombinations}
+      />
 
       {/* ALERTS */}
       { error && <ErrorAlert text={error}/> }
@@ -141,9 +209,9 @@ const DocumentForm = ({formData, handleDatabase}) => {
       <div onClick={handleSubmit(onSubmit)} className="pt-1 btn-block text-right">
         <Button id="save" type="submit" className="mr-1">Save</Button>
         <Button id="send" type="submit" variant="danger">Send</Button>
-        {formData !== undefined &&
-          <Button id="sendNewVersion" type="submit" variant="danger">Send as new version</Button>
-        }
+        {/*{formData !== undefined && formData.editable &&*/}
+        {/*  <Button id="sendNewVersion" type="submit" variant="danger">Send as new version</Button>*/}
+        {/*}*/}
       </div>
     </Form>
   )
