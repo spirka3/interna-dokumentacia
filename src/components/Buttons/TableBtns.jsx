@@ -1,13 +1,16 @@
 import React from "react";
 import {Button} from "react-bootstrap";
 import {require_superior} from "../../helpers/functions";
-import {FormattedSuperiorDate} from "../Others/Formatter";
+import {FormattedEmployeeDate, FormattedSuperiorDate} from "../Others/Formatter";
 
 export const MissedBtn = (cell, row, index, {setModalInfo, setShowModal}) => {
 
   const handleClick = () => {
     if (!require_superior(row)) {
-      setModalInfo(`Do you really want to sign the ${row.name}?`);
+      setModalInfo({
+        ...row,
+        body: `Do you really want to sign the ${row.name}?`
+      });
       setShowModal(true);
     }
   }
@@ -38,6 +41,6 @@ export const MissedExpandBtn = (cell, row, index, {setModalExpandInfo, setShowEx
 export const SignedBtn = (cell, row) => {
   return require_superior(row)
     ? <Button size="sm">Details</Button>
-    : FormattedSuperiorDate(cell, row.signatures[0])
+    : FormattedEmployeeDate(cell, row.signatures[0])
 };
 

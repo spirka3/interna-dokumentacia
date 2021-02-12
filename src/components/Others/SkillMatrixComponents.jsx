@@ -12,7 +12,7 @@ export const RowButtons = ({setAction, setModalInfo, setShowModal, handleAccept,
     if (action === "cancel") {
       handleAccept()
     } else {
-      setModalInfo(`Do you really want to ${action} selected signatures?`)
+      setModalInfo({body:`Do you really want to ${action} selected signatures?`})
       setShowModal(true)
     }
   }

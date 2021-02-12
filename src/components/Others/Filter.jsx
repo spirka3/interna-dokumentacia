@@ -1,13 +1,31 @@
 import React, {useEffect, useState} from "react";
 import {Button, Col, Form, InputGroup, Row} from "react-bootstrap";
-import {combinations, employees as e} from "../../helpers/data";
+import {employees as e} from "../../helpers/data";
 import Select from 'react-select'
 import {setOf} from "../../helpers/functions";
 import {Typeahead} from "react-bootstrap-typeahead";
 
-const Filter = ({filter, setFilter}) => {
+const Filter = ({filter, setFilter, combs}) => {
 
-  let combi = combinations
+  const [combi, setCombi] = useState([])
+
+  useEffect (() => {
+    setBranches(setOf(combi.map(c => c.branch)))
+    setCities(setOf(combi.map(c => c.city)))
+    setDepartments(setOf(combi.map(c => c.department)))
+    setDivisions(setOf(combi.map(c => c.division)))
+  }, [combi])
+
+  useEffect(() => {
+    combs.forEach(c => {
+      c.type = {value: "TYPE", label: "TYPE"}
+      c.branch = {value: c.branch_id, label: c.branch_name}
+      c.city = {value: c.city_id, label: c.city_name}
+      c.department = {value: c.department_id, label: c.department_name}
+      c.division = {value: c.division_id, label: c.division_name}
+    })
+    setCombi(combs)
+  }, [combs])
 
   const types = setOf(combi.map(c => c.type))
   const records = [
@@ -31,11 +49,6 @@ const Filter = ({filter, setFilter}) => {
       !filter.department.length &&
       !filter.city.length
   }
-
-  useEffect(() => {
-    // TODO load combination
-    // combi = ...
-  }, []);
 
   const onSubmit = (e) => {
     e.preventDefault()
@@ -146,7 +159,6 @@ const Filter = ({filter, setFilter}) => {
   return (
     <Form className="pb-4" onSubmit={onSubmit}>
       <Row className='pb-1'>
-        {/*// TODO ME labels a osamostatnit */}
         <Col>Types</Col>
         <Col>Branches</Col>
         <Col>Divisions</Col>
@@ -155,7 +167,6 @@ const Filter = ({filter, setFilter}) => {
         <Col>Record</Col>
       </Row>
       <Row className='pb-2'>
-        {/*// TODO ME labels a osamostatnit */}
         <Col><Select isMulti={true} placeholder="Types" options={types} onChange={handleType}/></Col>
         <Col><Select isMulti={true} placeholder="Branches" options={branches} onChange={handleBranch}/></Col>
         <Col><Select isMulti={true} placeholder="Divisions" options={divisions} onChange={handleDivision}/></Col>

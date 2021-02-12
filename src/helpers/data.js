@@ -44,15 +44,15 @@ export const employees = [{
 
 export const doc_form = {
   name: "Test",
-  link: "",
-  note: "",
-  release: get_current_date(),
-  deadline: get_current_date(),
+  link: "linka",
+  note: "noteska",
+  // release_date: '2021-02-15',
+  // deadline: '2021-02-15',
   order_number: 1,
   version: "1",
-  assigned_to: "b; u; b; u",
+  assigned_to: "1,1,1,1&2,2,2,2",
   type: 'A',
-  require_superior: false
+  require_superior: true
 }
 
 export const docs = [{

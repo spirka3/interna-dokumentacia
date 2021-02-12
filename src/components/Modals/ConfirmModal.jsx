@@ -16,7 +16,7 @@ const ConfirmModal = ({showModal, setShowModal, modalInfo, handleAccept}) => {
         <Modal.Title>Confirm</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>{modalInfo}</p>
+        <p>{modalInfo.body}</p>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="danger" onClick={onAccept}>Accept</Button>

@@ -2,14 +2,12 @@ import React, {useEffect, useState} from "react";
 import {Redirect} from "react-router";
 import useSessionStorage from "@rooks/use-sessionstorage";
 import LoginForm from "../Forms/LoginForm";
-import { useHistory } from "react-router-dom";
+import {getUser, removeUser} from "../../helpers/functions";
+import IdleTimer from "../../helpers/IdleTimer";
 
 const LoginPage = () => {
 
-  const history = useHistory();
-
   const [language, setLanguage] = useSessionStorage("language", "sk");
-  const [user, setUser] = useSessionStorage("user", undefined);
   const [loginError, setLoginError] = useState("");
 
   let cardInput = '';
@@ -47,7 +45,7 @@ const LoginPage = () => {
   function checkCard(cardInput) {
     let user = findByCard(cardInput);
     if(user !== undefined) {
-      console.log(`${user.anet_id}`);
+      console.log(`${user.id}`);
       //Here goes login based on user
     }
   }
@@ -65,7 +63,7 @@ const LoginPage = () => {
 
   const event = (e) => {
     //console.log(`${e.key} ${e.keyCode} ${String.fromCharCode(e.keyCode)}`)
-    let engInput = String.fromCharCode(e.keyCode)
+    let engInput = String.fromCharCode(e.keyCode).toLowerCase()
     if(isValiable(e)) {
       cardInput += engInput;
       clearTimeout(t);
@@ -94,8 +92,9 @@ const LoginPage = () => {
     })
       .then(response => response.json())
       .then(res => {
-        setUser({id: res.id, role: res.role})
-        history.push("/")
+        const u = {id: res.id, role: res.role}
+        sessionStorage.setItem('user', JSON.stringify(u))
+        window.location.reload(false);
       })
       .catch(() => setLoginError("Wrong login input"))
   }
@@ -107,15 +106,16 @@ const LoginPage = () => {
     })
       .then(response => response.json())
       .then(res => {
-        setUser({id: res.id, role: res.role})
-        history.push("/")
+        const u = {id: res.id, role: res.role}
+        sessionStorage.setItem('user', JSON.stringify(u))
+        window.location.reload(false);
       })
       .catch(() => setLoginError("Wrong card input"))
   }
 
   return (
     <>
-      {user !== null
+      {getUser() !== null
         ? <Redirect to="/missed-docs"/>
         : <LoginForm
           onSubmit={onSubmit}

@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import { BrowserRouter as Router, Switch, Route, withRouter } from "react-router-dom";
+import React, {useEffect} from 'react';
+import {BrowserRouter as Router, Switch, Route, withRouter} from "react-router-dom";
 import {Redirect} from "react-router";
 
 import './App.css';
@@ -15,26 +15,19 @@ import LogoutPage from "./components/Pages/LogoutPage";
 import {isAdmin, getUser, removeUser} from "./helpers/functions";
 import Container from "react-bootstrap/Container";
 import IdleTimer from "./helpers/IdleTimer";
-import { useHistory } from "react-router-dom";
 
 function App() {
 
   const user = getUser();
   const admin = isAdmin();
-  const history = useHistory();
-
-  const [isTimeout, setIsTimeout] = useState(false);
   useEffect(() => {
     const timer = new IdleTimer({
-      timeout: 300, //expire after 10 seconds
+      timeout: 60*10, // expire after 10 minutes
       onTimeout: () => {
-        setIsTimeout(true);
-      },
-      onExpired: () => {
-        console.log("end of session") // TODO TEST
-        removeUser()
-        // history.push("/")
-        setIsTimeout(true);
+        if (user !== null){
+          removeUser()
+          window.location.reload(false);
+        }
       }
     });
 
@@ -49,7 +42,7 @@ function App() {
     <Route {...rest} render={props => (user !== null
         ? <Component {...props} />
         : <Redirect to="/" />
-        )}
+      )}
     />
   )
 

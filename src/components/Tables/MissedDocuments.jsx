@@ -5,7 +5,7 @@ import CaptionElement from "../Others/CaptionElement";
 import ConfirmModal from "../Modals/ConfirmModal";
 import EmptyTable from "./EmptyTable";
 import {fitBtn, nonExpandableDocs, orderBy, require_superior} from "../../helpers/functions";
-import {FormattedDeadline, FormattedRelease, NameWithLink} from "../Others/Formatter";
+import {FormattedDeadline, FormattedEmployeeDate, FormattedRelease, FullName, NameWithLink} from "../Others/Formatter";
 import ConfirmExpandModal from "../Modals/ConfirmExpandModal";
 
 const MissedDocuments = ({documents}) => {
@@ -17,38 +17,58 @@ const MissedDocuments = ({documents}) => {
   const [modalExpandInfo, setModalExpandInfo] = useState({})
 
   const handleAccept = () => {
-    if (require_superior(modalInfo) === false) {
-      const signature_id = modalInfo.signatures[0].id
-      fetchSign('/sign', signature_id)
-      setDocs(docs.filter(d => d.signatures[0].id !== signature_id)) // TODO ak sa podaril fetch, inak errorMessage
+    if (require_superior(modalInfo)===false) { // TODO TEST
+      signAsEmployee(modalInfo.signatures[0].id)
     } else {
-      const signature_id = modalExpandInfo.id
-      fetchSign('/sign/superior', signature_id)
-      const update = docs.map(d => {
-        return {...d, signatures: d.signatures.filter(s => s.id !== signature_id)}
-      })
-      setDocs(update.filter(d => d.signatures.length)); // TODO ak sa podaril fetch
+      signAsSuperior(modalExpandInfo.id)
     }
     setShowModal(false);
   }
 
-  /** Update sign date (e_date or s_date) to Date.now()
-   * @param url: /sign update employee date
-   *             /sign/superior update superior
-   * @param id: id of document_signature
+  /** Update sign date to Date.now()
+   * @param url:
+   *    '/sign' update employee date
+   *    '/sign/superior' update superior date
+   * @param id: id of the document_signature
    * */
   const fetchSign = (url, id) => {
-    console.log('fetch to', url, id)
-    fetch(url, {
+    return fetch(url, {
       method: "POST",
       body: new URLSearchParams(`id=${id}`)
     })
-      .then(response => response.json())
+  }
+
+  const successResponse = (response) => {
+    return 200 <= response.status && response.status <= 299
+  }
+
+  const signAsEmployee = (signature_id) => {
+    fetchSign('/sign', signature_id)
       .then(res => {
-        console.log("succeeded")
-        console.log('res', res)
+        if (successResponse(res)){
+          updateEmployeeDocs(signature_id)
+        }
       })
-      .catch(() => console.log("something goes wrong"))
+  }
+
+  const signAsSuperior = (signature_id) => {
+    fetchSign('/sign/superior', signature_id)
+      .then(res => {
+        if (successResponse(res)){
+          updateSuperiorDocs(signature_id)
+        }
+      })
+  }
+
+  const updateEmployeeDocs = (signature_id) => {
+    setDocs(docs.filter(d => d.signatures[0].id !== signature_id))
+  }
+
+  const updateSuperiorDocs = (signature_id) => {
+    const update = docs.map(d => {
+      return {...d, signatures: d.signatures.filter(s => s.id !== signature_id)}
+    })
+    setDocs(update.filter(d => d.signatures.length));
   }
 
   const columns = [{
@@ -57,14 +77,14 @@ const MissedDocuments = ({documents}) => {
     sort: true,
     formatter: NameWithLink
   }, {
-    dataField: 'release_date',
+    dataField: 'release_date.Time',
     text: 'Release',
-    sort: true, // FIXME
+    sort: true,
     formatter: FormattedRelease
   }, {
-    dataField: 'deadline',
+    dataField: 'deadline.Time',
     text: 'Deadline',
-    sort: true, // FIXME
+    sort: true,
     formatter: FormattedDeadline
   }, {
     dataField: 'signBtn',
@@ -77,39 +97,39 @@ const MissedDocuments = ({documents}) => {
     headerStyle: fitBtn()
   }];
 
-  const expandColumns = [
-    {
-      dataField: 'employee.id',
-      text: 'Employee ID',
-      sort: true
-    }, {
-      dataField: 'employee.first_name',
-      text: 'First name',
-      sort: true
-    }, {
-      dataField: 'employee.last_name',
-      text: 'Last Name',
-      sort: true
-    }, {
-      dataField: 'signBtn',
-      text: 'Sign',
-      formatter: MissedExpandBtn,
-      formatExtraData: {
-        setModalExpandInfo: setModalExpandInfo,
-        setShowExpandModal: setShowExpandModal
-      },
-      headerStyle: fitBtn()
-    }
-  ];
+  const expandColumns = [{
+    dataField: 'employee.id',
+    text: 'Employee ID',
+    sort: true,
+  }, {
+    dataField: 'employee.last_name',
+    text: 'Full name',
+    sort: true,
+    formatter: FullName
+  }, {
+    dataField: 'e_date.Time',
+    text: 'Sign Date',
+    sort: true,
+    formatter: FormattedEmployeeDate
+  },{
+    dataField: 'signBtn',
+    text: '',
+    formatter: MissedExpandBtn,
+    formatExtraData: {
+      setModalExpandInfo: setModalExpandInfo,
+      setShowExpandModal: setShowExpandModal
+    },
+    headerStyle: fitBtn()
+  }];
 
   const expandRow = {
     nonExpandable: nonExpandableDocs(documents),
-    renderer: (cell, row) => (
+    renderer: (cell) => (
       <BootstrapTable
         keyField="id"
         classes="inner-table"
         hover
-        data={docs[row].signatures}
+        data={cell.signatures}
         columns={expandColumns}
         defaultSorted={orderBy('employee.last_name')}
       />
@@ -125,7 +145,7 @@ const MissedDocuments = ({documents}) => {
         data={docs}
         columns={columns}
         expandRow={expandRow}
-        defaultSorted={orderBy('deadline')}
+        defaultSorted={orderBy('deadline.Time')}
         noDataIndication={EmptyTable}
       />
       {showModal &&

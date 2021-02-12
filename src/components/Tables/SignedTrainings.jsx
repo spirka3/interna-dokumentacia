@@ -2,25 +2,25 @@ import React from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import CaptionElement from "../Others/CaptionElement";
 import EmptyTable from "./EmptyTable";
-import {FormattedDate} from "../Others/Formatter";
+import {FormattedDate, FormattedTrainingDate} from "../Others/Formatter";
 import {orderBy} from "../../helpers/functions";
 
-const MissedTrainings = ({trainings}) => {
+const SignedTrainings = ({trainings}) => {
 
   const columns = [{
     dataField: 'name',
     text: 'Name',
     sort: true
   }, {
-    dataField: 'took_place',
+    dataField: 'date.Time',
     text: 'Took place',
     sort: true,
     formatter: FormattedDate
   }, {
-    dataField: 'signatures[0]', // always array with length of 1 [by SQL query]
+    dataField: 'signatures[0].date.Time', // always array with length of 1 [by SQL query]
     text: 'Signed date',
     sort: true,
-    formatter: FormattedDate
+    formatter: FormattedTrainingDate
   }];
 
   return (
@@ -32,10 +32,10 @@ const MissedTrainings = ({trainings}) => {
         data={trainings}
         columns={columns}
         noDataIndication={EmptyTable}
-        defaultSorted={orderBy('signatures[0].date.Time', 'desc')}
+        defaultSorted={orderBy('date.Time', 'desc')}
       />
     </>
   )
 }
 
-export default MissedTrainings;
+export default SignedTrainings;

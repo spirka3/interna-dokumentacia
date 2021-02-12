@@ -8,13 +8,13 @@ import {FormattedDeadline, FormattedDate} from "../Others/Formatter";
 import {fitBtn, orderBy} from "../../helpers/functions";
 
 const MissedTrainings = ({trainings}) => {
-
+  console.log('trainings', trainings)
   const [trns, setTrns] = useState(trainings);
   const [modalInfo, setModalInfo] = useState([])
   const [showModal, setShowModal] = useState(false)
 
   const handleAccept = () => {
-    const signature_id = modalInfo.signatures[0].id
+    const signature_id = modalInfo.id
     fetchSign('/sign/training', signature_id)
     setTrns(trns.filter(t => t.signatures[0].id !== signature_id)) // TODO ak sa podaril fetch
     setShowModal(false);
@@ -22,6 +22,7 @@ const MissedTrainings = ({trainings}) => {
 
   const fetchSign = (url, id) => {
     // TODO ME duplicates lines
+    console.log('id', id)
     console.log('fetch to', url, id)
     fetch(url, {
       method: "POST",
@@ -40,12 +41,12 @@ const MissedTrainings = ({trainings}) => {
     text: 'Name',
     sort: true
   }, {
-    dataField: 'date',
+    dataField: 'date.Time',
     text: 'Date',
     sort: true,
     formatter: FormattedDate
   }, {
-    dataField: 'deadline',
+    dataField: 'deadline.Time',
     text: 'Deadline',
     sort: true,
     formatter: FormattedDeadline
@@ -69,7 +70,7 @@ const MissedTrainings = ({trainings}) => {
         data={trns}
         columns={columns}
         noDataIndication={EmptyTable}
-        defaultSorted={orderBy('deadline')}
+        defaultSorted={orderBy('deadline.Time')}
       />
       { showModal &&
         <ConfirmModal

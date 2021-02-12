@@ -3,7 +3,11 @@ import React from "react";
 // Tables
 export const require_superior = (document) => document.require_superior
 export const recordType = (record) => Object.keys(record).includes('link') ? "document" : "training"
-export const nonExpandableDocs = (documents) => documents.filter(doc => !require_superior(doc));
+export const nonExpandableDocs = (documents) => {
+  return documents
+    .filter(doc => !require_superior(doc))
+    .map(d => d.id);
+}
 
 export const fitBtn = () => {
   return { width: '1%'}

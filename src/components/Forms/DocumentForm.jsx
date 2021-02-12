@@ -28,7 +28,7 @@ const DocumentForm = ({formData, handleDatabase}) => {
     //   return
     // }
 
-    // data = {...data, assigned_to: resolveCombinations()}
+    data = {...data, assigned_to: resolveCombinations()}
     console.log('data', JSON.stringify(data));
 
     const action = event.target.id
@@ -114,24 +114,14 @@ const DocumentForm = ({formData, handleDatabase}) => {
       </Form.Group>
       {/* REQUIRE SUPERIOR */}
       <Form.Group as={Row}>
-        <Form.Label column sm="2">Require superior*</Form.Label>
+        <Form.Label column sm="2"> </Form.Label>
         <Col>
           <Form.Check
-            type="radio"
-            label="yes"
-            value={true}
             inline
+            label="require superior"
             name="require_superior"
             ref={register}
-          />
-          <Form.Check
-            type="radio"
-            label="no"
-            value={false}
-            name="require_superior"
-            inline
-            defaultChecked // TODO ME
-            ref={register}
+            checked={formData !== null && formData.require_superior}
           />
         </Col>
       </Form.Group>
@@ -150,21 +140,21 @@ const DocumentForm = ({formData, handleDatabase}) => {
         placeholder="Enter document link to sharepoint"
         register={register}
       />
-      {/* RELEASE */}
-      <MyHookForm
-        label="Release date*"
-        name="release"
-        type="date"
-        register={register({required:true})}
-      />
-      {/* DEADLINE */}
-      <MyHookForm
-        label="Days to deadline*"
-        name="deadline"
-        type="date"
-        defaultValue="14"
-        register={register({required:true})}
-      />
+      {/*/!* RELEASE *!/*/}
+      {/*<MyHookForm*/}
+      {/*  label="Release date*"*/}
+      {/*  name="release_date"*/}
+      {/*  type="date"*/}
+      {/*  register={register({required:true})}*/}
+      {/*/>*/}
+      {/*/!* DEADLINE *!/*/}
+      {/*<MyHookForm*/}
+      {/*  label="Days to deadline*"*/}
+      {/*  name="deadline"*/}
+      {/*  type="date"*/}
+      {/*  defaultValue="14"*/}
+      {/*  register={register({required:true})}*/}
+      {/*/>*/}
       {/* VERSION */}
       <MyHookForm
         label="Version*"
@@ -178,7 +168,7 @@ const DocumentForm = ({formData, handleDatabase}) => {
         name="order_number"
         type="number"
         placeholder="Enter number"
-        register={register({required:true})}
+        register={register({required:true, valueAsNumber: true})}
       />
       {/* NOTE */}
       <MyHookForm

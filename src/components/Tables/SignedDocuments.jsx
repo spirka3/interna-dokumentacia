@@ -4,7 +4,13 @@ import CaptionElement from "../Others/CaptionElement";
 import {SignedBtn} from "../Buttons/TableBtns";
 import {nonExpandableDocs, orderBy} from "../../helpers/functions";
 import EmptyTable from "./EmptyTable";
-import {FormattedRelease, FormattedSuperiorDate, NameWithLink} from "../Others/Formatter";
+import {
+  FormattedEmployeeDate,
+  FormattedRelease,
+  FormattedSuperiorDate,
+  FullName,
+  NameWithLink
+} from "../Others/Formatter";
 
 const SignedDocuments = ({documents}) => {
 
@@ -15,14 +21,19 @@ const SignedDocuments = ({documents}) => {
     sort: true,
     formatter: NameWithLink
   }, {
-    dataField: 'release',
+    dataField: 'release_date.Time',
     text: 'Release',
-    sort: true, // FIXME
-    formatter: FormattedRelease
+    sort: true,
+    formatter: FormattedRelease,
+    align: 'center',
+    headerAlign: 'center'
   }, {
-    dataField: 'signature',
+    dataField: 'signatures[0].e_date.Time',
     text: 'Signed date',
-    formatter: SignedBtn
+    sort: true,
+    formatter: SignedBtn,
+    align: 'right',
+    headerAlign: 'right'
   }];
 
 const expandColumns = [{
@@ -30,27 +41,30 @@ const expandColumns = [{
     text: 'Employee ID',
     sort: true
   }, {
-    dataField: 'employee.first_name',
-    text: 'First name',
-    sort: true
-  }, {
     dataField: 'employee.last_name',
-    text: 'Last Name',
-    sort: true
+    text: 'Full name',
+    sort: true,
+    formatter: FullName
   }, {
-    dataField: 's_date.time',
-    text: 'Sign date',
+    dataField: 'e_date.Time',
+    text: 'Employee Sign',
+    sort: true,
+    formatter: FormattedEmployeeDate
+  },{
+    dataField: 's_date.Time',
+    text: 'My Sign',
+    sort: true,
     formatter: FormattedSuperiorDate
   }];
 
   const expandRow = {
     nonExpandable: nonExpandableDocs(documents),
-    renderer: (cell, row) => (
+    renderer: (cell) => (
       <BootstrapTable
         keyField="id"
         classes="inner-table"
         hover
-        data={documents[row].signatures}
+        data={cell.signatures}
         columns={expandColumns}
         defaultSorted={orderBy('employee.last_name')}
       />
@@ -67,7 +81,7 @@ const expandColumns = [{
         columns={columns}
         expandRow={expandRow}
         noDataIndication={EmptyTable}
-        defaultSorted={orderBy('release', 'desc')} // FIXME
+        defaultSorted={orderBy('release_date.Time', 'desc')}
       />
     </>
   );
