@@ -7,8 +7,20 @@ import useDataApi from "../../helpers/useDataApi";
 
 const MissedRecordsPage = () => {
 
-  const URL = `/unsigned/signatures/${getUser().id}`;
+  /** Update sign date to Date.now()
+   * @param url:
+   *    '/sign' update employee date
+   *    '/sign/superior' update superior date
+   * @param id: id of the document_signature
+   * */
+  const fetchSign = (url, id) => {
+    return fetch(url, {
+      method: "POST",
+      body: new URLSearchParams(`id=${id}`)
+    })
+  }
 
+  const URL = `/unsigned/signatures/${getUser().id}`;
   const [data, isLoaded, error] = useDataApi(URL);
 
   if (error) {
@@ -16,13 +28,12 @@ const MissedRecordsPage = () => {
   } else if (!isLoaded || data === undefined) {
     return <FetchLoading/>
   }
-
   return (
     <>
-      <MissedDocuments documents={data.documents}/>
-      <MissedTrainings trainings={data.online_trainings}/>
+      <MissedDocuments documents={data.documents} fetchSign={fetchSign}/>
+      <MissedTrainings trainings={data.online_trainings} fetchSign={fetchSign}/>
     </>
   )
-}
+};
 
 export default MissedRecordsPage;

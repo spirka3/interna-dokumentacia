@@ -1,45 +1,25 @@
 import React, {useState} from "react";
 import BootstrapTable from "react-bootstrap-table-next";
-import {MissedBtn, MissedExpandBtn} from "../Buttons/TableBtns";
+import {MissedBtn} from "../Buttons/TableBtns";
 import CaptionElement from "../Others/CaptionElement";
 import ConfirmModal from "../Modals/ConfirmModal";
 import EmptyTable from "./EmptyTable";
-import {fitBtn, nonExpandableDocs, orderBy, require_superior} from "../../helpers/functions";
+import {fitBtn, nonExpandableDocs, orderBy, require_superior, successResponse} from "../../helpers/functions";
 import {FormattedDeadline, FormattedEmployeeDate, FormattedRelease, FullName, NameWithLink} from "../Others/Formatter";
-import ConfirmExpandModal from "../Modals/ConfirmExpandModal";
 
-const MissedDocuments = ({documents}) => {
+const MissedDocuments = ({documents, fetchSign}) => {
 
   const [docs, setDocs] = useState(documents);
   const [showModal, setShowModal] = useState(false)
   const [modalInfo, setModalInfo] = useState({})
-  const [showExpandModal, setShowExpandModal] = useState(false)
-  const [modalExpandInfo, setModalExpandInfo] = useState({})
 
   const handleAccept = () => {
-    if (require_superior(modalInfo)===false) { // TODO TEST
+    if (require_superior(modalInfo) === false) {
       signAsEmployee(modalInfo.signatures[0].id)
     } else {
-      signAsSuperior(modalExpandInfo.id)
+      signAsSuperior(modalInfo.id)
     }
     setShowModal(false);
-  }
-
-  /** Update sign date to Date.now()
-   * @param url:
-   *    '/sign' update employee date
-   *    '/sign/superior' update superior date
-   * @param id: id of the document_signature
-   * */
-  const fetchSign = (url, id) => {
-    return fetch(url, {
-      method: "POST",
-      body: new URLSearchParams(`id=${id}`)
-    })
-  }
-
-  const successResponse = (response) => {
-    return 200 <= response.status && response.status <= 299
   }
 
   const signAsEmployee = (signature_id) => {
@@ -87,12 +67,11 @@ const MissedDocuments = ({documents}) => {
     sort: true,
     formatter: FormattedDeadline
   }, {
-    dataField: 'signBtn',
-    text: 'Sign',
     formatter: MissedBtn,
     formatExtraData: {
       setModalInfo: setModalInfo,
-      setShowModal: setShowModal
+      setShowModal: setShowModal,
+      asSuperior: false
     },
     headerStyle: fitBtn()
   }];
@@ -112,12 +91,11 @@ const MissedDocuments = ({documents}) => {
     sort: true,
     formatter: FormattedEmployeeDate
   },{
-    dataField: 'signBtn',
-    text: '',
-    formatter: MissedExpandBtn,
+    formatter: MissedBtn,
     formatExtraData: {
-      setModalExpandInfo: setModalExpandInfo,
-      setShowExpandModal: setShowExpandModal
+      setModalInfo: setModalInfo,
+      setShowModal: setShowModal,
+      asSuperior: true
     },
     headerStyle: fitBtn()
   }];
@@ -149,23 +127,15 @@ const MissedDocuments = ({documents}) => {
         noDataIndication={EmptyTable}
       />
       {showModal &&
-      <ConfirmModal
-        showModal={showModal}
-        setShowModal={setShowModal}
-        modalInfo={modalInfo}
-        handleAccept={handleAccept}
-      />
-      }
-      {showExpandModal &&
-      <ConfirmExpandModal
-        showModal={showExpandModal}
-        setShowModal={setShowExpandModal}
-        modalInfo={modalExpandInfo}
-        handleAccept={handleAccept}
-      />
+        <ConfirmModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          modalInfo={modalInfo}
+          handleAccept={handleAccept}
+        />
       }
     </>
   )
-}
+};
 
 export default MissedDocuments;

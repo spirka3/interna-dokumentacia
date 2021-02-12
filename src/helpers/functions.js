@@ -47,7 +47,9 @@ export const isAdmin = () => getUser() !== null && getUser().role === 'admin'
 
 
 // Fetches
-// ???
+export const successResponse = (response) => {
+  return 200 <= response.status && response.status <= 299
+}
 
 
 // Filter

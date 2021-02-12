@@ -5,35 +5,30 @@ import CaptionElement from "../Others/CaptionElement";
 import ConfirmModal from "../Modals/ConfirmModal";
 import EmptyTable from "./EmptyTable";
 import {FormattedDeadline, FormattedDate} from "../Others/Formatter";
-import {fitBtn, orderBy} from "../../helpers/functions";
+import {fitBtn, orderBy, successResponse} from "../../helpers/functions";
 
-const MissedTrainings = ({trainings}) => {
-  console.log('trainings', trainings)
+const MissedTrainings = ({trainings, fetchSign}) => {
+
   const [trns, setTrns] = useState(trainings);
   const [modalInfo, setModalInfo] = useState([])
   const [showModal, setShowModal] = useState(false)
 
   const handleAccept = () => {
-    const signature_id = modalInfo.id
-    fetchSign('/sign/training', signature_id)
-    setTrns(trns.filter(t => t.signatures[0].id !== signature_id)) // TODO ak sa podaril fetch
+    signAsEmployee(modalInfo.signatures[0].id)
     setShowModal(false);
   }
 
-  const fetchSign = (url, id) => {
-    // TODO ME duplicates lines
-    console.log('id', id)
-    console.log('fetch to', url, id)
-    fetch(url, {
-      method: "POST",
-      body: new URLSearchParams(`id=${id}`)
-    })
-      .then(response => response.json())
+  const signAsEmployee = (signature_id) => {
+    fetchSign('/sign/training', signature_id)
       .then(res => {
-        console.log("succeeded")
-        console.log('res', res)
+        if (successResponse(res)){
+          updateEmployeeTrns(signature_id)
+        }
       })
-      .catch(() => console.log("something goes wrong"))
+  }
+
+  const updateEmployeeTrns = (signature_id) => {
+    setTrns(trns.filter(t => t.signatures[0].id !== signature_id))
   }
 
   const columns = [{
@@ -51,8 +46,6 @@ const MissedTrainings = ({trainings}) => {
     sort: true,
     formatter: FormattedDeadline
   }, {
-    dataField: 'signBtn',
-    text: 'Sign',
     formatter: MissedBtn,
     formatExtraData: {
       setModalInfo: setModalInfo,
