@@ -7,7 +7,7 @@ import EmptyTable from "./EmptyTable";
 import {fitBtn, nonExpandableDocs, orderBy, require_superior, successResponse} from "../../helpers/functions";
 import {FormattedDeadline, FormattedEmployeeDate, FormattedRelease, FullName, NameWithLink} from "../Others/Formatter";
 
-const MissedDocuments = ({documents, fetchSign}) => {
+const DocumentsToSign = ({documents, fetchSign}) => {
 
   const [docs, setDocs] = useState(documents);
   const [showModal, setShowModal] = useState(false)
@@ -67,6 +67,7 @@ const MissedDocuments = ({documents, fetchSign}) => {
     sort: true,
     formatter: FormattedDeadline
   }, {
+    dataField: 'missedBtn',
     formatter: MissedBtn,
     formatExtraData: {
       setModalInfo: setModalInfo,
@@ -101,6 +102,7 @@ const MissedDocuments = ({documents, fetchSign}) => {
   }];
 
   const expandRow = {
+    onlyOneExpanding: true,
     nonExpandable: nonExpandableDocs(documents),
     renderer: (cell) => (
       <BootstrapTable
@@ -138,4 +140,4 @@ const MissedDocuments = ({documents, fetchSign}) => {
   )
 };
 
-export default MissedDocuments;
+export default DocumentsToSign;

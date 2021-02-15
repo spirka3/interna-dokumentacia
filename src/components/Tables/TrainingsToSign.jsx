@@ -7,7 +7,7 @@ import EmptyTable from "./EmptyTable";
 import {FormattedDeadline, FormattedDate} from "../Others/Formatter";
 import {fitBtn, orderBy, successResponse} from "../../helpers/functions";
 
-const MissedTrainings = ({trainings, fetchSign}) => {
+const TrainingsToSign = ({trainings, fetchSign}) => {
 
   const [trns, setTrns] = useState(trainings);
   const [modalInfo, setModalInfo] = useState([])
@@ -22,12 +22,12 @@ const MissedTrainings = ({trainings, fetchSign}) => {
     fetchSign('/sign/training', signature_id)
       .then(res => {
         if (successResponse(res)){
-          updateEmployeeTrns(signature_id)
+          updateTrainings(signature_id)
         }
       })
   }
 
-  const updateEmployeeTrns = (signature_id) => {
+  const updateTrainings = (signature_id) => {
     setTrns(trns.filter(t => t.signatures[0].id !== signature_id))
   }
 
@@ -46,6 +46,7 @@ const MissedTrainings = ({trainings, fetchSign}) => {
     sort: true,
     formatter: FormattedDeadline
   }, {
+    dataField: 'missedBtn',
     formatter: MissedBtn,
     formatExtraData: {
       setModalInfo: setModalInfo,
@@ -65,7 +66,7 @@ const MissedTrainings = ({trainings, fetchSign}) => {
         noDataIndication={EmptyTable}
         defaultSorted={orderBy('deadline.Time')}
       />
-      { showModal &&
+      {showModal &&
         <ConfirmModal
           showModal={showModal}
           setShowModal={setShowModal}
@@ -77,4 +78,4 @@ const MissedTrainings = ({trainings, fetchSign}) => {
   )
 }
 
-export default MissedTrainings;
+export default TrainingsToSign;

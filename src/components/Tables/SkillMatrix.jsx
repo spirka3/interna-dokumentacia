@@ -8,7 +8,7 @@ import {Legend, RowButtons} from "../Others/SkillMatrixComponents";
 import {fitBtn} from "../../helpers/functions";
 import {DocumentLabel, FormattedEmployee} from "../Others/Formatter";
 
-const SkillMatrixPage = () => {
+const SkillMatrix = () => {
 
   const [showLegend, setShowLegend] = useState(false)
   const [showModal, setShowModal] = useState(false)
@@ -99,6 +99,7 @@ const SkillMatrixPage = () => {
         classes="skill-matrix-table"
         data={data}
         columns={columns}
+        // horizontal scroll
         wrapperClasses="table-responsive"
         rowClasses="text-nowrap"
       />
@@ -126,4 +127,4 @@ const SkillMatrixPage = () => {
   );
 };
 
-export default SkillMatrixPage;
+export default SkillMatrix;

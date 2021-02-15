@@ -25,7 +25,7 @@ const SignedTrainings = ({trainings}) => {
 
   return (
     <>
-      <CaptionElement title="Trainings to sign"/>
+      <CaptionElement title="Signed Trainings"/>
       <BootstrapTable
         keyField="id"
         hover

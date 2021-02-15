@@ -2,8 +2,8 @@ import React, {useEffect, useState} from "react";
 import {Form, Row, Col, Button} from "react-bootstrap";
 import {useForm} from "react-hook-form";
 import MyHookForm from "./MyHookForm";
-import Combinations from "../Others/Combinations";
-import {ErrorAlert} from "../Others/ErrorAlert";
+import Combinations from "../Tables/Combinations";
+import {CustomAlert} from "../Others/CustomAlert";
 import {doc_form, types as t} from "../../helpers/data";
 import {getSelectOptions} from "../../helpers/functions";
 import {SuccessAlert} from "../Others/SuccessAlert";
@@ -11,8 +11,8 @@ import {SuccessAlert} from "../Others/SuccessAlert";
 const DocumentForm = ({formData, handleDatabase}) => {
   console.log('form_data', formData)
   const {register, handleSubmit, errors, reset} = useForm({
-    // defaultValues: {...formData, deadline: 14}
-    defaultValues: {...doc_form} // test data
+    defaultValues: {...formData, deadline: 14}
+    // defaultValues: {...doc_form} // test data
   });
 
   const types = t // TODO define as array [asi z DB]
@@ -105,7 +105,7 @@ const DocumentForm = ({formData, handleDatabase}) => {
     <Form onChange={()=>setSuccessMessage("")}>
        {/* TYPE OF DOCUMENT */}
       <Form.Group as={Row}>
-        <Form.Label column sm="2">Type*</Form.Label>
+        <Form.Label column sm="3">Type*</Form.Label>
         <Col>
           <Form.Control as="select" name="type" ref={register({validate: v => v !== ""})}>
             {getSelectOptions(types)}
@@ -114,14 +114,14 @@ const DocumentForm = ({formData, handleDatabase}) => {
       </Form.Group>
       {/* REQUIRE SUPERIOR */}
       <Form.Group as={Row}>
-        <Form.Label column sm="2"> </Form.Label>
+        <Form.Label column sm="3"> </Form.Label>
         <Col>
           <Form.Check
             inline
             label="require superior"
             name="require_superior"
             ref={register}
-            checked={formData !== null && formData.require_superior}
+            // checked={formData !== null && formData.require_superior}
           />
         </Col>
       </Form.Group>
@@ -140,21 +140,21 @@ const DocumentForm = ({formData, handleDatabase}) => {
         placeholder="Enter document link to sharepoint"
         register={register}
       />
-      {/*/!* RELEASE *!/*/}
-      {/*<MyHookForm*/}
-      {/*  label="Release date*"*/}
-      {/*  name="release_date"*/}
-      {/*  type="date"*/}
-      {/*  register={register({required:true})}*/}
-      {/*/>*/}
-      {/*/!* DEADLINE *!/*/}
-      {/*<MyHookForm*/}
-      {/*  label="Days to deadline*"*/}
-      {/*  name="deadline"*/}
-      {/*  type="date"*/}
-      {/*  defaultValue="14"*/}
-      {/*  register={register({required:true})}*/}
-      {/*/>*/}
+      {/* RELEASE */}
+      <MyHookForm
+        label="Release date*"
+        name="release_date"
+        type="date"
+        register={register({required:true})}
+      />
+      {/* DEADLINE */}
+      <MyHookForm
+        label="Days to deadline*"
+        name="deadline"
+        type="date"
+        defaultValue="14"
+        register={register({required:true})}
+      />
       {/* VERSION */}
       <MyHookForm
         label="Version*"
@@ -187,8 +187,8 @@ const DocumentForm = ({formData, handleDatabase}) => {
       />
 
       {/* ALERTS */}
-      { error && <ErrorAlert text={error}/> }
-      { Object.keys(errors).length ? <ErrorAlert text={"Fill all the require fields"}/> : null}
+      { error && <CustomAlert text={error}/> }
+      { Object.keys(errors).length ? <CustomAlert text={"Fill all the require fields"}/> : null }
       { successMessage && <SuccessAlert text={successMessage}/> }
 
       {/* SAVE | SEND BUTTONS */}

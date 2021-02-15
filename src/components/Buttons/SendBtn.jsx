@@ -1,39 +1,39 @@
 import {Button} from "react-bootstrap";
 import React from "react";
-import {recordType} from "../../helpers/functions";
+import {recordType, successResponse} from "../../helpers/functions";
 
-const SendBtn = (cell, row, index, {data, setErrorMsg, setSuccessMsg, setSavedDocs}) => {
+const SendBtn = (cell, row, index, {setSavedRec, setNotification}) => {
 
   const handleClick = () => {
-    // TODO send record
-    const record = data[index]
-    console.log("send", record);
-    const result = sendRecord(recordType(record), record.id)
-    if (result) { // if successful TODO
-      setSavedDocs(prev => prev.filter(d => d.id !== data[index].id));
-      setSuccessMsg(`Record ${data[index].name} was successfully sent`)
-    } else {
-      setErrorMsg(`Sending the ${data[index].name} failed`)
-    }
-  }
-
-  const sendRecord = (record, id) => { // TODO
-    return fetch(`/${record}/confirm`, {
-      method: "POST",
-      body: new URLSearchParams(`${record}=${id}`)
-    })
-      .then(response => response.json())
+    sendRecord()
       .then(res => {
-        console.log(res)
-        return res;
+        if (successResponse(res)){
+          setSavedRec(prev => prev.filter(doc => doc.id !== row.id));
+          setNotification({
+            variant: 'success',
+            body: `Record ${row.name} was successfully sent`
+          })
+        } else {
+          setNotification({
+            variant: 'danger',
+            body: `Sending the ${row.name} failed`
+          })
+        }
       })
       .catch((e) => console.log(e))
   }
 
-  return(
-    <Button id="save" variant="danger" size="sm" onClick={handleClick}>
-      Send
-    </Button>
+  /** Send record to relevant employees */
+  const sendRecord = () => {
+    const record = recordType(row)
+    return fetch(`/${record}/confirm`, {
+      method: "POST",
+      body: new URLSearchParams(`${record}=${row.id}`)
+    })
+  }
+
+  return (
+    <Button id="save" variant="danger" size="sm" onClick={handleClick}>Send</Button>
   );
 };
 

@@ -10,12 +10,12 @@ const Navigation = ({location}) => {
   const LoginNav = () => {
     return (
       <>
-        <NavLink href="/missed-docs">Missed Records</NavLink>
-        <NavLink href="/signed-docs">Signed records</NavLink>
+        <NavLink href="/records-to-sign">Records to sign</NavLink>
+        <NavLink href="/signed-records">Signed records</NavLink>
         {admin &&
           <>
-          {/*<NavLink href="/skill-matrix">SkillMatrix</NavLink>*/}
           <NavLink href="/add-record">Add Record</NavLink>
+          <NavLink href="/saved-record">Saved Record</NavLink>
           <NavLink href='/finder'>Finder</NavLink>
           <NavLink href='/settings'>Settings</NavLink>
           </>
@@ -42,7 +42,7 @@ const Navigation = ({location}) => {
           className="d-inline-block align-top"
         />
       </Navbar.Brand>
-      <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+      <Navbar.Toggle/>
       <Navbar.Collapse id="responsive-navbar-nav">
       <Nav className="ml-auto" variant="pills" activeKey={location.pathname}>
         {user !== null ? <LoginNav/> : <LogoutNav/>}

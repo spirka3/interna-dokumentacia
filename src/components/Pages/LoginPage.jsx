@@ -2,8 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Redirect} from "react-router";
 import useSessionStorage from "@rooks/use-sessionstorage";
 import LoginForm from "../Forms/LoginForm";
-import {getUser, removeUser} from "../../helpers/functions";
-import IdleTimer from "../../helpers/IdleTimer";
+import {getUser} from "../../helpers/functions";
 
 const LoginPage = () => {
 
@@ -116,7 +115,7 @@ const LoginPage = () => {
   return (
     <>
       {getUser() !== null
-        ? <Redirect to="/missed-docs"/>
+        ? <Redirect to="/records-to-sign"/>
         : <LoginForm
           onSubmit={onSubmit}
           language={language}

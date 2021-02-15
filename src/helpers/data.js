@@ -218,28 +218,40 @@ export const sm_data = [{
 
 export const combinations = [{
   type: { value: 'A', label: 'A' },
-  branch: { value: 'A1', label: 'A1' },
-  division: { value: 'D1', label: 'D1' },
-  department: { value: 'D1', label: 'D1' },
-  city: { value: 'C1', label: 'C1' },
+  branch: { value: 'A1', label: 'A1abcdefgh' },
+  division: { value: 'D1', label: 'B2abcdefgh' },
+  department: { value: 'D1', label: 'B2abcdefgh' },
+  city: { value: 'C1', label: 'B2abcdefgh' },
 },{
   type: { value: 'A', label: 'A' },
-  branch: { value: 'A1', label: 'A1' },
-  division: { value: 'Da1', label: 'Da1' },
-  department: { value: 'Da1', label: 'Da1' },
+  branch: { value: 'A1', label: 'A1abcdefgh' },
+  division: { value: 'Da1', label: 'B2abcdefgh' },
+  department: { value: 'Da1', label: 'B2abcdefgh' },
   city: { value: 'C2', label: 'C2'},
 },{
   type: { value: 'B', label: 'B' },
-  branch: { value: 'B2', label: 'B2' },
-  division: { value: 'D1', label: 'D1' },
-  department: { value: 'D2', label: 'D2' },
+  branch: { value: 'B2', label: 'B2abcdefgh' },
+  division: { value: 'D1', label: 'B2abcdefgh' },
+  department: { value: 'D2', label: 'B2abcdefgh' },
   city: { value: 'C3', label: 'C3' },
 },{
-  type: { value: 'B', label: 'B' },
-  branch: { value: 'B1', label: 'B1' },
-  division: { value: 'D1', label: 'D1' },
-  department: { value: 'D1', label: 'D1' },
-  city: { value: 'C1', label: 'C1' },
+  type: { value: 'B3', label: 'B' },
+  branch: { value: 'B13', label: 'B1abcdefgh' },
+  division: { value: 'D13', label: 'B2abcdefgh' },
+  department: { value: 'D13', label: 'B2abcdefgh' },
+  city: { value: 'C13', label: 'B2abcdefgh' },
+},{
+  type: { value: 'B4', label: 'B' },
+  branch: { value: 'B14', label: 'B1abcdefgh' },
+  division: { value: 'D14', label: 'B2abcdefgh' },
+  department: { value: 'D14', label: 'B2abcdefgh' },
+  city: { value: 'C14', label: 'B2abcdefgh' },
+},{
+  type: { value: 'B5', label: 'B' },
+  branch: { value: 'B15', label: 'B1abcdefgh' },
+  division: { value: 'D15', label: 'B2abcdefgh' },
+  department: { value: 'D15', label: 'B2abcdefgh' },
+  city: { value: 'C15', label: 'B2abcdefgh' },
 }];
 
 export const types = [...new Set(combinations.map(c => c.type.value))];

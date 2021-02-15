@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Button, Col, Form} from "react-bootstrap";
 import Filter from "../Others/Filter";
 import FoundRecords from "../Tables/FoundRecords";
-import SkillMatrixPage from "./SkillMatrixPage";
+import SkillMatrix from "../Tables/SkillMatrix";
 import {docs} from "../../helpers/data";
 
 const FinderPage = () => {
@@ -62,7 +62,7 @@ const FinderPage = () => {
             setDocs={setDocuments}
             combs={combs}
           />
-        : <SkillMatrixPage
+        : <SkillMatrix
             filter={filter}
           />
       }

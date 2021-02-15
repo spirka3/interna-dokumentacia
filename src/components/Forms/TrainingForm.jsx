@@ -6,7 +6,7 @@ import {Typeahead} from 'react-bootstrap-typeahead'
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import {dbdocs, employees} from "../../helpers/data";
 import {get_current_date} from "../../helpers/functions";
-import {ErrorAlert} from "../Others/ErrorAlert";
+import {CustomAlert} from "../Others/CustomAlert";
 import {SuccessAlert} from "../Others/SuccessAlert";
 
 const TrainingForm = ({formData, handleDatabase}) => {
@@ -17,8 +17,8 @@ const TrainingForm = ({formData, handleDatabase}) => {
   },[]) // Only once
 
   const {register, handleSubmit, errors, reset} = useForm({
-    defaultValues: {...dbdocs[1], date: get_current_date()} // test data
-    // defaultValues: {...formData, date: get_current_date()}
+    // defaultValues: {...dbdocs[1], date: get_current_date()} // test data
+    defaultValues: {...formData, date: get_current_date()}
   });
 
   const [errorMsg, setErrorMsg] = useState()
@@ -136,8 +136,8 @@ const TrainingForm = ({formData, handleDatabase}) => {
       </Form.Group>
 
       {/* ALERTS */}
-      { Object.keys(errors).length ? <ErrorAlert text={"Fill all the require fields"}/> : null}
-      { errorMsg && <ErrorAlert text={errorMsg}/> }
+      { Object.keys(errors).length ? <CustomAlert text={"Fill all the require fields"}/> : null}
+      { errorMsg && <CustomAlert text={errorMsg}/> }
       { successMsg && <SuccessAlert text={successMsg}/> }
 
       {/* SAVE | SEND BUTTONS */}

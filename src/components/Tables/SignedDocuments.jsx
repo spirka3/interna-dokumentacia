@@ -58,6 +58,7 @@ const expandColumns = [{
   }];
 
   const expandRow = {
+    onlyOneExpanding: true,
     nonExpandable: nonExpandableDocs(documents),
     renderer: (cell) => (
       <BootstrapTable

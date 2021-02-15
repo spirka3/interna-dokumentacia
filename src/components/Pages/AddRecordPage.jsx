@@ -2,12 +2,10 @@ import React, {useState} from 'react';
 import {Button, ButtonGroup, Container} from 'react-bootstrap';
 import DocumentForm from "../Forms/DocumentForm";
 import TrainingForm from "../Forms/TrainingForm";
-import SavedRecords from "../Tables/SavedRecords";
 
 const AddRecordPage = () => {
 
-  const [formType, setFormType] = useState('new_document');
-  const [formData, setFormData] = useState({});
+  const [formType, setFormType] = useState('document');
 
   const handleClick = (event) => {
     setFormType(event.target.id)
@@ -15,7 +13,6 @@ const AddRecordPage = () => {
 
   const handleDatabase = (type, data, action) => {
     let id
-    // if (formData === undefined) {
     if (true) {
       id = insertRecord(type, data) // TODO insert
     } else {
@@ -63,29 +60,16 @@ const AddRecordPage = () => {
   const active = id => formType === id && 'active'
 
   return (
-    <Container className="w-80">
+    <Container className="w-75">
       <ButtonGroup onClick={handleClick} className="btn-group btn-header">
-        <Button id="new_document" className={active("new_document")}>Document</Button>
-        <Button id="new_training" className={active("new_training")}>Online training</Button>
-        <Button id="editable_docs" className={active("editable_docs")}>Saved records</Button>
+        <Button id="document" className={active("document")}>Document</Button>
+        <Button id="training" className={active("training")}>Online training</Button>
       </ButtonGroup>
-      {formType === 'new_document' &&
-        <DocumentForm
-          formData={formData}
-          handleDatabase={handleDatabase}
-        />
+      {formType === 'document' && // if
+        <DocumentForm handleDatabase={handleDatabase}/>
       }
-      {formType === 'new_training' && // elif
-        <TrainingForm
-          formData={formData}
-          handleDatabase={handleDatabase}
-        />
-      }
-      {formType === 'editable_docs' && // elif
-        <SavedRecords
-          setFormType={setFormType}
-          setFormData={setFormData}
-        />
+      {formType === 'training' && // elif
+        <TrainingForm handleDatabase={handleDatabase}/>
       }
     </Container>
   )

@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import {PlusSquare, XSquare} from 'react-bootstrap-icons';
 import CombinationModal from "../Modals/CombinationModal";
-import EmptyTable from "../Tables/EmptyTable";
+import EmptyTable from "./EmptyTable";
 import Button from "react-bootstrap/Button";
 import {fitBtn} from "../../helpers/functions";
 
@@ -12,13 +12,15 @@ const Combinations = ({combinations, setCombinations, setEmptyCombinations}) => 
 
   console.log('combinations', combinations)
 
-  const deleteCombination = (c) => {
-    setCombinations(combinations.filter(c2 => c2.id !== c.id)); // TODO ME delete the combination
+  const deleteCombination = (row) => {
+    setCombinations(prevState => {
+     return prevState.filter(c => c.id !== row.id)
+    })
   };
 
-  const DeleteIcon = (cell, c) => {
+  const DeleteIcon = (cell, row) => {
     return (
-      <XSquare size="25" color="red" onClick={() => deleteCombination(c)}/>
+      <XSquare size="25" color="red" onClick={() => deleteCombination(row)}/>
     )
   };
 
@@ -31,55 +33,57 @@ const Combinations = ({combinations, setCombinations, setEmptyCombinations}) => 
     )
   };
 
-  const Branch = (col, row) => <>{row.branch.map(r=>r.value).join(',')}</>
-  const Division = (col, row) => <>{row.division.map(r=>r.value).join(',')}</>
-  const Department = (col, row) => <>{row.department.map(r=>r.value).join(',')}</>
-  const City = (col, row) => <>{row.city.map(r=>r.value).join(',')}</>
+  const getLabels = (field) => {
+    return <>{field.map(f => f.label).join(',')}</>
+  }
+  const Branch = (_, row) => getLabels(row.branch)
+  const Division = (_, row) => getLabels(row.division)
+  const Department = (_, row) => getLabels(row.department)
+  const City = (_, row) => getLabels(row.city)
 
   const columns = [{
-    dataField: 'c.branch',
+    dataField: 'branch',
     text: 'Branch',
     formatter: Branch
   }, {
-    dataField: 'c.division',
+    dataField: 'division',
     text: 'Division',
     formatter: Division
   }, {
-    dataField: 'c.department',
+    dataField: 'department',
     text: 'Department',
     formatter: Department
   }, {
-    dataField: 'c.city',
+    dataField: 'city',
     text: 'City',
     formatter: City
   }, {
     dataField: '',
-    text: 'Delete',
+    text: '',
     formatter: DeleteIcon,
     headerStyle: fitBtn()
   }];
 
   return (
     <>
-      <hr/>
       <BootstrapTable
         keyField="id"
         data={combinations}
         columns={columns}
         bordered={false}
         noDataIndication={EmptyTable}
+        // horizontal scroll
+        wrapperClasses="table-responsive"
+        rowClasses="text-nowrap"
       />
       <AddIcon/>
       {showModal &&
         <CombinationModal
-          showModal={showModal}
           setShowModal={setShowModal}
-          combinations={combinations}
           setCombinations={setCombinations}
           setEmptyCombinations={setEmptyCombinations}
         />
       }
-      <hr/>
     </>
   )
 }

@@ -1,11 +1,11 @@
 import React from "react";
-import MissedDocuments from "../Tables/MissedDocuments";
-import MissedTrainings from "../Tables/MissedTrainings";
+import DocumentsToSign from "../Tables/DocumentsToSign";
+import TrainingsToSign from "../Tables/TrainingsToSign";
 import {getUser} from "../../helpers/functions";
 import {FetchError, FetchLoading} from "../Others/FetchComponents";
 import useDataApi from "../../helpers/useDataApi";
 
-const MissedRecordsPage = () => {
+const RecordsToSignPage = () => {
 
   /** Update sign date to Date.now()
    * @param url:
@@ -30,10 +30,10 @@ const MissedRecordsPage = () => {
   }
   return (
     <>
-      <MissedDocuments documents={data.documents} fetchSign={fetchSign}/>
-      <MissedTrainings trainings={data.online_trainings} fetchSign={fetchSign}/>
+      <DocumentsToSign documents={data.documents} fetchSign={fetchSign}/>
+      <TrainingsToSign trainings={data.online_trainings} fetchSign={fetchSign}/>
     </>
   )
 };
 
-export default MissedRecordsPage;
+export default RecordsToSignPage;

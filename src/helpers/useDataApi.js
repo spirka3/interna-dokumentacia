@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react';
 
+
+
+
+
+
 const useDataApi = url => {
 
-  const [data, setData] = useState(undefined);
-  const [error, setError] = useState(null);
+  const [data, setData] = useState();
+  const [error, setError] = useState();
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {

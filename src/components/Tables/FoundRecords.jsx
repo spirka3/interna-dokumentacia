@@ -12,7 +12,7 @@ import {FormattedRelease} from "../Others/Formatter";
 const FoundRecords = ({filter, docs, setDocs, combs}) => {
 
   const [formType, setFormType] = useState('');
-  const [formData, setFormData] = useState();
+  const [formData, setFormData] = useState({});
 
   useEffect(() => {
     if(docs.length > 0 && combs.length > 0) {
@@ -82,22 +82,18 @@ const FoundRecords = ({filter, docs, setDocs, combs}) => {
         hover
         data={docs}
         columns={columns}
-        wrapperClasses="table-responsive"
-        rowClasses="text-nowrap"
         defaultSorted={orderBy('name')}
         noDataIndication={EmptyTable}
+        // horizontal scroll
+        wrapperClasses="table-responsive"
+        rowClasses="text-nowrap"
       />
-      {formType === 'new_document' &&
-      <EditRecordModal
-        setFormType={setFormType}
-        form={() => <DocumentForm data={formData}/>}
-      />
-      }
-      {formType === 'new_training' &&
-      <EditRecordModal
-        setFormType={setFormType}
-        form={() => <TrainingForm data={formData}/>}
-      />
+      {formType !== '' &&
+        <EditRecordModal
+          formData={formData}
+          formType={formType}
+          setFormType={setFormType}
+        />
       }
     </>
   );
