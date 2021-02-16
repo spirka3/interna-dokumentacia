@@ -1,4 +1,3 @@
-import {get_current_date} from "./functions";
 
 /**
  * toto som čisto len testovacie dáta, náhradou za databázu
@@ -7,42 +6,39 @@ import {get_current_date} from "./functions";
 export const employees = [{
   id: '1',
   name: 'Janko',
-  pass: 'ja',
   job: 'Job1',
   complete: '70%'
 }, {
   id: '2',
   name: 'Julka',
-  pass: 'ty',
   job: 'Job2',
   complete: '100%'
 }, {
   id: '3',
   name: 'Jaroslav',
-  pass: 'on',
   job: 'Job3',
   complete: '44%'
 }, {
   id: '4',
   name: 'Jozef',
-  pass: 'ty',
   job: 'Job4',
   complete: '53%'
 }, {
   id: '5',
   name: 'Juraj',
-  pass: 'on',
   job: 'Job5',
   complete: '83%'
 }, {
   id: '6',
   name: 'Janka',
-  pass: 'on',
   job: 'Job6',
   complete: '22%'
 }];
 
-const date = {Time: "2021-02-15T00:00:00Z", Valid: true}
+const date = {
+  Time: "2021-02-15T00:00:00Z",
+  Valid: true
+}
 
 export const doc_form = {
   name: "xxx",
@@ -149,45 +145,34 @@ export const sm_data = [
 
 export const combinations = [
   {
-  type: { value: 'A', label: 'A' },
-  branch: { value: 'A1', label: 'A1abcdefgh' },
-  division: { value: 'D1', label: 'B2abcdefgh' },
-  department: { value: 'D1', label: 'B2abcdefgh' },
-  city: { value: 'C1', label: 'B2abcdefgh' },
+  branch: [{ value: 'A1', label: 'A1' }],
+  division: [{ value: 'D1', label: 'B2' }],
+  department: [{ value: 'D1', label: 'B2' }],
+  city: [{ value: 'C1', label: 'B2' }],
 },{
-  type: { value: 'A', label: 'A' },
-  branch: { value: 'A1', label: 'A1abcdefgh' },
-  division: { value: 'Da1', label: 'B2abcdefgh' },
-  department: { value: 'Da1', label: 'B2abcdefgh' },
-  city: { value: 'C2', label: 'C2'},
+  branch: [{ value: 'A1', label: 'A1' }],
+  division: [{ value: 'Da1', label: 'B2' }],
+  department: [{ value: 'Da1', label: 'B2' }],
+  city: [{ value: 'C2', label: 'C2'}],
 },{
-  type: { value: 'B', label: 'B' },
-  branch: { value: 'B2', label: 'B2abcdefgh' },
-  division: { value: 'D1', label: 'B2abcdefgh' },
-  department: { value: 'D2', label: 'B2abcdefgh' },
-  city: { value: 'C3', label: 'C3' },
+  branch: [{ value: 'B2', label: 'B2' }],
+  division: [{ value: 'D1', label: 'B2' }],
+  department: [{ value: 'D2', label: 'B2' }],
+  city: [{ value: 'C3', label: 'C3' }],
 },{
-  type: { value: 'B3', label: 'B' },
-  branch: { value: 'B13', label: 'B1abcdefgh' },
-  division: { value: 'D13', label: 'B2abcdefgh' },
-  department: { value: 'D13', label: 'B2abcdefgh' },
-  city: { value: 'C13', label: 'B2abcdefgh' },
+  branch: [{ value: 'B13', label: 'B1' }],
+  division: [{ value: 'D13', label: 'B2' }],
+  department: [{ value: 'D13', label: 'B2' }],
+  city: [{ value: 'C13', label: 'B2' }],
 },{
-  type: { value: 'B4', label: 'B' },
-  branch: { value: 'B14', label: 'B1abcdefgh' },
-  division: { value: 'D14', label: 'B2abcdefgh' },
-  department: { value: 'D14', label: 'B2abcdefgh' },
-  city: { value: 'C14', label: 'B2abcdefgh' },
-},{
-  type: { value: 'B5', label: 'B' },
-  branch: { value: 'B15', label: 'B1abcdefgh' },
-  division: { value: 'D15', label: 'B2abcdefgh' },
-  department: { value: 'D15', label: 'B2abcdefgh' },
-  city: { value: 'C15', label: 'B2abcdefgh' },
+  branch: [{ value: 'B14', label: 'B1' }],
+  division: [{ value: 'D14', label: 'B2' }],
+  department: [{ value: 'D14', label: 'B2' }],
+  city: [{ value: 'C14', label: 'B2' }],
 }
 ];
 
-export const types = [...new Set(combinations.map(c => c.type.value))];
+export const types = ['A', 'B'];
 export const branches = [...new Set(combinations.map(c => c.branch))];
 export const divisions = [...new Set(combinations.map(c => c.division))];
 export const departments = [...new Set(combinations.map(c => c.department))];

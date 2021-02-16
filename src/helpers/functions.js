@@ -1,23 +1,22 @@
 import React from "react";
-import {doc_form} from "./data";
 
 // Tables
-export const require_superior = (document) => document.require_superior
 export const recordType = (record) => Object.keys(record).includes('link') ? "document" : "training"
+export const require_superior = (document) => document.require_superior
 export const nonExpandableDocs = (documents) => {
-  return documents
-    .filter(doc => !require_superior(doc))
-    .map(d => d.id);
+  return documents.map(doc => {
+      if (!require_superior(doc))
+        return  doc.id
+    }
+  )
 }
 
 export const fitBtn = () => {
   return { width: '1%'}
 }
+
 export const orderBy = (field, order='asc') => {
-  return [{
-    dataField: field,
-    order: order
-  }]
+  return [{ dataField: field, order: order }]
 }
 
 
@@ -43,25 +42,18 @@ export const badMsg = (body) => {
   }
 }
 
-export const successResponse = (response) => {
-  return 200 <= response.status && response.status <= 299
-}
-
+export const successResponse = (response) => 200 <= response.status && response.status <= 299
 export const getLanguage = () => JSON.parse(sessionStorage.getItem('language'))
-
 export const delay = ms => new Promise(res => setTimeout(res, ms));
 
 
 // Add record forms
 export const getSelectOptions = (field) => {
-  return (
-    <>
-      <option hidden value="">Select option ...</option>
-      {field.map(value => <option>{value}</option>)}
-    </>
-  )
+  return <>
+        <option hidden value="">Select option ...</option>
+        { field.map(value => <option>{value}</option>) }
+      </>
 }
-
 
 export const setOf = (array) => {
   const set = []
@@ -71,19 +63,29 @@ export const setOf = (array) => {
   return set // array of unique objects by their .value
 }
 
-export const get_current_date = () => {
-  const curr = new Date();
-  curr.setDate(curr.getDate() + 3);
-  return curr.toISOString().substr(0,10);
-}
-
-export const prefillDocumentForm = (data, combinations=null) => {
+export const prefillDocumentForm = (data) => {
   return {
     ...data,
     release_date: getDateString(data.release_date),
     deadline: getDateString(data.deadline),
-    // assigned_to: attendees.map(a => a.id).join(',')
   }
+}
+
+export const getCombinationsLabels = (combinations) => { // TODO ME
+  const c = combinations.split('&').map(e => e.split(','))
+  console.log(c)
+  // return c
+  return [{
+    branch: [{ value: 'A1', label: 'A1' }],
+    division: [{ value: 'D1', label: 'B2' }],
+    department: [{ value: 'D1', label: 'B2' }],
+    city: [{ value: 'C1', label: 'B2' }],
+  },{
+    branch: [{ value: 'A1', label: 'A1' }],
+    division: [{ value: 'Da1', label: 'B2' }],
+    department: [{ value: 'Da1', label: 'B2' }],
+    city: [{ value: 'C2', label: 'C2'}],
+    }]
 }
 
 export const prefillTrainingForm = (data, attendees=null) => {
@@ -132,39 +134,38 @@ const resolveCombinations = (combinations) => {
 
 const flatBranch = (combs) => {
   const res = []
-  combs.forEach(c => {
-    if (!c.branch.length) res.push(c)
+  combs.forEach(c => { if (!c.branch.length) res.push(c)
     c.branch.forEach(b => res.push({...c, branch: [b]}))
   })
   return res
 }
+
 const flatDivision = (combs) => {
   const res = []
-  combs.forEach(c => {
-    if (!c.division.length) res.push(c)
+  combs.forEach(c => { if (!c.division.length) res.push(c)
     c.division.forEach(f => res.push({...c, division: [f]}))
   })
   return res
 }
+
 const flatDepartment = (combs) => {
   const res = []
-  combs.forEach(c => {
-    if (!c.department.length) res.push(c)
+  combs.forEach(c => { if (!c.department.length) res.push(c)
     c.department.forEach(f => res.push({...c, department: [f]}))
   })
   return res
 }
+
 const flatCity = (combs) => {
   const res = []
-  combs.forEach(c => {
-    if (!c.city.length) res.push(c)
+  combs.forEach(c => { if (!c.city.length) res.push(c)
     c.city.forEach(f => res.push({...c, city: [f]}))
   })
   return res
 }
 
 const getID = (field) => {
-  return field.length ? field[0].value : '.'
+  return field.length ? field[0].value : 'x'
 }
 
 const stringify = (combs) => {

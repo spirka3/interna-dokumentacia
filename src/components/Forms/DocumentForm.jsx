@@ -11,21 +11,25 @@ import {
   correctDocumentFormData,
   getSelectOptions,
   prefillDocumentForm,
-  successResponse
+  successResponse, getCombinationsLabels
 } from "../../helpers/functions";
 
 const DocumentForm = ({formData, insertRecord}) => {
   const {register, handleSubmit, errors} = useForm({
-    defaultValues: prefillDocumentForm(doc_form) // TODO ME - prefill combination
+    defaultValues: prefillDocumentForm(doc_form)
     // defaultValues: prefillDocumentForm(formData)
   });
 
   const [types, setTypes] = useState([]);
   const [notification, setNotification] = useState();
-  const [combinations, setCombinations] = useState([])
+  const [combinations, setCombinations] = useState(
+    // []
+    getCombinationsLabels(doc_form.assigned_to)
+  );
+  console.log(combinations)
   const [emptyCombinations, setEmptyCombinations] = useState([true])
   useEffect(() => setNotification(undefined), emptyCombinations)
-  useEffect(()=>{
+  useEffect(() => {
     setTypes(t) // TODO array from DB
   },[])
 
