@@ -38,7 +38,7 @@ const SavedTrainings = ({setForm, trainings}) => {
     formatter: SendBtn,
     formatExtraData: {
       setNotification: setNotification,
-      setSavedRec: setSavedTrainings()
+      setSavedRec: setSavedTrainings
     },
     headerStyle: fitBtn()
   }];

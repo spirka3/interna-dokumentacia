@@ -1,108 +1,62 @@
 import React, {useEffect, useState} from "react";
-import {Form, Row, Col, Button} from "react-bootstrap";
 import {useForm} from "react-hook-form";
 import MyHookForm from "./MyHookForm";
+import {Form, Row, Col, Button} from "react-bootstrap";
 import Combinations from "../Tables/Combinations";
 import {CustomAlert} from "../Others/CustomAlert";
 import {doc_form, types as t} from "../../helpers/data";
-import {getSelectOptions} from "../../helpers/functions";
-import {SuccessAlert} from "../Others/SuccessAlert";
+import {
+  badMsg,
+  goodMsg,
+  correctDocumentFormData,
+  getSelectOptions,
+  prefillDocumentForm,
+  successResponse
+} from "../../helpers/functions";
 
-const DocumentForm = ({formData, handleDatabase}) => {
-  console.log('form_data', formData)
-  const {register, handleSubmit, errors, reset} = useForm({
-    defaultValues: {...formData, deadline: 14}
-    // defaultValues: {...doc_form} // test data
+const DocumentForm = ({formData, insertRecord}) => {
+  const {register, handleSubmit, errors} = useForm({
+    defaultValues: prefillDocumentForm(doc_form) // TODO ME - prefill combination
+    // defaultValues: prefillDocumentForm(formData)
   });
 
-  const types = t // TODO define as array [asi z DB]
-  const [error, setError] = useState()
-  const [successMessage, setSuccessMessage] = useState()
+  const [types, setTypes] = useState([]);
+  const [notification, setNotification] = useState();
   const [combinations, setCombinations] = useState([])
   const [emptyCombinations, setEmptyCombinations] = useState([true])
-  useEffect(() => setError(""), emptyCombinations)
+  useEffect(() => setNotification(undefined), emptyCombinations)
+  useEffect(()=>{
+    setTypes(t) // TODO array from DB
+  },[])
 
   const onSubmit = (data, event) => {
-    // if (emptyCombinations[0] || combinations.length === 0){
-    //   setError("At least one combination is required")
-    //   return
-    // }
+    if (emptyCombinations[0] || combinations.length === 0){
+      setNotification(badMsg("At least one combination is required"))
+      return
+    }
 
-    data = {...data, assigned_to: resolveCombinations()}
-    console.log('data', JSON.stringify(data));
-
+    data = correctDocumentFormData(data, combinations)
+    console.log(data)
     const action = event.target.id
     // const result = handleDatabase('/document', data, action)
-    const result = false
 
-    fetch('/document/create', {
+    fetch(`/document/update`, {
       method: "POST",
-      body: JSON.stringify(data),
+      body: JSON.stringify(data)
     })
-      // .then(response => response.json())
       .then(res => {
-        console.log('res', res)
+        if (successResponse(res)) {
+          setNotification(goodMsg(`${action} was successful`))
+          // reset({})
+        } else {
+          setNotification(badMsg(`${action} failed`))
+        }
       })
       .catch((e) => console.log('error', e))
-
-    if (result) { // if successful TODO
-      setSuccessMessage(`${action} was successful`)
-      reset({})
-    } else {
-      setError(`${action} failed`)
-    }
-  }
-
-  const resolveCombinations = () => {
-    let combs = flatBranch()
-    combs = flatDivision(combs)
-    combs = flatDepartment(combs)
-    combs = flatCity(combs)
-    return stringify(combs).join('&')
-  }
-
-  const getID = (field) => field.length ? field[0].value : '.'
-
-  const stringify = (combs) => {
-    return combs.map(c => {
-      return `${getID(c.branch)},${getID(c.city)},${getID(c.department)},${getID(c.division)}`
-    })
-  }
-  const flatBranch = () => {
-    const res = []
-    combinations.forEach(c => {
-      if (!c.branch.length) res.push(c)
-      c.branch.forEach(b => res.push({...c, branch: [b]}))
-    })
-    return res
-  }
-  const flatDivision = (combs) => {
-    const res = []
-    combs.forEach(c => {
-      if (!c.division.length) res.push(c)
-      c.division.forEach(f => res.push({...c, division: [f]}))
-    })
-    return res
-  }
-  const flatDepartment = (combs) => {
-    const res = []
-    combs.forEach(c => {
-      if (!c.department.length) res.push(c)
-      c.department.forEach(f => res.push({...c, department: [f]}))
-    })
-    return res
-  }
-  const flatCity = (combs) => {
-    const res = []
-    combs.forEach(c => {
-      if (!c.city.length) res.push(c)
-      c.city.forEach(f => res.push({...c, city: [f]}))
-    })
-    return res
   }
 
   return (
-    <Form onChange={()=>setSuccessMessage("")}>
+    <Form onChange={()=>setNotification(undefined)}>
        {/* TYPE OF DOCUMENT */}
       <Form.Group as={Row}>
         <Form.Label column sm="3">Type*</Form.Label>
@@ -121,7 +75,6 @@ const DocumentForm = ({formData, handleDatabase}) => {
             label="require superior"
             name="require_superior"
             ref={register}
-            // checked={formData !== null && formData.require_superior}
           />
         </Col>
       </Form.Group>
@@ -178,26 +131,23 @@ const DocumentForm = ({formData, handleDatabase}) => {
         placeholder="Enter note"
         register={register}
       />
-
       {/* COMBINATIONS */}
       <Combinations
         combinations={combinations}
         setCombinations={setCombinations}
         setEmptyCombinations={setEmptyCombinations}
       />
-
       {/* ALERTS */}
-      { error && <CustomAlert text={error}/> }
-      { Object.keys(errors).length ? <CustomAlert text={"Fill all the require fields"}/> : null }
-      { successMessage && <SuccessAlert text={successMessage}/> }
-
+      {notification &&
+        <CustomAlert notification={notification}/>
+      }
+      {Object.keys(errors).length ?
+        <CustomAlert text={badMsg("Fill all the require fields")}/> : null
+      }
       {/* SAVE | SEND BUTTONS */}
       <div onClick={handleSubmit(onSubmit)} className="pt-1 btn-block text-right">
         <Button id="save" type="submit" className="mr-1">Save</Button>
         <Button id="send" type="submit" variant="danger">Send</Button>
-        {/*{formData !== undefined && formData.editable &&*/}
-        {/*  <Button id="sendNewVersion" type="submit" variant="danger">Send as new version</Button>*/}
-        {/*}*/}
       </div>
     </Form>
   )

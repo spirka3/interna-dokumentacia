@@ -1,33 +1,39 @@
 import React from 'react';
 import {Navbar, Nav, NavLink} from 'react-bootstrap';
-import {getUser, isAdmin} from "../../helpers/functions";
+import {getLanguage, getUser, isAdmin} from "../../helpers/functions";
+import {wording} from "../../helpers/wording";
 
 const Navigation = ({location}) => {
 
   const user = getUser();
   const admin = isAdmin();
 
+  const language = getLanguage()
+  let x = language === 'sk' ? wording.sk : wording.en
+  x = x.navigation
+  console.log(x)
+
   const LoginNav = () => {
     return (
       <>
-        <NavLink href="/records-to-sign">Records to sign</NavLink>
-        <NavLink href="/signed-records">Signed records</NavLink>
+        <NavLink href="/records-to-sign">{x.recordsToSign}</NavLink>
+        <NavLink href="/signed-records">{x.signedRecords}</NavLink>
         {admin &&
           <>
-          <NavLink href="/add-record">Add Record</NavLink>
-          <NavLink href="/saved-record">Saved Record</NavLink>
-          <NavLink href='/finder'>Finder</NavLink>
-          <NavLink href='/settings'>Settings</NavLink>
+          <NavLink href="/add-record">{x.addRecord}</NavLink>
+          <NavLink href="/saved-record">{x.savedRecords}</NavLink>
+          <NavLink href='/finder'>{x.finder}</NavLink>
+          <NavLink href='/settings'>{x.settings}</NavLink>
           </>
         }
-        <NavLink href='/logout'>Log out</NavLink>
+        <NavLink href='/logout'>{x.logout}</NavLink>
       </>
     )
   };
 
   const LogoutNav = () => {
     return (
-      <NavLink href='/'>Sing in</NavLink>
+      <NavLink href='/'>{x.login}</NavLink>
     )
   };
 

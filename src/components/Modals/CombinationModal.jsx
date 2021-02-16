@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Button, Container, Modal} from "react-bootstrap";
+import {Button, Col, Container, Modal} from "react-bootstrap";
 import CombinationForm from "../Forms/CombinationForm";
 import uuid from 'react-uuid'
 
@@ -41,9 +41,11 @@ const CombinationModal = ({setShowModal, setCombinations, setEmptyCombinations})
         />
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={add}>Add next</Button>
-        <Button onClick={addClose}>Add and close</Button>
-        <Button onClick={closeModal} variant="secondary">close</Button>
+        <Col className="text-center">
+          <Button onClick={add} size="sm" className="mr-2">Add next</Button>
+          <Button onClick={addClose} size="sm" className="mr-2">Add and close</Button>
+          <Button onClick={closeModal} variant="secondary" size="sm">close</Button>
+        </Col>
       </Modal.Footer>
       </Container>
     </Modal>

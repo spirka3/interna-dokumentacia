@@ -42,107 +42,37 @@ export const employees = [{
   complete: '22%'
 }];
 
+const date = {Time: "2021-02-15T00:00:00Z", Valid: true}
+
 export const doc_form = {
-  name: "Test",
+  name: "xxx",
   link: "linka",
-  note: "noteska",
-  // release_date: '2021-02-15',
-  // deadline: '2021-02-15',
   order_number: 1,
+  note: "noteska",
+  release_date: date,
+  deadline: date,
   version: "1",
   assigned_to: "1,1,1,1&2,2,2,2",
   type: 'A',
   require_superior: true
 }
 
-export const docs = [{
-  id: '1',
-  name: 'Document1',
-  release: '1.7.2020',
-  deadline: '15.1.2000',
-  sign: '1.7.2020',
-  type: 'T',
-  division: 'D',
-  department: 'D',
-  city: 'Zilina',
-  record_type: 'training-document',
-  state: '75%',
-  sub: [{
-      anet_id: '1',
-      name: 'Employee1',
-      sign: '1.7.2020'
-    }, {
-      anet_id: '2',
-      name: 'Employee2',
-      sign: '1.7.2020'
-    }, {
-      anet_id: '3',
-      name: 'Employee3',
-      sign: '1.7.2020'
-    }]
-}, {
-  id: '2',
-  name: 'Document2',
-  release: '15.1.2019',
-  deadline: '15.1.2019',
-  sign: '1.7.2020',
-  type: 'T',
-  division: 'D',
-  department: 'D',
-  city: 'Zilina, Martin',
-  record_type: 'document',
-  state: '80%',
-}, {
-  id: '3',
-  name: 'Document3',
-  release: '15.1.2018',
-  deadline: '15.1.2021',
-  sign: '1.7.2020',
-  type: 'T',
-  division: 'D',
-  department: 'D',
-  city: 'Bratislava',
-  record_type: 'online-training',
-  state: '100%',
-}];
-
-export const dbdocs = [{
-  assigned_to: "3; 4; 1; 4",
-  deadline: {Time: "2017-03-14T00:00:00Z", Valid: true},
-  id: 46,
+export const trn_form = {
   name: "name_46",
   agency: "Agency name_18",
   agenda: "Agenda Agenda AgendaAgendaAgenda Agenda Agenda Agenda",
   lector: "Simona",
   place: "Trnava",
   duration: 30,
-  release_date: {Time: "2017-06-24T00:00:00Z", Valid: true},
-}, {
-  assigned_to: "5; 4; 2; 2",
-  deadline: {Time: "2017-04-23T00:00:00Z", Valid: true},
-  id: 18,
-  name: "name_18",
-  agency: "Agency name_18",
-  agenda: "Agenda Agenda AgendaAgendaAgenda Agenda Agenda Agenda",
-  lector: "Laura",
-  place: "Banska bystrica",
-  duration: 120,
-  prev_version_id: 0,
-  release_date: {Time: "2017-10-23T00:00:00Z", Valid: true},
-}, {
-  assigned_to: "5; 4; 2; 2",
-  deadline: {Time: "2013-03-11T00:00:00Z", Valid: true},
-  id: 1,
-  link: "www.google.com",
-  name: "name_1",
-  release_date: {Time: "2017-10-23T00:00:00Z", Valid: true},
-  require_superior: false,
-  version: "v3"
-}];
+  date: date,
+  deadline: date,
+  employees: '1,2'
+}
 
 export const pobocky = ["prva pobocka", "druha pobocka", "tretia pobocka"]
 
-export const sm_data = [{
+export const sm_data = [
+  {
   id: 1,
   name: 'Document1',
   type: 'A',
@@ -214,9 +144,11 @@ export const sm_data = [{
     anet_id: '6',
     state: ''
   }]
-}];
+}
+];
 
-export const combinations = [{
+export const combinations = [
+  {
   type: { value: 'A', label: 'A' },
   branch: { value: 'A1', label: 'A1abcdefgh' },
   division: { value: 'D1', label: 'B2abcdefgh' },
@@ -252,7 +184,8 @@ export const combinations = [{
   division: { value: 'D15', label: 'B2abcdefgh' },
   department: { value: 'D15', label: 'B2abcdefgh' },
   city: { value: 'C15', label: 'B2abcdefgh' },
-}];
+}
+];
 
 export const types = [...new Set(combinations.map(c => c.type.value))];
 export const branches = [...new Set(combinations.map(c => c.branch))];

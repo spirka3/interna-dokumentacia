@@ -1,4 +1,5 @@
 import React from "react";
+import {doc_form} from "./data";
 
 // Tables
 export const require_superior = (document) => document.require_superior
@@ -19,7 +20,39 @@ export const orderBy = (field, order='asc') => {
   }]
 }
 
-// Forms
+
+// Authentication
+export const setUser = (user) => sessionStorage.setItem('user', JSON.stringify(user))
+export const getUser = () => JSON.parse(sessionStorage.getItem('user'))
+export const removeUser = () => sessionStorage.removeItem('user')
+export const isAdmin = () => getUser() !== null && getUser().role === 'admin'
+
+
+// Helpers
+export const goodMsg = (body) => {
+  return {
+    variant: 'success',
+    body: body
+  }
+}
+
+export const badMsg = (body) => {
+  return {
+    variant: 'danger',
+    body: body
+  }
+}
+
+export const successResponse = (response) => {
+  return 200 <= response.status && response.status <= 299
+}
+
+export const getLanguage = () => JSON.parse(sessionStorage.getItem('language'))
+
+export const delay = ms => new Promise(res => setTimeout(res, ms));
+
+
+// Add record forms
 export const getSelectOptions = (field) => {
   return (
     <>
@@ -38,28 +71,104 @@ export const setOf = (array) => {
   return set // array of unique objects by their .value
 }
 
-
-// Authentication
-export const setUser = (user) => sessionStorage.setItem('user', JSON.stringify(user))
-export const getUser = () => JSON.parse(sessionStorage.getItem('user'))
-export const removeUser = () => sessionStorage.removeItem('user')
-export const isAdmin = () => getUser() !== null && getUser().role === 'admin'
-
-
-// Fetches
-export const successResponse = (response) => {
-  return 200 <= response.status && response.status <= 299
-}
-
-
-// Filter
-
-
-// Helpers
-export const delay = ms => new Promise(res => setTimeout(res, ms));
-
 export const get_current_date = () => {
   const curr = new Date();
   curr.setDate(curr.getDate() + 3);
   return curr.toISOString().substr(0,10);
+}
+
+export const prefillDocumentForm = (data, combinations=null) => {
+  return {
+    ...data,
+    release_date: getDateString(data.release_date),
+    deadline: getDateString(data.deadline),
+    // assigned_to: attendees.map(a => a.id).join(',')
+  }
+}
+
+export const prefillTrainingForm = (data, attendees=null) => {
+  return {
+    ...data,
+    date: getDateString(data.date),
+    deadline: getDateString(data.deadline),
+    // employees: attendees.map(a => a.id).join(',')
+  }
+}
+
+export const correctTrainingFormData = (data, attendees) => {
+  return {
+    ...data,
+    date: getDateObject(data.date),
+    deadline: getDateObject(data.deadline),
+    employees: attendees.map(a => a.id).join(',')
+  }
+}
+
+export const correctDocumentFormData = (data, combinations) => {
+  return {
+    ...data,
+    release_date: getDateObject(data.release_date),
+    deadline: getDateObject(data.deadline),
+    assigned_to: resolveCombinations(combinations)
+  }
+}
+
+const getDateObject = (date) => {
+  return {
+    Time: date + 'T00:00:00Z',
+    Valid: true
+  }
+}
+
+const getDateString = (date) => date.Time.substr(0, 10)
+
+const resolveCombinations = (combinations) => {
+  let combs = flatBranch(combinations)
+  combs = flatDivision(combs)
+  combs = flatDepartment(combs)
+  combs = flatCity(combs)
+  return stringify(combs).join('&')
+}
+
+const flatBranch = (combs) => {
+  const res = []
+  combs.forEach(c => {
+    if (!c.branch.length) res.push(c)
+    c.branch.forEach(b => res.push({...c, branch: [b]}))
+  })
+  return res
+}
+const flatDivision = (combs) => {
+  const res = []
+  combs.forEach(c => {
+    if (!c.division.length) res.push(c)
+    c.division.forEach(f => res.push({...c, division: [f]}))
+  })
+  return res
+}
+const flatDepartment = (combs) => {
+  const res = []
+  combs.forEach(c => {
+    if (!c.department.length) res.push(c)
+    c.department.forEach(f => res.push({...c, department: [f]}))
+  })
+  return res
+}
+const flatCity = (combs) => {
+  const res = []
+  combs.forEach(c => {
+    if (!c.city.length) res.push(c)
+    c.city.forEach(f => res.push({...c, city: [f]}))
+  })
+  return res
+}
+
+const getID = (field) => {
+  return field.length ? field[0].value : '.'
+}
+
+const stringify = (combs) => {
+  return combs.map(c => {
+    return `${getID(c.branch)},${getID(c.city)},${getID(c.department)},${getID(c.division)}`
+  })
 }

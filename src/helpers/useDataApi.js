@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-
-
-
-
-
 const useDataApi = url => {
 
   const [data, setData] = useState();
@@ -13,7 +8,9 @@ const useDataApi = url => {
 
   useEffect(() => {
     console.log('url', url)
-    fetch(url, { method: "GET"} )
+    fetch(url, {
+      method: "GET"
+    })
       .then(response => response.json())
       .then(res => {
           setIsLoaded(true);

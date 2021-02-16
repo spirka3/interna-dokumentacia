@@ -26,7 +26,7 @@ const Combinations = ({combinations, setCombinations, setEmptyCombinations}) => 
 
   const AddIcon = () => {
     return (
-      <Button variant="success" onClick={() => setShowModal(true)} size="sm">
+      <Button variant="success" onClick={() => setShowModal(true)} size="sm" className="mb-2">
         <strong>Add combination {" "}</strong>
         <PlusSquare size="20" color="white"/>
       </Button>

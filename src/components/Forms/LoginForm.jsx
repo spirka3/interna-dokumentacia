@@ -3,7 +3,7 @@ import {useForm} from "react-hook-form";
 import {Button, ButtonGroup, Form, Container} from "react-bootstrap";
 import {CustomAlert} from "../Others/CustomAlert";
 
-const LoginForm = ({onSubmit, language, setLanguage, loginError}) => {
+const LoginForm = ({onSubmit, language, setLanguage, notification}) => {
 
   const {register, handleSubmit} = useForm();
 
@@ -24,7 +24,7 @@ const LoginForm = ({onSubmit, language, setLanguage, loginError}) => {
         </ButtonGroup>
         {/* NAME */}
         <Form.Group>
-          <Form.Label>Name</Form.Label>
+          <Form.Label>Email</Form.Label>
           <Form.Control
             name="email"
             placeholder="Enter email"
@@ -43,8 +43,8 @@ const LoginForm = ({onSubmit, language, setLanguage, loginError}) => {
             required
           />
         </Form.Group>
-        {/* ERRORS */}
-        { loginError && <CustomAlert text={loginError}/> }
+        {/* ALERT */}
+        {notification && <CustomAlert notification={notification}/>}
         {/* SUBMIT BTN */}
         <Button type="submit" variant="dark" className="btn-block">Login</Button>
       </Form>

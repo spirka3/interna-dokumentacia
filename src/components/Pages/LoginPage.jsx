@@ -7,7 +7,7 @@ import {getUser} from "../../helpers/functions";
 const LoginPage = () => {
 
   const [language, setLanguage] = useSessionStorage("language", "sk");
-  const [loginError, setLoginError] = useState("");
+  const [notification, setNotification] = useState();
 
   let cardInput = '';
   const maxCardInputTimeDifference = 40;
@@ -41,27 +41,17 @@ const LoginPage = () => {
     cardInput = '';
   }
 
-  function checkCard(cardInput) {
-    let user = findByCard(cardInput);
-    if(user !== undefined) {
-      console.log(`${user.id}`);
-      //Here goes login based on user
-    }
-  }
-
   function checkInput() {
     if(cardInput.length === cardInputLength) {
       console.log(`checking card ${cardInput}`);
-      checkCard(cardInput);
-      emptyCardInput();
+      findByCard(cardInput);
     } else {
-      emptyCardInput();
       console.log('emptying input');
     }
+    emptyCardInput();
   }
 
   const event = (e) => {
-    //console.log(`${e.key} ${e.keyCode} ${String.fromCharCode(e.keyCode)}`)
     let engInput = String.fromCharCode(e.keyCode).toLowerCase()
     if(isValiable(e)) {
       cardInput += engInput;
@@ -75,55 +65,52 @@ const LoginPage = () => {
     return () => document.removeEventListener("keydown", event); // cleanup
   })
 
-  const onSubmit = (data) =>{
-    fetchLoginByPass(data)
+  const setLoginError = (body) => {
+    setNotification({
+      variant: 'danger',
+      body: body
+    })
   }
 
-  const findByCard = (input) => {
-    // TODO MATO find employee with cardID
-    fetchLoginByCard(input)
+  const setUser = (data) => {
+    const user = {
+      id: data.id,
+      role: data.role
+    }
+    sessionStorage.setItem('user', JSON.stringify(user))
+    window.location.reload(false);
   }
 
-  const fetchLoginByPass = (data) => {
+  const onSubmit = (data) => {
     fetch('/login', {
       method: "POST",
       body: new URLSearchParams(`email=${data.email}&password=${data.password}`)
     })
       .then(response => response.json())
-      .then(res => {
-        const u = {id: res.id, role: res.role}
-        sessionStorage.setItem('user', JSON.stringify(u))
-        window.location.reload(false);
-      })
+      .then(data => { setUser(data) })
       .catch(() => setLoginError("Wrong login input"))
   }
 
-  const fetchLoginByCard = (input) => {
+  const findByCard = (input) => {
     fetch('/kiosk', {
       method: "POST",
       body: new URLSearchParams(`card=${input}`)
     })
       .then(response => response.json())
-      .then(res => {
-        const u = {id: res.id, role: res.role}
-        sessionStorage.setItem('user', JSON.stringify(u))
-        window.location.reload(false);
-      })
+      .then(data => { setUser(data) })
       .catch(() => setLoginError("Wrong card input"))
   }
 
+  if (getUser() !== null)
+    return <Redirect to="/records-to-sign"/>
+
   return (
-    <>
-      {getUser() !== null
-        ? <Redirect to="/records-to-sign"/>
-        : <LoginForm
-          onSubmit={onSubmit}
-          language={language}
-          setLanguage={setLanguage}
-          loginError={loginError}
-        />
-      }
-    </>
+    <LoginForm
+      onSubmit={onSubmit}
+      language={language}
+      setLanguage={setLanguage}
+      notification={notification}
+    />
   )
 };
 

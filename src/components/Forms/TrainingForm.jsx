@@ -4,59 +4,55 @@ import MyHookForm from "./MyHookForm";
 import {Row, Col, Form, Button} from "react-bootstrap";
 import {Typeahead} from 'react-bootstrap-typeahead'
 import 'react-bootstrap-typeahead/css/Typeahead.css';
-import {dbdocs, employees} from "../../helpers/data";
-import {get_current_date} from "../../helpers/functions";
 import {CustomAlert} from "../Others/CustomAlert";
-import {SuccessAlert} from "../Others/SuccessAlert";
+import {trn_form, employees as e} from "../../helpers/data";
+import {
+  badMsg,
+  goodMsg,
+  correctTrainingFormData,
+  successResponse,
+  prefillTrainingForm
+} from "../../helpers/functions";
 
 const TrainingForm = ({formData, handleDatabase}) => {
-  console.log('form_data', formData)
-  // let employees = ...
-  useEffect(()=>{
-    // TODO MATO load employees
-  },[]) // Only once
-
   const {register, handleSubmit, errors, reset} = useForm({
-    // defaultValues: {...dbdocs[1], date: get_current_date()} // test data
-    defaultValues: {...formData, date: get_current_date()}
+    defaultValues: prefillTrainingForm(trn_form) // TODO ME - prefill employees
+    // defaultValues: prefillDocumentForm(formData)
   });
 
-  const [errorMsg, setErrorMsg] = useState()
-  const [successMsg, setSuccessMsg] = useState()
+  const [employees, setEmployees] = useState([]);
+  const [notification, setNotification] = useState();
   const [attendees, setAttendees] = useState([])
   const [emptyAttendees, setEmptyAttendees] = useState([true])
-  useEffect(() => setErrorMsg(""), emptyAttendees)
+  useEffect(() => setNotification(undefined), emptyAttendees)
+  useEffect(()=>{
+    setEmployees(e) // TODO MATO load employees
+  },[])
 
   const onSubmit = (data, event) => {
     if (emptyAttendees[0] || attendees.length === 0){
-      setErrorMsg("At least one employee is required")
+      setNotification(badMsg("At least one employee is required"))
       return
     }
 
-    data = {...data, employees: attendees.map(a=>a.id)} // TODO poslat správne zamestnancov do DB
-    console.log('data', data);
-
+    data = correctTrainingFormData(data, attendees)
+    console.log(data)
     const action = event.target.id
     // const result = handleDatabase('/training', data, action)
-    const result = true
 
-    fetch('/training/save', {
+    fetch(`/training/update`, {
       method: "POST",
       body: JSON.stringify(data)
     })
-      // .then(response => response.json())
       .then(res => {
-        console.log(res)
-        return res; // id
+        if (successResponse(res)) {
+          setNotification(goodMsg(`${action} was successful`))
+          // reset({})
+        } else {
+          setNotification(badMsg(`${action} failed`))
+        }
       })
-      .catch((e) => console.log(e))
-
-    if (result) { // if successful TODO
-      setSuccessMsg(`${action} was successful`)
-      reset({})
-    } else {
-      setErrorMsg(`${action} failed`)
-    }
+      .catch((e) => console.log('error', e))
   }
 
   const addAttendees = (attendee) => {
@@ -65,7 +61,7 @@ const TrainingForm = ({formData, handleDatabase}) => {
   }
 
   return (
-    <Form onChange={()=>setSuccessMsg("")}>
+    <Form onChange={()=>setNotification(undefined)}>
       {/* NAME */}
       <MyHookForm
         label="Training name*"
@@ -100,7 +96,15 @@ const TrainingForm = ({formData, handleDatabase}) => {
         name="date"
         type="date"
         placeholder="Enter date"
-        register={register({required:true, valueAsDate: true})}
+        register={register({required:true})}
+      />
+      {/* DEADLINE */}
+      <MyHookForm
+        label="Days to deadline*"
+        name="deadline"
+        type="date"
+        defaultValue="14"
+        register={register({required:true})}
       />
       {/* DURATION */}
       <MyHookForm
@@ -108,7 +112,7 @@ const TrainingForm = ({formData, handleDatabase}) => {
         name="duration"
         type="number"
         placeholder="Enter duration"
-        register={register}
+        register={register({valueAsNumber: true})}
       />
       {/* AGENDA */}
       <MyHookForm
@@ -120,7 +124,7 @@ const TrainingForm = ({formData, handleDatabase}) => {
       />
       {/* LIST OF EMPLOYEES */}
       <Form.Group as={Row}>
-        <Form.Label column sm="2">Add employees*</Form.Label>
+        <Form.Label column sm="3">Add employees*</Form.Label>
         <Col>
           <Typeahead
             id="basic-typeahead-single"
@@ -134,12 +138,13 @@ const TrainingForm = ({formData, handleDatabase}) => {
           />
         </Col>
       </Form.Group>
-
       {/* ALERTS */}
-      { Object.keys(errors).length ? <CustomAlert text={"Fill all the require fields"}/> : null}
-      { errorMsg && <CustomAlert text={errorMsg}/> }
-      { successMsg && <SuccessAlert text={successMsg}/> }
-
+      {notification &&
+        <CustomAlert notification={notification}/>
+      }
+      {Object.keys(errors).length ?
+        <CustomAlert text={badMsg("Fill all the require fields")}/> : null
+      }
       {/* SAVE | SEND BUTTONS */}
       <div onClick={handleSubmit(onSubmit)} className="pt-1 btn-block text-right">
         <Button id="save" type="submit" className="mr-1">Save</Button>

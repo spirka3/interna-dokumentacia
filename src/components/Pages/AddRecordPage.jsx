@@ -2,10 +2,12 @@ import React, {useState} from 'react';
 import {Button, ButtonGroup, Container} from 'react-bootstrap';
 import DocumentForm from "../Forms/DocumentForm";
 import TrainingForm from "../Forms/TrainingForm";
+import {successResponse} from "../../helpers/functions";
 
 const AddRecordPage = () => {
 
   const [formType, setFormType] = useState('document');
+  const [status, setStatus] = useState();
 
   const handleClick = (event) => {
     setFormType(event.target.id)
@@ -14,14 +16,14 @@ const AddRecordPage = () => {
   const handleDatabase = (type, data, action) => {
     let id
     if (true) {
-      id = insertRecord(type, data) // TODO insert
+      insertRecord(type, data) // TODO insert
     } else {
       id = updateRecord(type, data) // TODO update
     }
     if (action === "send"){
       sendRecord(type, id) // TODO send
     }
-    return null // vratit vysledok ci sa to podarilo
+    return status
   }
 
   const insertRecord = (record, data) => { // TODO test
@@ -30,16 +32,10 @@ const AddRecordPage = () => {
       method: "POST",
       body: JSON.stringify(data)
     })
-      .then(response => response.json())
-      .then(res => {
-        console.log(res)
-        return res; // id
-      })
-      .catch((e) => console.log(e))
   }
 
   const sendRecord = (record, id) => { // TODO test
-    return fetch(`/${record}/confirm`, {
+    return fetch(`/${record}/confirm/`, {
       method: "POST",
       body: new URLSearchParams(`${record}=${id}`)
     })
@@ -57,6 +53,20 @@ const AddRecordPage = () => {
     })
   }
 
+  // const successMsg = () => {
+  //   setNotification({
+  //     variant: 'success',
+  //     body: `Record ${row.name} was successfully sent`
+  //   })
+  // }
+  //
+  // const errorMsg = () => {
+  //   setNotification({
+  //     variant: 'danger',
+  //     body: `Sending the ${row.name} failed`
+  //   })
+  // }
+
   const active = id => formType === id && 'active'
 
   return (
@@ -66,7 +76,7 @@ const AddRecordPage = () => {
         <Button id="training" className={active("training")}>Online training</Button>
       </ButtonGroup>
       {formType === 'document' && // if
-        <DocumentForm handleDatabase={handleDatabase}/>
+        <DocumentForm insertRecord={insertRecord}/>
       }
       {formType === 'training' && // elif
         <TrainingForm handleDatabase={handleDatabase}/>

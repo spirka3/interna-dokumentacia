@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from "react";
-import {Button, Col, Form} from "react-bootstrap";
+import Button from "react-bootstrap/Button";
 import Filter from "../Others/Filter";
 import FoundRecords from "../Tables/FoundRecords";
 import SkillMatrix from "../Tables/SkillMatrix";
-import {docs} from "../../helpers/data";
 
 const FinderPage = () => {
 

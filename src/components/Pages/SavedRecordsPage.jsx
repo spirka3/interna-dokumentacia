@@ -16,13 +16,13 @@ const SavedRecordsPage = () => {
   const [trainings, isLoaded2, error2] = useDataApi('/training/edited');
 
   if (error) {
-    return <FetchError e={`Error: ${error.message}`}/>
+    return <FetchError e={`Error: ${error.message}`} />
   } else if (!isLoaded || documents === undefined) {
     return <FetchLoading/>
   }
 
   if (error2) {
-    return <FetchError e={`Error2: ${error2.message}`}/>
+    return <FetchError e={`Error2: ${error2.message}`} />
   } else if (!isLoaded2 || trainings === undefined) {
     return <FetchLoading/>
   }
