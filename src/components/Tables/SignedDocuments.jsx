@@ -1,6 +1,6 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
-import CaptionElement from "../Others/CaptionElement";
+import TableHeader from "../Others/TableHeader";
 import {SignedBtn} from "../Buttons/TableBtns";
 import {nonExpandableDocs, orderBy} from "../../helpers/functions";
 import EmptyTable from "./EmptyTable";
@@ -70,7 +70,7 @@ const expandColumns = [{
 
   return (
     <>
-      <CaptionElement title="Signed Documents"/>
+      <TableHeader title="Signed Documents"/>
       <BootstrapTable
         keyField="id"
         hover

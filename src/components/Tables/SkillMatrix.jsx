@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
-import CaptionElement from "../Others/CaptionElement";
+import TableHeader from "../Others/TableHeader";
 import {sm_data, employees} from "../../helpers/data";
 import ToggleBtn from "../Buttons/ToggleBtn";
 import ConfirmModal from "../Modals/ConfirmModal";

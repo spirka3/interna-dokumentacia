@@ -42,7 +42,7 @@ const date = {
 
 export const doc_form = {
   id: "",
-  type: "B",
+  type: "type0",
   name: "xxx",
   link: "linka",
   order_number: 1,
@@ -50,7 +50,7 @@ export const doc_form = {
   release_date: date,
   deadline: date,
   version: "1",
-  assigned_to: "1,1,1,1&2,2,2,2",
+  assigned_to: "1; 2; 2; 2",
   require_superior: true
 }
 
@@ -66,7 +66,7 @@ export const trn_form = {
   employees: '1,2'
 }
 
-export const pobocky = ["prva pobocka", "druha pobocka", "tretia pobocka"]
+export const pobocky = ["prva", "druha", "tretia"]
 
 export const sm_data = [
   {
@@ -173,7 +173,7 @@ export const combinations = [
 }
 ];
 
-export const types = ['A', 'B'];
+export const types = ['type0', 'type1', 'type2'];
 export const branches = [...new Set(combinations.map(c => c.branch))];
 export const divisions = [...new Set(combinations.map(c => c.division))];
 export const departments = [...new Set(combinations.map(c => c.department))];

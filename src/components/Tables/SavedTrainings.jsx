@@ -6,11 +6,13 @@ import SendBtn from "../Buttons/SendBtn";
 import {FormattedDate} from "../Others/Formatter";
 import {fitBtn} from "../../helpers/functions";
 import {CustomAlert} from "../Others/CustomAlert";
-import CaptionElement from "../Others/CaptionElement";
+import TableHeader from "../Others/TableHeader";
+import EditRecordModal from "../Modals/EditRecordModal";
 
-const SavedTrainings = ({setForm, trainings}) => {
+const SavedTrainings = ({trainings}) => {
 
-  const [savedTrainings, setSavedTrainings] = useState(trainings);
+  const [formData, setFormData] = useState()
+  const [savedRec, setSavedRec] = useState(trainings);
   const [notification, setNotification] = useState()
 
   const columns = [{
@@ -30,7 +32,7 @@ const SavedTrainings = ({setForm, trainings}) => {
     dataField: 'editBtn',
     formatter: EditBtn,
     formatExtraData: {
-      setForm: setForm,
+      setFormData: setFormData,
     },
     headerStyle: fitBtn()
   }, {
@@ -38,23 +40,30 @@ const SavedTrainings = ({setForm, trainings}) => {
     formatter: SendBtn,
     formatExtraData: {
       setNotification: setNotification,
-      setSavedRec: setSavedTrainings
+      setSavedRec: setSavedRec
     },
     headerStyle: fitBtn()
   }];
 
   return (
     <>
-      <CaptionElement title="Saved trainings"/>
+      <TableHeader title="Saved trainings"/>
       <BootstrapTable
         keyField="id"
         hover
-        data={savedTrainings}
+        data={savedRec}
         columns={columns}
         noDataIndication={EmptyTable}
       />
       {notification &&
         <CustomAlert notification={notification}/>
+      }
+      {formData &&
+        <EditRecordModal
+          setSavedRec={setSavedRec}
+          formData={formData}
+          setFormData={setFormData}
+        />
       }
     </>
   )

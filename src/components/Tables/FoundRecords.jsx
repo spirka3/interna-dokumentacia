@@ -9,7 +9,7 @@ import {FormattedRelease} from "../Others/Formatter";
 
 const FoundRecords = ({filter, docs, setDocs, combs}) => {
 
-  const [form, setForm] = useState();
+  const [formData, setFormData] = useState();
 
   useEffect(() => {
     if(docs.length > 0 && combs.length > 0) {
@@ -61,7 +61,7 @@ const FoundRecords = ({filter, docs, setDocs, combs}) => {
     text: 'Edit',
     formatter: EditBtn,
     formatExtraData: {
-      setForm: setForm,
+      setForm: setFormData,
     },
     headerStyle: fitBtn()
   }, {
@@ -84,10 +84,10 @@ const FoundRecords = ({filter, docs, setDocs, combs}) => {
         wrapperClasses="table-responsive"
         rowClasses="text-nowrap"
       />
-      {form &&
+      {formData &&
         <EditRecordModal
-          form={form}
-          setForm={setForm}
+          form={formData}
+          setForm={setFormData}
           actual={true}
         />
       }

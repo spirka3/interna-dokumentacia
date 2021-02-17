@@ -1,6 +1,6 @@
 import React from "react";
 import BootstrapTable from "react-bootstrap-table-next";
-import CaptionElement from "../Others/CaptionElement";
+import TableHeader from "../Others/TableHeader";
 import EmptyTable from "./EmptyTable";
 import {orderBy} from "../../helpers/functions";
 import {FormattedDate, FormattedTrainingDate} from "../Others/Formatter";
@@ -25,7 +25,7 @@ const SignedTrainings = ({trainings}) => {
 
   return (
     <>
-      <CaptionElement title="Signed Trainings"/>
+      <TableHeader title="Signed Trainings"/>
       <BootstrapTable
         keyField="id"
         hover

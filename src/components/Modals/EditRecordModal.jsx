@@ -2,23 +2,22 @@ import React from "react";
 import Modal from "react-bootstrap/Modal";
 import DocumentForm from "../Forms/DocumentForm";
 import TrainingForm from "../Forms/TrainingForm";
+import {recordType} from "../../helpers/functions";
 
-const EditRecordModal = ({form, setForm, actual}) => {
+const EditRecordModal = ({setSavedRec, formData, setFormData, actual}) => {
 
-  const closeModal = () => setForm({...form, type: ''});
+  const closeModal = () => setFormData(undefined);
+  const type = recordType(formData)
 
-  if (form.type === ''){
-    return null
-  }
   return (
     <Modal show={true} onHide={closeModal} centered size="lg">
       <Modal.Header closeButton>
-        <Modal.Title>Edit {form.type}</Modal.Title>
+        <Modal.Title>Edit {type}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {form.type === 'document'
-          ? <DocumentForm formData={form.data} actual={actual}/>
-          : <TrainingForm formData={form.data} actual={actual}/>
+        {type === 'document'
+          ? <DocumentForm setSavedRec={setSavedRec} formData={formData} actual={actual}/>
+          : <TrainingForm setSavedRec={setSavedRec} formData={formData} actual={actual}/>
         }
       </Modal.Body>
     </Modal>

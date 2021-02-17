@@ -9,7 +9,7 @@ const Navigation = ({location}) => {
   const admin = isAdmin();
 
   const language = getLanguage()
-  let x = language === 'sk' ? wording.sk : wording.en
+  let x = language === 'sk' ? wording.sk : wording.en // TODO
   x = x.navigation
   console.log(x)
 

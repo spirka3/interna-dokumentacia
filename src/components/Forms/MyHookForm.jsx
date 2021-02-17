@@ -11,7 +11,6 @@ const MyHookForm = ({label, name, placeholder, type, register, as, defaultValue,
           name={name}
           placeholder={placeholder}
           ref={register}
-          defaultValue={defaultValue}
           type={type}
           as={as}
           required={required}

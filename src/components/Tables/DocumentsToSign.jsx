@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import {MissedBtn} from "../Buttons/TableBtns";
-import CaptionElement from "../Others/CaptionElement";
+import TableHeader from "../Others/TableHeader";
 import ConfirmModal from "../Modals/ConfirmModal";
 import EmptyTable from "./EmptyTable";
 import {fitBtn, nonExpandableDocs, orderBy, require_superior, successResponse} from "../../helpers/functions";
@@ -118,7 +118,7 @@ const DocumentsToSign = ({documents, fetchSign}) => {
 
   return (
     <>
-      <CaptionElement title="Documents to sign"/>
+      <TableHeader title="Documents to sign"/>
       <BootstrapTable
         keyField="id"
         hover

@@ -11,16 +11,16 @@ import {
   correctDocumentFormData,
   getSelectOptions,
   prefillDocumentForm,
-  successResponse, getCombinationsNames, prepareCombinations
+  successResponse, getCombinationsNames, prepareCombinations, getFormID
 } from "../../helpers/functions";
 
-const DocumentForm = ({formData, actual}) => {
+const DocumentForm = ({setSavedRec, formData, actual}) => {
+  // formData = doc_form
   const {register, handleSubmit} = useForm({
-    // defaultValues: prefillDocumentForm(doc_form)
     defaultValues: prefillDocumentForm(formData)
   });
-
   const types = t;
+  const [currentID, setCurrentID] = useState(getFormID(formData))
   const [notification, setNotification] = useState()
   const [combinations, setCombinations] = useState([])
   const [assignedTo, setAssignedTo] = useState([])
@@ -36,45 +36,50 @@ const DocumentForm = ({formData, actual}) => {
         const combs = prepareCombinations(res)
         setCombinations(combs)
         const assign = getCombinationsNames(formData, combs)
-        console.log('assign', assign)
         setAssignedTo(assign)
       })
       .catch((e) => console.log(e))
   },[])
 
   const onSubmit = (data, event) => {
-    if (emptyAssign[0] || assignedTo.length === 0){
+    if (assignedTo.length === 0){
       setNotification(badMsg("At least one combination is required"))
       return
     }
 
     data = correctDocumentFormData(data, assignedTo)
-    console.log('FormData', data)
+    console.log('data', data)
     const action = event.target.id
 
     if (action === "save")
-      if (formData) {
-        data = {...data, id: formData.id}
+      if (currentID) {
+        data = {...data, id: currentID}
         upsert(data, 'update')
+        updateSavedRec(data)
       } else {
-        upsert(data, 'create') // TODO ME po uspesnom by sa malo pridat do data id
+        upsert(data, 'create')
+          .then(r => setCurrentID(r.id))
       }
     if (action === "send"){
-      if (formData) {
-        data = {...data, id: formData.id}
+      if (currentID) {
+        data = {...data, id: currentID}
         if (actual) {
           upsertConfirm(data, 'create/confirm')
+            .then(r => setCurrentID(r.id))
         } else {
           upsertConfirm(data, 'update/confirm')
         }
       } else {
         upsertConfirm(data, 'create/confirm')
+          .then(r => setCurrentID(r.id))
       }
+      filterSavedRec(data) // TODO TEST ma to byt aj tu?
+      updateSavedRec(data) // TODO TEST ma to byt aj tu?
     }
   }
 
   const upsert = (data, action) => {
-    fetch(`/document/${action}`, {
+    return fetch(`/document/${action}`, {
       method: "POST",
       body: JSON.stringify(data)
     })
@@ -84,15 +89,13 @@ const DocumentForm = ({formData, actual}) => {
         } else {
           setNotification(badMsg(`${action} failed`))
         }
-        console.log('res', res.body)
         return res.json()
       })
-      .then((r) => console.log('r', r))
       .catch((e) => console.log('error', e))
   }
 
   const upsertConfirm = (data, action) => {
-    fetch(`/document/${action}`, {
+    return fetch(`/document/${action}`, {
       method: "POST",
       body: JSON.stringify(data)
     }).then(res => {
@@ -101,17 +104,29 @@ const DocumentForm = ({formData, actual}) => {
       } else {
         setNotification(badMsg(`${action} failed`))
       }
+      return res.json()
     }).catch((e) => console.log('error', e))
   }
 
-  const getType = () => 'B'
-  // const getType = () => formData ? formData.type : ''
+  const filterSavedRec = (data) => {
+    setSavedRec(prevState => prevState.filter(p => p.id === data.id))
+  }
+
+  const updateSavedRec = (data) => {
+    setSavedRec(prevState => {
+      let update = prevState
+      const foundID = prevState.findIndex(p => p.id === data.id)
+      update[foundID] = data
+      console.log('cur', prevState)
+      return update
+    })
+  }
+
+  const getType = () => formData ? formData.type : ''
 
   return (
-    <Form
-      onChange={()=>setNotification(undefined)}
-
-    >
+    <Form onChange={()=>setNotification(undefined)}>
+      {/* TYPE */}
       <Form.Group as={Row}>
         <Form.Label column sm="3">Type*</Form.Label>
         <Col>
@@ -164,7 +179,6 @@ const DocumentForm = ({formData, actual}) => {
         label="Days to deadline*"
         name="deadline"
         type="date"
-        defaultValue="14"
         register={register({required:true})}
       />
       {/* VERSION */}

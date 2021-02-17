@@ -6,8 +6,6 @@ const SendBtn = (cell, row, index, {setSavedRec, setNotification}) => {
 
   /** Send record to relevant employees */
   const handleClick = () => {
-    console.log('sending', row) // TODO ME record type
-    console.log(`${recordType(row)}/confirm/${row.id}`)
     fetch(`${recordType(row)}/confirm/${row.id}`, {
       method: "GET",
     })

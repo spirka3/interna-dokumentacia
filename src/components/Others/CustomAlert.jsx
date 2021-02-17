@@ -1,5 +1,4 @@
-import {ExclamationTriangle} from 'react-bootstrap-icons';
-import {Alert, Toast} from "react-bootstrap";
+import Alert from "react-bootstrap/Alert";
 import {useEffect, useState} from "react";
 
 export const CustomAlert = ({notification}) => {
@@ -21,18 +20,4 @@ export const CustomAlert = ({notification}) => {
       {/*}*/}
       </>
     )
-    // <Toast
-    //   onClose={() => show = false} show={show}
-    //   // delay={3000} autohide
-    //   style={{
-    //   position: 'absolute',
-    //   top: '5rem',
-    //   right: '1rem',
-    //   backgroundColor: notification.color
-    // }}>
-    //   <Toast.Header>
-    //     <strong className="mr-auto">Notification</strong>
-    //   </Toast.Header>
-    //   <Toast.Body>{notification.body}</Toast.Body>
-    // </Toast>
 }

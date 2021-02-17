@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import EditBtn from "../Buttons/EditBtn";
 import EmptyTable from "./EmptyTable";
@@ -6,11 +6,13 @@ import SendBtn from "../Buttons/SendBtn";
 import {FormattedDeadline, FormattedRelease} from "../Others/Formatter";
 import {fitBtn} from "../../helpers/functions";
 import {CustomAlert} from "../Others/CustomAlert";
-import CaptionElement from "../Others/CaptionElement";
+import TableHeader from "../Others/TableHeader";
+import EditRecordModal from "../Modals/EditRecordModal";
 
-const SavedDocuments = ({setForm, documents}) => {
+const SavedDocuments = ({documents}) => {
 
-  const [savedDocs, setSavedDocs] = useState(documents);
+  const [formData, setFormData] = useState()
+  const [savedRec, setSavedRec] = useState(documents);
   const [notification, setNotification] = useState()
 
   const columns = [{
@@ -31,7 +33,7 @@ const SavedDocuments = ({setForm, documents}) => {
     dataField: 'editBtn',
     formatter: EditBtn,
     formatExtraData: {
-      setForm: setForm,
+      setFormData: setFormData,
     },
     headerStyle: fitBtn()
   }, {
@@ -39,23 +41,30 @@ const SavedDocuments = ({setForm, documents}) => {
     formatter: SendBtn,
     formatExtraData: {
       setNotification: setNotification,
-      setSavedRec: setSavedDocs
+      setSavedRec: setSavedRec
     },
     headerStyle: fitBtn()
   }];
 
   return (
     <>
-      <CaptionElement title="Saved documents"/>
+      <TableHeader title="Saved documents"/>
       <BootstrapTable
         keyField="id"
         hover
-        data={savedDocs}
+        data={savedRec}
         columns={columns}
         noDataIndication={EmptyTable}
       />
       {notification &&
         <CustomAlert notification={notification}/>
+      }
+      {formData &&
+        <EditRecordModal
+          setSavedRec={setSavedRec}
+          formData={formData}
+          setFormData={setFormData}
+        />
       }
     </>
   )

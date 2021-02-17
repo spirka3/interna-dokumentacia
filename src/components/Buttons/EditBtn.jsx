@@ -2,13 +2,10 @@ import React from "react";
 import Button from "react-bootstrap/Button";
 import {recordType} from "../../helpers/functions";
 
-const EditBtn = (cell, row, index, {setForm}) => {
+const EditBtn = (cell, row, index, {setFormData}) => {
 
   const handleClick = () => {
-    setForm({
-      type: recordType(row),
-      data: row
-    })
+    setFormData(row)
   }
 
   return (

@@ -20,7 +20,6 @@ class IdleTimer {
           this.cleanUp();
         }
       }
-      console.log('tic')
     }, 1000);
   }
 

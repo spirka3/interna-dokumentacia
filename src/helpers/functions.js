@@ -49,6 +49,10 @@ export const delay = ms => new Promise(res => setTimeout(res, ms));
 
 
 // Add record forms
+export const getFormID = (formData) => {
+  return formData ? formData.id : 0
+}
+
 export const getSelectOptions = (field) => {
   return <>
         <option hidden value="">Select option ...</option>
@@ -75,7 +79,7 @@ export const prepareCombinations = (combs) => {
   })
 }
 
-export const getCombinationsNames = (formData, combinations) => { // TODO ME
+export const getCombinationsNames = (formData, combinations) => { // FIXME
   if (!formData) return []
   const c = formData.assigned_to.split('&')
   return c.map(e => {

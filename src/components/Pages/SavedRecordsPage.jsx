@@ -1,13 +1,10 @@
-import React, {useState} from 'react';
+import React from 'react';
 import useDataApi from "../../helpers/useDataApi";
 import {FetchError, FetchLoading} from "../Others/FetchComponents";
 import SavedTrainings from "../Tables/SavedTrainings";
 import SavedDocuments from "../Tables/SavedDocuments";
-import EditRecordModal from "../Modals/EditRecordModal";
 
 const SavedRecordsPage = () => {
-
-  const [form, setForm] = useState()
 
   const [documents, isLoaded, error] = useDataApi('/document/edited');
   const [trainings, isLoaded2, error2] = useDataApi('/training/edited');
@@ -26,20 +23,8 @@ const SavedRecordsPage = () => {
 
   return (
     <>
-      <SavedDocuments
-        setForm={setForm}
-        documents={documents}
-      />
-      <SavedTrainings
-        setForm={setForm}
-        trainings={trainings}
-      />
-      {form &&
-        <EditRecordModal
-          form={form}
-          setForm={setForm}
-        />
-      }
+      <SavedDocuments documents={documents}/>
+      <SavedTrainings trainings={trainings}/>
     </>
   );
 };

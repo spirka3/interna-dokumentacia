@@ -1,6 +1,6 @@
 import React from "react";
 
-const CaptionElement = ({title}) => {
+const TableHeader = ({title}) => {
   return (
     <h3 style={{
       borderRadius: '0.25em',
@@ -13,4 +13,4 @@ const CaptionElement = ({title}) => {
   )
 }
 
-export default CaptionElement;
+export default TableHeader;

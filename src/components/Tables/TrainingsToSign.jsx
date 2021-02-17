@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import {MissedBtn} from "../Buttons/TableBtns";
-import CaptionElement from "../Others/CaptionElement";
+import TableHeader from "../Others/TableHeader";
 import ConfirmModal from "../Modals/ConfirmModal";
 import EmptyTable from "./EmptyTable";
 import {FormattedDeadline, FormattedDate} from "../Others/Formatter";
@@ -57,7 +57,7 @@ const TrainingsToSign = ({trainings, fetchSign}) => {
 
   return (
     <>
-      <CaptionElement title="Trainings to sign"/>
+      <TableHeader title="Trainings to sign"/>
       <BootstrapTable
         keyField="id"
         hover
