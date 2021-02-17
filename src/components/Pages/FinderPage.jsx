@@ -45,6 +45,7 @@ const FinderPage = () => {
 
     myFetch("/document/actual")
       .then(actual => {
+        console.log('actual', actual)
         setDocuments(actual)
       })
     myFetch("/combination")

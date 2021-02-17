@@ -12,9 +12,11 @@ import {
   successResponse,
   prefillTrainingForm, getEmployeesNames
 } from "../../helpers/functions";
+import {trn_form} from "../../helpers/data";
 
 const TrainingForm = ({formData, actual}) => {
   const {register, handleSubmit} = useForm({
+    // defaultValues: prefillTrainingForm(trn_form)
     defaultValues: prefillTrainingForm(formData)
   });
 
@@ -102,7 +104,6 @@ const TrainingForm = ({formData, actual}) => {
   return (
     <Form
       onChange={()=>setNotification(undefined)}
-      onSubmit={handleSubmit(onSubmit)}
     >
       {/* NAME */}
       <MyHookForm
@@ -185,7 +186,7 @@ const TrainingForm = ({formData, actual}) => {
         <CustomAlert notification={notification}/>
       }
       {/* SAVE | SEND BUTTONS */}
-      <div className="pt-1 btn-block text-right">
+      <div onClick={handleSubmit(onSubmit)} className="pt-1 btn-block text-right">
         <Button id="save" type="submit" className="mr-1">Save</Button>
         <Button id="send" type="submit" variant="danger">Send</Button>
       </div>

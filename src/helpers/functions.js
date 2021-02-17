@@ -136,7 +136,7 @@ export const correctTrainingFormData = (data, attendees) => {
     ...data,
     date: getDateObject(data.date),
     deadline: getDateObject(data.deadline),
-    employees: attendees.map(a => a.id).join(',')
+    unreleased_id_employees: attendees.map(a => a.id).join(',')
   }
 }
 

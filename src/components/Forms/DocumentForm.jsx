@@ -16,7 +16,8 @@ import {
 
 const DocumentForm = ({formData, actual}) => {
   const {register, handleSubmit} = useForm({
-    defaultValues: prefillDocumentForm(doc_form)
+    // defaultValues: prefillDocumentForm(doc_form)
+    defaultValues: prefillDocumentForm(formData)
   });
 
   const types = t;
