@@ -4,40 +4,50 @@ import MyHookForm from "./MyHookForm";
 import {Form, Row, Col, Button} from "react-bootstrap";
 import Combinations from "../Tables/Combinations";
 import {CustomAlert} from "../Others/CustomAlert";
-import {types as t} from "../../helpers/data";
+import {doc_form, types as t} from "../../helpers/data";
 import {
   badMsg,
   goodMsg,
   correctDocumentFormData,
   getSelectOptions,
   prefillDocumentForm,
-  successResponse, getCombinationsLabels
+  successResponse, getCombinationsNames, prepareCombinations
 } from "../../helpers/functions";
 
 const DocumentForm = ({formData, actual}) => {
   const {register, handleSubmit} = useForm({
-    defaultValues: prefillDocumentForm(formData)
+    defaultValues: prefillDocumentForm(doc_form)
   });
 
-  const [types, setTypes] = useState([]);
-  const [notification, setNotification] = useState();
-  const [combinations, setCombinations] = useState(
-    []
-    // getCombinationsLabels(doc_form.assigned_to)
-  );
-  const [emptyCombinations, setEmptyCombinations] = useState([true])
-  useEffect(() => setNotification(undefined), emptyCombinations)
+  const types = t;
+  const [notification, setNotification] = useState()
+  const [combinations, setCombinations] = useState([])
+  const [assignedTo, setAssignedTo] = useState([])
+  const [emptyAssign, setEmptyAssign] = useState([true])
+  useEffect(() => setNotification(undefined), emptyAssign)
+
   useEffect(() => {
-    setTypes(t) // TODO ME array from DB
+    fetch('/combination', {
+      method: "GET",
+    })
+      .then(response => response.json())
+      .then(res => {
+        const combs = prepareCombinations(res)
+        setCombinations(combs)
+        const assign = getCombinationsNames(formData, combs)
+        console.log('assign', assign)
+        setAssignedTo(assign)
+      })
+      .catch((e) => console.log(e))
   },[])
 
   const onSubmit = (data, event) => {
-    if (emptyCombinations[0] || combinations.length === 0){
+    if (emptyAssign[0] || assignedTo.length === 0){
       setNotification(badMsg("At least one combination is required"))
       return
     }
 
-    data = correctDocumentFormData(data, combinations)
+    data = correctDocumentFormData(data, assignedTo)
     console.log('FormData', data)
     const action = event.target.id
 
@@ -73,7 +83,11 @@ const DocumentForm = ({formData, actual}) => {
         } else {
           setNotification(badMsg(`${action} failed`))
         }
-      }).catch((e) => console.log('error', e))
+        console.log('res', res.body)
+        return res.json()
+      })
+      .then((r) => console.log('r', r))
+      .catch((e) => console.log('error', e))
   }
 
   const upsertConfirm = (data, action) => {
@@ -89,12 +103,13 @@ const DocumentForm = ({formData, actual}) => {
     }).catch((e) => console.log('error', e))
   }
 
-  const getType = () => formData ? formData.type : ''
+  const getType = () => 'B'
+  // const getType = () => formData ? formData.type : ''
 
   return (
     <Form
       onChange={()=>setNotification(undefined)}
-      onSubmit={handleSubmit(onSubmit)}
+
     >
       <Form.Group as={Row}>
         <Form.Label column sm="3">Type*</Form.Label>
@@ -177,15 +192,16 @@ const DocumentForm = ({formData, actual}) => {
       {/* COMBINATIONS */}
       <Combinations
         combinations={combinations}
-        setCombinations={setCombinations}
-        setEmptyCombinations={setEmptyCombinations}
+        assignedTo={assignedTo}
+        setAssignedTo={setAssignedTo}
+        setEmptyAssign={setEmptyAssign}
       />
       {/* ALERTS */}
       {notification &&
         <CustomAlert notification={notification}/>
       }
       {/* SAVE | SEND BUTTONS */}
-      <div className="pt-1 btn-block text-right">
+      <div onClick={handleSubmit(onSubmit)} className="pt-1 btn-block text-right">
         <Button id="save" type="submit" className="mr-1">Save</Button>
         <Button id="send" type="submit" variant="danger">{actual ? 'Send as new version' : 'Send'}</Button>
       </div>

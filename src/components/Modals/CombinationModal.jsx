@@ -3,7 +3,7 @@ import {Button, Col, Container, Modal} from "react-bootstrap";
 import CombinationForm from "../Forms/CombinationForm";
 import uuid from 'react-uuid'
 
-const CombinationModal = ({setShowModal, setCombinations, setEmptyCombinations}) => {
+const CombinationModal = ({setShowModal, combinations, setAssignedTo, setEmptyAssign}) => {
 
   const [combination, setCombination] = useState({
     branch: [],
@@ -13,8 +13,8 @@ const CombinationModal = ({setShowModal, setCombinations, setEmptyCombinations})
   });
 
   const add = () => {
-    setEmptyCombinations([false])
-    setCombinations(prevState => {
+    setEmptyAssign([false])
+    setAssignedTo(prevState => {
       return [...prevState, {...combination, id: uuid()}]
     });
   }
@@ -36,6 +36,7 @@ const CombinationModal = ({setShowModal, setCombinations, setEmptyCombinations})
       </Modal.Header>
       <Modal.Body>
         <CombinationForm
+          combinations={combinations}
           combination={combination}
           setCombination={setCombination}
         />

@@ -9,23 +9,23 @@ import {CustomAlert} from "../Others/CustomAlert";
 import CaptionElement from "../Others/CaptionElement";
 
 const SavedTrainings = ({setForm, trainings}) => {
-  console.log('trainings', trainings)
+
   const [savedTrainings, setSavedTrainings] = useState(trainings);
   const [notification, setNotification] = useState()
 
   const columns = [{
     dataField: 'name',
     text: 'Name',
-    sort: true,
+    sort: true
   }, {
-    dataField: 'release_date.Time',
+    dataField: 'date.Time',
     text: 'Release',
-    formatter: FormattedDate,
     sort: true,
+    formatter: FormattedDate
   }, {
     dataField: 'place',
     text: 'Place',
-    sort: true,
+    sort: true
   }, {
     dataField: 'editBtn',
     formatter: EditBtn,

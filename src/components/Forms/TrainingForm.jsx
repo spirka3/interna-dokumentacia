@@ -18,8 +18,8 @@ const TrainingForm = ({formData, actual}) => {
     defaultValues: prefillTrainingForm(formData)
   });
 
-  const [employees, setEmployees] = useState([]);
-  const [notification, setNotification] = useState();
+  const [notification, setNotification] = useState()
+  const [employees, setEmployees] = useState([])
   const [attendees, setAttendees] = useState([])
   const [emptyAttendees, setEmptyAttendees] = useState([true])
   useEffect(() => setNotification(undefined), emptyAttendees)

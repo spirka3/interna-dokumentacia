@@ -8,7 +8,6 @@ import {FetchError, FetchLoading} from "../Others/FetchComponents";
 const SignedRecordsPage = () => {
 
   const URL = `/signed/signatures/${getUser().id}`;
-
   const [data, isLoaded, error] = useDataApi(URL);
 
   if (error) {

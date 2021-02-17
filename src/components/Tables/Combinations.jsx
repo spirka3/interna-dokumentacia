@@ -6,14 +6,12 @@ import EmptyTable from "./EmptyTable";
 import Button from "react-bootstrap/Button";
 import {fitBtn} from "../../helpers/functions";
 
-const Combinations = ({combinations, setCombinations, setEmptyCombinations}) => {
+const Combinations = ({combinations, assignedTo, setAssignedTo, setEmptyAssign}) => {
 
   const [showModal, setShowModal] = useState(false)
 
-  console.log('combinations', combinations)
-
   const deleteCombination = (row) => {
-    setCombinations(prevState => {
+    setAssignedTo(prevState => {
      return prevState.filter(c => c.id !== row.id)
     })
   };
@@ -68,7 +66,7 @@ const Combinations = ({combinations, setCombinations, setEmptyCombinations}) => 
     <>
       <BootstrapTable
         keyField="id"
-        data={combinations}
+        data={assignedTo}
         columns={columns}
         bordered={false}
         noDataIndication={EmptyTable}
@@ -79,9 +77,10 @@ const Combinations = ({combinations, setCombinations, setEmptyCombinations}) => 
       <AddIcon/>
       {showModal &&
         <CombinationModal
+          combinations={combinations}
           setShowModal={setShowModal}
-          setCombinations={setCombinations}
-          setEmptyCombinations={setEmptyCombinations}
+          setAssignedTo={setAssignedTo}
+          setEmptyAssign={setEmptyAssign}
         />
       }
     </>

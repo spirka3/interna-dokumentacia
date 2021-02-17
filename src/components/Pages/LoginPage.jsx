@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Redirect} from "react-router";
 import useSessionStorage from "@rooks/use-sessionstorage";
 import LoginForm from "../Forms/LoginForm";
-import {getUser} from "../../helpers/functions";
+import {badMsg, getUser} from "../../helpers/functions";
 
 const LoginPage = () => {
 
@@ -33,7 +33,7 @@ const LoginPage = () => {
     return e.keyCode >= zeroKeycode && e.keyCode <= nineKeycode
   }
 
-  function isValiable(e) {
+  function isValuable(e) {
     return isLetter(e) || isNumber(e)
   }
 
@@ -43,17 +43,14 @@ const LoginPage = () => {
 
   function checkInput() {
     if(cardInput.length === cardInputLength) {
-      console.log(`checking card ${cardInput}`);
       findByCard(cardInput);
-    } else {
-      console.log('emptying input');
     }
     emptyCardInput();
   }
 
   const event = (e) => {
     let engInput = String.fromCharCode(e.keyCode).toLowerCase()
-    if(isValiable(e)) {
+    if(isValuable(e)) {
       cardInput += engInput;
       clearTimeout(t);
       t = cardInputTimeout();
@@ -64,13 +61,6 @@ const LoginPage = () => {
     document.addEventListener('keydown', event)
     return () => document.removeEventListener("keydown", event); // cleanup
   })
-
-  const setLoginError = (body) => {
-    setNotification({
-      variant: 'danger',
-      body: body
-    })
-  }
 
   const setUser = (data) => {
     const user = {
@@ -88,7 +78,7 @@ const LoginPage = () => {
     })
       .then(response => response.json())
       .then(data => { setUser(data) })
-      .catch(() => setLoginError("Wrong login input"))
+      .catch(() => setNotification(badMsg("Wrong login input")))
   }
 
   const findByCard = (input) => {
@@ -98,7 +88,7 @@ const LoginPage = () => {
     })
       .then(response => response.json())
       .then(data => { setUser(data) })
-      .catch(() => setLoginError("Wrong card input"))
+      .catch(() => setNotification(badMsg("Wrong card input")))
   }
 
   if (getUser() !== null)

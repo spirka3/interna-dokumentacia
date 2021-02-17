@@ -1,4 +1,5 @@
 import React from "react";
+import {combinations, departments, divisions} from "./data";
 
 // Tables
 export const recordType = (record) => Object.keys(record).includes('link') ? "document" : "training"
@@ -63,21 +64,45 @@ export const setOf = (array) => {
   return set // array of unique objects by their .value
 }
 
-export const getCombinationsLabels = (assigned_to, combinations) => { // TODO ME
-  const c = combinations.split('&').map(e => e.split(','))
-  console.log(c)
-  // return c
-  return [{
-    branch: [{ value: 'A1', label: 'A1' }],
-    division: [{ value: 'D1', label: 'B2' }],
-    department: [{ value: 'D1', label: 'B2' }],
-    city: [{ value: 'C1', label: 'B2' }],
-  },{
-    branch: [{ value: 'A1', label: 'A1' }],
-    division: [{ value: 'Da1', label: 'B2' }],
-    department: [{ value: 'Da1', label: 'B2' }],
-    city: [{ value: 'C2', label: 'C2'}],
-  }]
+export const prepareCombinations = (combs) => {
+  return combs.map(c => {
+    return {
+      branch: { value: c.branch_id, label: c.branch_name },
+      division: { value: c.division_id, label: c.division_name },
+      department: { value: c.department_id, label: c.department_name },
+      city: { value: c.city_id, label: c.city_name },
+    }
+  })
+}
+
+export const getCombinationsNames = (formData, combinations) => { // TODO ME
+  if (!formData) return []
+  const c = formData.assigned_to.split('&')
+  return c.map(e => {
+    const [b_id, c_id, dep_id, div_id] = e.split('; ')
+    return {
+      branch: [{ value: b_id, label: getBranchName(b_id, combinations) }],
+      division: [{ value: div_id, label: getDivisionName(div_id, combinations) }],
+      department: [{ value: dep_id, label: getDepartmentName(dep_id, combinations) }],
+      city: [{ value: c_id, label: getCityName(c_id, combinations) }]
+    }
+  })
+}
+
+const getBranchName = (id, combinations) => {
+  return combinations.find(c=>''+c.branch.value === id).branch.label
+}
+
+const getDivisionName = (id, combinations) => {
+  return combinations.find(c=>''+c.division.value === id).division.label
+}
+
+const getDepartmentName = (id, combinations) => {
+  return combinations.find(c=>''+c.department.value === id).department.label
+}
+
+const getCityName = (id, combinations) => {
+  return combinations.find(c=>''+c.city.value === id).city.label
 }
 
 export const getEmployeesNames = (attendees, employees) => {
@@ -90,9 +115,6 @@ export const withId = (data) => {
 
 export const prefillDocumentForm = (data) => {
   if (!data) return {}
-  // if (withId(data)) {
-  //   data = {...data, id: data.id}
-  // }
   return {
     ...data,
     release_date: getDateString(data.release_date),
@@ -102,9 +124,6 @@ export const prefillDocumentForm = (data) => {
 
 export const prefillTrainingForm = (data) => {
   if (!data) return {}
-  // if (withId(data)) {
-  //   data = {...data, id: data.id}
-  // }
   return {
     ...data,
     date: getDateString(data.date),

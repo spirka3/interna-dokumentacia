@@ -9,7 +9,7 @@ import {CustomAlert} from "../Others/CustomAlert";
 import CaptionElement from "../Others/CaptionElement";
 
 const SavedDocuments = ({setForm, documents}) => {
-  console.log('documents', documents)
+
   const [savedDocs, setSavedDocs] = useState(documents);
   const [notification, setNotification] = useState()
 

@@ -23,15 +23,11 @@ const SignedDocuments = ({documents}) => {
   }, {
     dataField: 'release_date.Time',
     text: 'Release',
-    // align: 'center',
-    // headerAlign: 'center',
     sort: true,
     formatter: FormattedRelease
   }, {
     dataField: 'signatures[0].e_date.Time',
     text: 'Signed date',
-    // align: 'right',
-    // headerAlign: 'right',
     sort: true,
     formatter: SignedBtn
   }];

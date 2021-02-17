@@ -2,8 +2,8 @@ import React from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import CaptionElement from "../Others/CaptionElement";
 import EmptyTable from "./EmptyTable";
-import {FormattedDate, FormattedTrainingDate} from "../Others/Formatter";
 import {orderBy} from "../../helpers/functions";
+import {FormattedDate, FormattedTrainingDate} from "../Others/Formatter";
 
 const SignedTrainings = ({trainings}) => {
 

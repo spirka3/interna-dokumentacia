@@ -38,7 +38,7 @@ const SettingsPage = () => {
   const onSubmit = (e) => {
     console.log("onSubmit")
 
-    var data = new FormData()
+    const data = new FormData();
     data.append('file', chosenFile)
     let name = document.getElementById("selectDivision").value + Date.now()
     data.append('name', name)

@@ -4,7 +4,7 @@ import Select from "react-select";
 import {setOf} from "../../helpers/functions";
 import {combinations} from "../../helpers/data";
 
-const CombinationForm = ({combination, setCombination}) => {
+const CombinationForm = ({combinations, combination, setCombination}) => {
 
   let combi = combinations
 
