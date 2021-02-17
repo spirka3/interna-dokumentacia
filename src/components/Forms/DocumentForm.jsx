@@ -4,19 +4,18 @@ import MyHookForm from "./MyHookForm";
 import {Form, Row, Col, Button} from "react-bootstrap";
 import Combinations from "../Tables/Combinations";
 import {CustomAlert} from "../Others/CustomAlert";
-import {doc_form, types as t} from "../../helpers/data";
+import {types as t} from "../../helpers/data";
 import {
   badMsg,
   goodMsg,
   correctDocumentFormData,
   getSelectOptions,
   prefillDocumentForm,
-  successResponse, getCombinationsLabels, withId
+  successResponse, getCombinationsLabels
 } from "../../helpers/functions";
 
 const DocumentForm = ({formData, actual}) => {
-  const {register, handleSubmit, errors} = useForm({
-    // defaultValues: prefillDocumentForm(doc_form)
+  const {register, handleSubmit} = useForm({
     defaultValues: prefillDocumentForm(formData)
   });
 
@@ -29,7 +28,7 @@ const DocumentForm = ({formData, actual}) => {
   const [emptyCombinations, setEmptyCombinations] = useState([true])
   useEffect(() => setNotification(undefined), emptyCombinations)
   useEffect(() => {
-    setTypes(t) // TODO array from DB
+    setTypes(t) // TODO ME array from DB
   },[])
 
   const onSubmit = (data, event) => {
@@ -47,15 +46,15 @@ const DocumentForm = ({formData, actual}) => {
         data = {...data, id: formData.id}
         upsert(data, 'update')
       } else {
-        upsert(data, 'create') // TODO po uspesnom by sa malo pridat do data id
+        upsert(data, 'create') // TODO ME po uspesnom by sa malo pridat do data id
       }
     if (action === "send"){
       if (formData) {
         data = {...data, id: formData.id}
         if (actual) {
-          upsertConfirm(data, 'update/confirm')
+          upsertConfirm(data, 'create/confirm')
         } else {
-          upsertConfirm(data, 'confirm')
+          upsertConfirm(data, 'update/confirm')
         }
       } else {
         upsertConfirm(data, 'create/confirm')
@@ -78,7 +77,7 @@ const DocumentForm = ({formData, actual}) => {
   }
 
   const upsertConfirm = (data, action) => {
-    fetch(`/${action}/confirm/`, {
+    fetch(`/document/${action}`, {
       method: "POST",
       body: JSON.stringify(data)
     }).then(res => {
@@ -90,20 +89,22 @@ const DocumentForm = ({formData, actual}) => {
     }).catch((e) => console.log('error', e))
   }
 
+  const getType = () => formData ? formData.type : ''
+
   return (
-    <Form onChange={()=>setNotification(undefined)}>
-      {/*/!* ID *!/*/}
-      {/*<Form.Control*/}
-      {/*  hidden*/}
-      {/*  name="id"*/}
-      {/*  ref={register()}*/}
-      {/*/>*/}
-       {/* TYPE OF DOCUMENT */}
+    <Form
+      onChange={()=>setNotification(undefined)}
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <Form.Group as={Row}>
         <Form.Label column sm="3">Type*</Form.Label>
         <Col>
-          <Form.Control as="select" name="type" ref={register({validate: v => v !== ""})}>
-            <option hidden>Select option ...</option>
+          <Form.Control
+            as="select"
+            name="type"
+            value={getType()}
+            ref={register({validate: v => v !== ""})}
+          >
             {getSelectOptions(types)}
           </Form.Control>
         </Col>
@@ -183,11 +184,8 @@ const DocumentForm = ({formData, actual}) => {
       {notification &&
         <CustomAlert notification={notification}/>
       }
-      {Object.keys(errors).length ?
-        <CustomAlert text={badMsg("Fill all the require fields")}/> : null
-      }
       {/* SAVE | SEND BUTTONS */}
-      <div onClick={handleSubmit(onSubmit)} className="pt-1 btn-block text-right">
+      <div className="pt-1 btn-block text-right">
         <Button id="save" type="submit" className="mr-1">Save</Button>
         <Button id="send" type="submit" variant="danger">{actual ? 'Send as new version' : 'Send'}</Button>
       </div>

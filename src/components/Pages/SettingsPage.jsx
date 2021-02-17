@@ -4,14 +4,6 @@ import {pobocky} from "../../helpers/data";
 
 const SettingsPage = () => {
 
-  // TODO JOZO implement the page
-
-  //vybrat pobocku, z ktorej bol export spraveny
-  //upload export
-  //update DB
-  //upload suboru so zamestnaneckymi kartami, zamestnanci su uz v DB
-  //division == pobocka?
-
   let chosenFile = null
 
   const placeholderOption = () => {

@@ -9,7 +9,7 @@ const ConfirmModal = ({showModal, setShowModal, modalInfo, handleAccept}) => {
     handleAccept();
     closeModal();
   };
-  console.log(modalInfo)
+
   const employeeName = () => modalInfo.employee.first_name + ' ' + modalInfo.employee.last_name
 
   return (

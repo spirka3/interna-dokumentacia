@@ -5,19 +5,17 @@ import {Row, Col, Form, Button} from "react-bootstrap";
 import {Typeahead} from 'react-bootstrap-typeahead'
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import {CustomAlert} from "../Others/CustomAlert";
-import {trn_form, employees as e} from "../../helpers/data";
 import {
   badMsg,
   goodMsg,
   correctTrainingFormData,
   successResponse,
-  prefillTrainingForm
+  prefillTrainingForm, getEmployeesNames
 } from "../../helpers/functions";
 
 const TrainingForm = ({formData, actual}) => {
-  const {register, handleSubmit, errors, reset} = useForm({
-    defaultValues: prefillTrainingForm(trn_form) // TODO ME - prefill employees
-    // defaultValues: prefillDocumentForm(formData)
+  const {register, handleSubmit} = useForm({
+    defaultValues: prefillTrainingForm(formData)
   });
 
   const [employees, setEmployees] = useState([]);
@@ -25,8 +23,17 @@ const TrainingForm = ({formData, actual}) => {
   const [attendees, setAttendees] = useState([])
   const [emptyAttendees, setEmptyAttendees] = useState([true])
   useEffect(() => setNotification(undefined), emptyAttendees)
-  useEffect(()=>{
-    setEmployees(e) // TODO MATO load employees
+
+  useEffect(() => {
+    fetch('/all_employees', {
+      method: "GET",
+    })
+      .then(response => response.json())
+      .then(res => {
+        setEmployees(res)
+        setAttendees(getEmployeesNames(formData.employees, res))
+      })
+      .catch((e) => console.log(e))
   },[])
 
   const onSubmit = (data, event) => {
@@ -38,21 +45,53 @@ const TrainingForm = ({formData, actual}) => {
     data = correctTrainingFormData(data, attendees)
     console.log(data)
     const action = event.target.id
-    // const result = handleDatabase('/training', data, action)
 
-    fetch(`/training/update`, {
+    if (action === "save")
+      if (formData) {
+        data = {...data, id: formData.id}
+        upsert(data, 'update')
+      } else {
+        upsert(data, 'create') // TODO ME po uspesnom by sa malo pridat do data id
+      }
+    if (action === "send"){
+      if (formData) {
+        data = {...data, id: formData.id}
+        if (actual) {
+          upsertConfirm(data, 'create/confirm')
+        } else {
+          upsertConfirm(data, 'update/confirm')
+        }
+      } else {
+        upsertConfirm(data, 'create/confirm')
+      }
+    }
+  }
+
+  const upsert = (data, action) => {
+    fetch(`/training/${action}`, {
       method: "POST",
       body: JSON.stringify(data)
     })
       .then(res => {
         if (successResponse(res)) {
           setNotification(goodMsg(`${action} was successful`))
-          // reset({})
         } else {
           setNotification(badMsg(`${action} failed`))
         }
-      })
-      .catch((e) => console.log('error', e))
+      }).catch((e) => console.log('error', e))
+  }
+
+  const upsertConfirm = (data, action) => {
+    fetch(`/training/${action}`, {
+      method: "POST",
+      body: JSON.stringify(data)
+    }).then(res => {
+      if (successResponse(res)) {
+        setNotification(goodMsg(`${action} was successful`))
+      } else {
+        setNotification(badMsg(`${action} failed`))
+      }
+    }).catch((e) => console.log('error', e))
   }
 
   const addAttendees = (attendee) => {
@@ -61,7 +100,10 @@ const TrainingForm = ({formData, actual}) => {
   }
 
   return (
-    <Form onChange={()=>setNotification(undefined)}>
+    <Form
+      onChange={()=>setNotification(undefined)}
+      onSubmit={handleSubmit(onSubmit)}
+    >
       {/* NAME */}
       <MyHookForm
         label="Training name*"
@@ -129,7 +171,7 @@ const TrainingForm = ({formData, actual}) => {
           <Typeahead
             id="basic-typeahead-single"
             name="employees"
-            labelKey={option => `${option.name} [${option.id}]`}
+            labelKey={e => `${e.first_name} ${e.last_name} [${e.id}]`}
             multiple
             onChange={addAttendees}
             options={employees}
@@ -142,11 +184,8 @@ const TrainingForm = ({formData, actual}) => {
       {notification &&
         <CustomAlert notification={notification}/>
       }
-      {Object.keys(errors).length ?
-        <CustomAlert text={badMsg("Fill all the require fields")}/> : null
-      }
       {/* SAVE | SEND BUTTONS */}
-      <div onClick={handleSubmit(onSubmit)} className="pt-1 btn-block text-right">
+      <div className="pt-1 btn-block text-right">
         <Button id="save" type="submit" className="mr-1">Save</Button>
         <Button id="send" type="submit" variant="danger">Send</Button>
       </div>

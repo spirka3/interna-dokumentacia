@@ -7,10 +7,7 @@ import EditRecordModal from "../Modals/EditRecordModal";
 
 const SavedRecordsPage = () => {
 
-  const [form, setForm] = useState({
-    type: '',
-    data: {}
-  })
+  const [form, setForm] = useState()
 
   const [documents, isLoaded, error] = useDataApi('/document/edited');
   const [trainings, isLoaded2, error2] = useDataApi('/training/edited');

@@ -109,8 +109,11 @@ const CombinationForm = ({combination, setCombination}) => {
   return (
     <Col>
       <Select isMulti={true} placeholder="Branches" options={branches} onChange={handleBranch}/>
+      <br/>
       <Select isMulti={true} placeholder="Divisions" options={divisions} onChange={handleDivision}/>
+      <br/>
       <Select isMulti={true} placeholder="Departments" options={departments} onChange={handleDepartment}/>
+      <br/>
       <Select isMulti={true} placeholder="Cities" options={cities} onChange={handleCity}/>
     </Col>
   )

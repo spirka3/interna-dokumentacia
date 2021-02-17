@@ -51,7 +51,7 @@ export const delay = ms => new Promise(res => setTimeout(res, ms));
 export const getSelectOptions = (field) => {
   return <>
         <option hidden value="">Select option ...</option>
-        { field.map(value => <option>{value}</option>) }
+        { field.map(value => <option value={value}>{value}</option>) }
       </>
 }
 
@@ -63,7 +63,7 @@ export const setOf = (array) => {
   return set // array of unique objects by their .value
 }
 
-export const getCombinationsLabels = (combinations) => { // TODO ME
+export const getCombinationsLabels = (assigned_to, combinations) => { // TODO ME
   const c = combinations.split('&').map(e => e.split(','))
   console.log(c)
   // return c
@@ -78,6 +78,10 @@ export const getCombinationsLabels = (combinations) => { // TODO ME
     department: [{ value: 'Da1', label: 'B2' }],
     city: [{ value: 'C2', label: 'C2'}],
   }]
+}
+
+export const getEmployeesNames = (attendees, employees) => {
+  return attendees.split(',').map(a => employees.find(e => ''+e.id === a))
 }
 
 export const withId = (data) => {

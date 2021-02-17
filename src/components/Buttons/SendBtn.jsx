@@ -1,13 +1,14 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
-import {badMsg, goodMsg, successResponse} from "../../helpers/functions";
+import {badMsg, goodMsg, recordType, successResponse} from "../../helpers/functions";
 
 const SendBtn = (cell, row, index, {setSavedRec, setNotification}) => {
 
   /** Send record to relevant employees */
   const handleClick = () => {
-    console.log('sending', row)
-    fetch(`/confirm/${row.id}`, {
+    console.log('sending', row) // TODO ME record type
+    console.log(`${recordType(row)}/confirm/${row.id}`)
+    fetch(`${recordType(row)}/confirm/${row.id}`, {
       method: "GET",
     })
       .then(res => {
