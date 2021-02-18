@@ -61,7 +61,7 @@ const FoundRecords = ({filter, docs, setDocs, combs}) => {
     text: 'Edit',
     formatter: EditBtn,
     formatExtraData: {
-      setForm: setFormData,
+      setFormData: setFormData,
     },
     headerStyle: fitBtn()
   }, {
@@ -86,8 +86,9 @@ const FoundRecords = ({filter, docs, setDocs, combs}) => {
       />
       {formData &&
         <EditRecordModal
-          form={formData}
-          setForm={setFormData}
+          setSavedRec={setDocs}
+          formData={formData}
+          setFormData={setFormData}
           actual={true}
         />
       }

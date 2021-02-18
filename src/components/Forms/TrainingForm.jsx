@@ -14,7 +14,7 @@ import {
 } from "../../helpers/functions";
 import {trn_form} from "../../helpers/data";
 
-const TrainingForm = ({setSavedRec, formData, actual}) => {
+const TrainingForm = ({setSavedRec, formData, setFormData, actual}) => {
   // formData = trn_form
   const {register, handleSubmit} = useForm({
     defaultValues: prefillTrainingForm(formData)
@@ -71,8 +71,8 @@ const TrainingForm = ({setSavedRec, formData, actual}) => {
         upsertConfirm(data, 'create/confirm')
           .then(r => setCurrentID(r.id))
       }
-      filterSavedRec(data) // TODO TEST ma to byt aj tu?
-      updateSavedRec(data) // TODO TEST ma to byt aj tu?
+      filterSavedRec(data)
+      if (setFormData) setFormData(undefined) // hide modal
     }
   }
 
@@ -106,7 +106,7 @@ const TrainingForm = ({setSavedRec, formData, actual}) => {
   }
 
   const filterSavedRec = (data) => {
-    setSavedRec(prevState => prevState.filter(p => p.id === data.id))
+    setSavedRec(prevState => prevState.filter(p => p.id !== data.id))
   }
 
   const updateSavedRec = (data) => {
@@ -114,7 +114,6 @@ const TrainingForm = ({setSavedRec, formData, actual}) => {
       let update = prevState
       const foundID = prevState.findIndex(p => p.id === data.id)
       update[foundID] = data
-      console.log('cur', prevState)
       return update
     })
   }

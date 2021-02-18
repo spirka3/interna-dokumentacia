@@ -16,8 +16,18 @@ const EditRecordModal = ({setSavedRec, formData, setFormData, actual}) => {
       </Modal.Header>
       <Modal.Body>
         {type === 'document'
-          ? <DocumentForm setSavedRec={setSavedRec} formData={formData} actual={actual}/>
-          : <TrainingForm setSavedRec={setSavedRec} formData={formData} actual={actual}/>
+          ? <DocumentForm
+            setSavedRec={setSavedRec}
+            formData={formData}
+            setFormData={setFormData}
+            actual={actual}
+          />
+          : <TrainingForm
+            setSavedRec={setSavedRec}
+            formData={formData}
+            setFormData={setFormData}
+            actual={actual}
+          />
         }
       </Modal.Body>
     </Modal>

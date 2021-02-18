@@ -14,7 +14,7 @@ import {
   successResponse, getCombinationsNames, prepareCombinations, getFormID
 } from "../../helpers/functions";
 
-const DocumentForm = ({setSavedRec, formData, actual}) => {
+const DocumentForm = ({setSavedRec, formData, setFormData, actual}) => {
   // formData = doc_form
   const {register, handleSubmit} = useForm({
     defaultValues: prefillDocumentForm(formData)
@@ -65,7 +65,10 @@ const DocumentForm = ({setSavedRec, formData, actual}) => {
         data = {...data, id: currentID}
         if (actual) {
           upsertConfirm(data, 'create/confirm')
-            .then(r => setCurrentID(r.id))
+            .then(r => {
+              console.log(r)
+              setCurrentID(r.id)
+            })
         } else {
           upsertConfirm(data, 'update/confirm')
         }
@@ -73,8 +76,8 @@ const DocumentForm = ({setSavedRec, formData, actual}) => {
         upsertConfirm(data, 'create/confirm')
           .then(r => setCurrentID(r.id))
       }
-      filterSavedRec(data) // TODO TEST ma to byt aj tu?
-      updateSavedRec(data) // TODO TEST ma to byt aj tu?
+      filterSavedRec(data)
+      if (setFormData) setFormData(undefined) // hide modal
     }
   }
 
@@ -104,12 +107,14 @@ const DocumentForm = ({setSavedRec, formData, actual}) => {
       } else {
         setNotification(badMsg(`${action} failed`))
       }
+      console.log(res)
+      console.log(res.json())
       return res.json()
     }).catch((e) => console.log('error', e))
   }
 
   const filterSavedRec = (data) => {
-    setSavedRec(prevState => prevState.filter(p => p.id === data.id))
+    setSavedRec(prevState => prevState.filter(p => p.id !== data.id))
   }
 
   const updateSavedRec = (data) => {
@@ -117,7 +122,6 @@ const DocumentForm = ({setSavedRec, formData, actual}) => {
       let update = prevState
       const foundID = prevState.findIndex(p => p.id === data.id)
       update[foundID] = data
-      console.log('cur', prevState)
       return update
     })
   }
