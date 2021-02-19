@@ -20,6 +20,8 @@ const TrainingForm = ({setSavedRec, formData, setFormData, actual}) => {
     defaultValues: prefillTrainingForm(formData)
   });
 
+  const [action, setAction] = useState();
+
   const [currentID, setCurrentID] = useState(getFormID(formData))
   const [notification, setNotification] = useState()
   const [employees, setEmployees] = useState([])
@@ -34,12 +36,12 @@ const TrainingForm = ({setSavedRec, formData, setFormData, actual}) => {
       .then(response => response.json())
       .then(res => {
         setEmployees(res)
-        setAttendees(getEmployeesNames(formData.employees, res))
+        setAttendees(getEmployeesNames(formData, res))
       })
       .catch((e) => console.log(e))
   },[])
 
-  const onSubmit = (data, event) => {
+  const onSubmit = (data) => {
     if (attendees.length === 0){
       setNotification(badMsg("At least one employee is required"))
       return
@@ -47,7 +49,6 @@ const TrainingForm = ({setSavedRec, formData, setFormData, actual}) => {
 
     data = correctTrainingFormData(data, attendees)
     console.log(data)
-    const action = event.target.id
 
     if (action === "save")
       if (currentID) {
@@ -71,8 +72,6 @@ const TrainingForm = ({setSavedRec, formData, setFormData, actual}) => {
         upsertConfirm(data, 'create/confirm')
           .then(r => setCurrentID(r.id))
       }
-      filterSavedRec(data)
-      if (setFormData) setFormData(undefined) // hide modal
     }
   }
 
@@ -98,6 +97,8 @@ const TrainingForm = ({setSavedRec, formData, setFormData, actual}) => {
     }).then(res => {
       if (successResponse(res)) {
         setNotification(goodMsg(`${action} was successful`))
+        if (setSavedRec) filterSavedRec(data)   // update table data
+        if (setFormData) setFormData(undefined) // hide modal
       } else {
         setNotification(badMsg(`${action} failed`))
       }
@@ -126,13 +127,15 @@ const TrainingForm = ({setSavedRec, formData, setFormData, actual}) => {
   return (
     <Form
       onChange={()=>setNotification(undefined)}
+      onSubmit={handleSubmit(onSubmit)}
     >
       {/* NAME */}
       <MyHookForm
         label="Training name*"
         name="name"
         placeholder="Enter document name"
-        register={register({required:true})}
+        register={register}
+        required
       />
       {/* TRAINEE */}
       <MyHookForm
@@ -161,7 +164,8 @@ const TrainingForm = ({setSavedRec, formData, setFormData, actual}) => {
         name="date"
         type="date"
         placeholder="Enter date"
-        register={register({required:true})}
+        register={register}
+        required
       />
       {/* DEADLINE */}
       <MyHookForm
@@ -169,7 +173,8 @@ const TrainingForm = ({setSavedRec, formData, setFormData, actual}) => {
         name="deadline"
         type="date"
         defaultValue="14"
-        register={register({required:true})}
+        register={register}
+        required
       />
       {/* DURATION */}
       <MyHookForm
@@ -185,7 +190,8 @@ const TrainingForm = ({setSavedRec, formData, setFormData, actual}) => {
         name="agenda"
         as="textarea"
         placeholder="Enter agenda"
-        register={register({required:true})}
+        register={register}
+        required
       />
       {/* LIST OF EMPLOYEES */}
       <Form.Group as={Row}>
@@ -208,9 +214,19 @@ const TrainingForm = ({setSavedRec, formData, setFormData, actual}) => {
         <CustomAlert notification={notification}/>
       }
       {/* SAVE | SEND BUTTONS */}
-      <div onClick={handleSubmit(onSubmit)} className="pt-1 btn-block text-right">
-        <Button id="save" type="submit" className="mr-1">Save</Button>
-        <Button id="send" type="submit" variant="danger">Send</Button>
+      <div className="pt-1 btn-block text-right">
+        <Button
+          type="submit" className="mr-1"
+          onClick={()=>setAction('save')}
+        >
+          Save
+        </Button>
+        <Button
+          type="submit" variant="danger"
+          onClick={()=>setAction('send')}
+        >
+          Send
+        </Button>
       </div>
     </Form>
   )

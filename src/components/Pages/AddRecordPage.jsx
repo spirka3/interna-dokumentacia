@@ -19,10 +19,10 @@ const AddRecordPage = () => {
         <Button id="document" className={active("document")}>Document</Button>
         <Button id="training" className={active("training")}>Online training</Button>
       </ButtonGroup>
-      {formType === 'document' && // if
+      {formType === 'document' &&
         <DocumentForm/>
       }
-      {formType === 'training' && // elif
+      {formType === 'training' &&
         <TrainingForm/>
       }
     </Container>

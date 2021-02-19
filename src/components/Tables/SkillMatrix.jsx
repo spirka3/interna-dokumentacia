@@ -5,7 +5,7 @@ import {sm_data, employees} from "../../helpers/data";
 import ToggleBtn from "../Buttons/ToggleBtn";
 import ConfirmModal from "../Modals/ConfirmModal";
 import {Legend, RowButtons} from "../Others/SkillMatrixComponents";
-import {fitBtn} from "../../helpers/functions";
+import {buttonColumn} from "../../helpers/functions";
 import {DocumentLabel, FormattedEmployee} from "../Others/Formatter";
 
 const SkillMatrix = () => {
@@ -29,11 +29,9 @@ const SkillMatrix = () => {
 
     let counter = 0;
 
-  // TODO MATO load inferior employees
     employees.forEach(e => {
       columns.push({
-        dataField: e.id,
-        text: e.name,
+        ...buttonColumn(e.id, e.name),
         formatter: ToggleBtn,
         headerFormatter: FormattedEmployee,
         headerTitle: (col, row) => employees[row-1].job,
@@ -41,8 +39,7 @@ const SkillMatrix = () => {
           data: data,
           setData: setData,
           id: (counter++ % employees.length)
-        },
-        headerStyle: fitBtn()
+        }
       })
     })
 
@@ -50,7 +47,6 @@ const SkillMatrix = () => {
   }
 
   function loadDocuments() {
-    // TODO MATO load documents
     return sm_data
   }
 
@@ -112,9 +108,9 @@ const SkillMatrix = () => {
         showLegend={showLegend}
         setShowLegend={setShowLegend}
       />
-      {/*{showLegend &&*/}
+      {showLegend &&
         <Legend/>
-      {/*}*/}
+      }
       {showModal &&
         <ConfirmModal
           showModal={showModal}
@@ -124,7 +120,7 @@ const SkillMatrix = () => {
         />
       }
     </>
-  );
-};
+  )
+}
 
-export default SkillMatrix;
+export default SkillMatrix

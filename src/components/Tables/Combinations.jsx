@@ -4,7 +4,7 @@ import {PlusSquare, XSquare} from 'react-bootstrap-icons';
 import CombinationModal from "../Modals/CombinationModal";
 import EmptyTable from "./EmptyTable";
 import Button from "react-bootstrap/Button";
-import {fitBtn} from "../../helpers/functions";
+import {buttonColumn} from "../../helpers/functions";
 
 const Combinations = ({combinations, assignedTo, setAssignedTo, setEmptyAssign}) => {
 
@@ -56,10 +56,8 @@ const Combinations = ({combinations, assignedTo, setAssignedTo, setEmptyAssign})
     text: 'City',
     formatter: City
   }, {
-    dataField: '',
-    text: '',
-    formatter: DeleteIcon,
-    headerStyle: fitBtn()
+    ...buttonColumn(),
+    formatter: DeleteIcon
   }];
 
   return (

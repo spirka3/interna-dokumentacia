@@ -11,13 +11,9 @@ const SavedRecordsPage = () => {
 
   if (error) {
     return <FetchError e={`Error: ${error.message}`} />
-  } else if (!isLoaded || documents === undefined) {
-    return <FetchLoading/>
-  }
-
-  if (error2) {
-    return <FetchError e={`Error2: ${error2.message}`} />
-  } else if (!isLoaded2 || trainings === undefined) {
+  } else if (error2) {
+    return <FetchError e={`Error: ${error2.message}`} />
+  } else if (!isLoaded || !documents || !isLoaded2 || !trainings) {
     return <FetchLoading/>
   }
 

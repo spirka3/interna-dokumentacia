@@ -1,7 +1,16 @@
 import React from "react";
 import {combinations, departments, divisions} from "./data";
+import uuid from "react-uuid";
 
 // Tables
+export const buttonColumn = (field='',text='') => {
+  return {
+    dataField: field,
+    text: text,
+    headerStyle: { width: '1%'}
+  }
+}
+
 export const recordType = (record) => Object.keys(record).includes('link') ? "document" : "training"
 export const require_superior = (document) => document.require_superior
 export const nonExpandableDocs = (documents) => {
@@ -10,10 +19,6 @@ export const nonExpandableDocs = (documents) => {
         return  doc.id
     }
   )
-}
-
-export const fitBtn = () => {
-  return { width: '1%'}
 }
 
 export const orderBy = (field, order='asc') => {
@@ -56,7 +61,7 @@ export const getFormID = (formData) => {
 export const getSelectOptions = (field) => {
   return <>
         <option hidden value="">Select option ...</option>
-        { field.map(value => <option value={value}>{value}</option>) }
+        { field.map(value => <option value={value} key={uuid()}>{value}</option>) }
       </>
 }
 
@@ -85,6 +90,7 @@ export const getCombinationsNames = (formData, combinations) => { // FIXME
   return c.map(e => {
     const [b_id, c_id, dep_id, div_id] = e.split('; ')
     return {
+      id: uuid(),
       branch: [{ value: b_id, label: getBranchName(b_id, combinations) }],
       division: [{ value: div_id, label: getDivisionName(div_id, combinations) }],
       department: [{ value: dep_id, label: getDepartmentName(dep_id, combinations) }],
@@ -109,12 +115,10 @@ const getCityName = (id, combinations) => {
   return combinations.find(c=>''+c.city.value === id).city.label
 }
 
-export const getEmployeesNames = (attendees, employees) => {
-  return attendees.split(',').map(a => employees.find(e => ''+e.id === a))
-}
-
-export const withId = (data) => {
-  return Object.keys(data).includes('id')
+export const getEmployeesNames = (formData, employees) => {
+  if (!formData) return []
+  return formData.unreleased_id_employees.split(',')
+    .map(a => employees.find(e => ''+e.id === a))
 }
 
 export const prefillDocumentForm = (data) => {

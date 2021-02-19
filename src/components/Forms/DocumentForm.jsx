@@ -13,13 +13,18 @@ import {
   prefillDocumentForm,
   successResponse, getCombinationsNames, prepareCombinations, getFormID
 } from "../../helpers/functions";
+import {upsert} from "../../helpers/recordSubmitingFetches";
 
 const DocumentForm = ({setSavedRec, formData, setFormData, actual}) => {
   // formData = doc_form
   const {register, handleSubmit} = useForm({
     defaultValues: prefillDocumentForm(formData)
   });
+
   const types = t;
+  const [action, setAction] = useState();
+  const [selectedType, setSelectedType] = useState(formData ? formData.type : '')
+
   const [currentID, setCurrentID] = useState(getFormID(formData))
   const [notification, setNotification] = useState()
   const [combinations, setCombinations] = useState([])
@@ -41,7 +46,7 @@ const DocumentForm = ({setSavedRec, formData, setFormData, actual}) => {
       .catch((e) => console.log(e))
   },[])
 
-  const onSubmit = (data, event) => {
+  const onSubmit = (data) => {
     if (assignedTo.length === 0){
       setNotification(badMsg("At least one combination is required"))
       return
@@ -49,7 +54,6 @@ const DocumentForm = ({setSavedRec, formData, setFormData, actual}) => {
 
     data = correctDocumentFormData(data, assignedTo)
     console.log('data', data)
-    const action = event.target.id
 
     if (action === "save")
       if (currentID) {
@@ -58,17 +62,14 @@ const DocumentForm = ({setSavedRec, formData, setFormData, actual}) => {
         updateSavedRec(data)
       } else {
         upsert(data, 'create')
-          .then(r => setCurrentID(r.id))
+          .then(r => setCurrentID(r.id)) // TODO .then len ked success, plati pre vsetky
       }
     if (action === "send"){
       if (currentID) {
         data = {...data, id: currentID}
         if (actual) {
-          upsertConfirm(data, 'create/confirm')
-            .then(r => {
-              console.log(r)
-              setCurrentID(r.id)
-            })
+          upsertConfirm(data, 'create/confirm') // TODO status 500
+            .then(r => setCurrentID(r.id))
         } else {
           upsertConfirm(data, 'update/confirm')
         }
@@ -76,13 +77,11 @@ const DocumentForm = ({setSavedRec, formData, setFormData, actual}) => {
         upsertConfirm(data, 'create/confirm')
           .then(r => setCurrentID(r.id))
       }
-      filterSavedRec(data)
-      if (setFormData) setFormData(undefined) // hide modal
     }
   }
 
   const upsert = (data, action) => {
-    return fetch(`/document/${action}`, {
+    return fetch(`/doument/${action}`, {
       method: "POST",
       body: JSON.stringify(data)
     })
@@ -98,17 +97,19 @@ const DocumentForm = ({setSavedRec, formData, setFormData, actual}) => {
   }
 
   const upsertConfirm = (data, action) => {
+    console.log('JSON', JSON.stringify(data))
     return fetch(`/document/${action}`, {
       method: "POST",
       body: JSON.stringify(data)
     }).then(res => {
       if (successResponse(res)) {
         setNotification(goodMsg(`${action} was successful`))
+        if (setSavedRec) filterSavedRec(data)   // update table data
+        if (setFormData) setFormData(undefined) // hide modal
       } else {
         setNotification(badMsg(`${action} failed`))
       }
       console.log(res)
-      console.log(res.json())
       return res.json()
     }).catch((e) => console.log('error', e))
   }
@@ -126,19 +127,22 @@ const DocumentForm = ({setSavedRec, formData, setFormData, actual}) => {
     })
   }
 
-  const getType = () => formData ? formData.type : ''
-
   return (
-    <Form onChange={()=>setNotification(undefined)}>
+    <Form
+      onChange={()=>setNotification(undefined)}
+      onSubmit={handleSubmit(onSubmit)}
+    >
       {/* TYPE */}
       <Form.Group as={Row}>
         <Form.Label column sm="3">Type*</Form.Label>
         <Col>
           <Form.Control
+            onChange={(e) => setSelectedType(e.target.value)}
             as="select"
             name="type"
-            value={getType()}
             ref={register({validate: v => v !== ""})}
+            required
+            value={selectedType}
           >
             {getSelectOptions(types)}
           </Form.Control>
@@ -161,8 +165,8 @@ const DocumentForm = ({setSavedRec, formData, setFormData, actual}) => {
         label="Document name*"
         name="name"
         placeholder="Enter document name"
-        register={register({required:true})}
-        required={true}
+        register={register}
+        required
       />
       {/* LINK */}
       <MyHookForm
@@ -176,21 +180,24 @@ const DocumentForm = ({setSavedRec, formData, setFormData, actual}) => {
         label="Release date*"
         name="release_date"
         type="date"
-        register={register({required:true})}
+        register={register}
+        required
       />
       {/* DEADLINE */}
       <MyHookForm
         label="Days to deadline*"
         name="deadline"
         type="date"
-        register={register({required:true})}
+        register={register}
+        required
       />
       {/* VERSION */}
       <MyHookForm
         label="Version*"
         name="version"
         placeholder="Enter version"
-        register={register({required:true})}
+        register={register}
+        required
       />
       {/* ORDER NUMBER */}
       <MyHookForm
@@ -198,7 +205,8 @@ const DocumentForm = ({setSavedRec, formData, setFormData, actual}) => {
         name="order_number"
         type="number"
         placeholder="Enter number"
-        register={register({required:true, valueAsNumber: true})}
+        register={register({valueAsNumber: true})}
+        required
       />
       {/* NOTE */}
       <MyHookForm
@@ -220,9 +228,19 @@ const DocumentForm = ({setSavedRec, formData, setFormData, actual}) => {
         <CustomAlert notification={notification}/>
       }
       {/* SAVE | SEND BUTTONS */}
-      <div onClick={handleSubmit(onSubmit)} className="pt-1 btn-block text-right">
-        <Button id="save" type="submit" className="mr-1">Save</Button>
-        <Button id="send" type="submit" variant="danger">{actual ? 'Send as new version' : 'Send'}</Button>
+      <div className="pt-1 btn-block text-right">
+        <Button
+          type="submit" className="mr-1"
+          onClick={()=>setAction('save')}
+        >
+          Save
+        </Button>
+        <Button
+          type="submit" variant="danger"
+          onClick={()=>setAction('send')}
+        >
+          {actual ? 'Send as new version' : 'Send'}
+        </Button>
       </div>
     </Form>
   )

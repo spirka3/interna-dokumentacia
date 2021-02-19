@@ -5,7 +5,7 @@ import Select from 'react-select'
 import {setOf} from "../../helpers/functions";
 import {Typeahead} from "react-bootstrap-typeahead";
 
-const Filter = ({filter, setFilter, combs}) => {
+const Filter = ({filter, setFilter, combs, showSM, setShowSM, documents}) => {
 
   const [combi, setCombi] = useState([])
 
@@ -212,7 +212,15 @@ const Filter = ({filter, setFilter, combs}) => {
         </Col>
 
         <Col className="text-right">
-          <Button type="submit">Search</Button>
+          <Button type="submit" className="mr-1">Search</Button>
+          <Button
+            className="mr-1"
+            disabled={!documents.length}
+            onClick={()=>setShowSM(!showSM)}
+          >
+            {`Show ${showSM ? 'table' : 'skillMatrix'}`}
+          </Button>
+          <Button disabled={!documents.length}>Export</Button>
         </Col>
       </Row>
     </Form>

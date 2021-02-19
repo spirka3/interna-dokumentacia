@@ -19,13 +19,15 @@ export const RowButtons = ({setAction, setModalInfo, setShowModal, handleAccept,
 
   return (
     <Row className="mb-3">
-      {/*<Col className="text-left">*/}
-      {/*  <ButtonGroup className="div-btn" size="sm">*/}
-      {/*    <Button onClick={() => setShowLegend(!showLegend)} size="sm">{showLegend ? 'Hide legend' : 'Show legend'}</Button>*/}
-      {/*  </ButtonGroup>*/}
-      {/*</Col>*/}
+      <Col className="text-left">
+        <ButtonGroup className="div-btn">
+          <Button onClick={() => setShowLegend(!showLegend)}>
+            {showLegend ? 'Hide legend' : 'Show legend'}
+          </Button>
+        </ButtonGroup>
+      </Col>
       <Col className="text-right">
-        <ButtonGroup className="div-btn" size="sm" onClick={handleClick}>
+        <ButtonGroup className="div-btn" onClick={handleClick}>
           <Button id="sign">Sign</Button>
           <Button id="cancelDuty">Cancel duty</Button>
           <Button id="trainAgain">Train again</Button>
@@ -52,8 +54,15 @@ export const Legend = () => {
     return <p><span><Button style={style}>{label}</Button>{` ${text}`}</span></p>
   }
 
+  const cardStyle = {
+    width: '30rem',
+    marginTop: '1rem',
+    fontSize: '.7rem',
+    marginBottom: '.75rem',
+  }
+
   return (
-    <Card style={{ width: '30rem', marginTop: '8rem', fontSize: '.7rem', marginBottom: '.75rem' }}>
+    <Card style={cardStyle}>
       <Card.Body>
         <Card.Subtitle className="mb-3 text-muted">Legend:</Card.Subtitle>
         <Card.Text>
@@ -64,7 +73,6 @@ export const Legend = () => {
           <Badge label="well done" text="Dokument je potvrdený" color="green"/>
           <Badge label="not sent" text="Este neodoslane" color="cornflowerblue"/>
           <p><ExclamationTriangle style={{color: "red", marginBottom: "4px"}}/>{' '}Uplynul deadline a chýbajú podpisy</p>
-          {/* TODO hviezdicka */}
           <p>hviezdička <strong>*</strong> znamena, ze zamestnanec sa opakovane preškoluje</p>
         </Card.Text>
       </Card.Body>

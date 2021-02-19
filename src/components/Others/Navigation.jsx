@@ -2,16 +2,16 @@ import React from 'react';
 import {Navbar, Nav, NavLink} from 'react-bootstrap';
 import {getLanguage, getUser, isAdmin} from "../../helpers/functions";
 import {wording} from "../../helpers/wording";
+import {useLocation} from "react-router";
 
-const Navigation = ({location}) => {
+const Navigation = () => {
 
   const user = getUser();
   const admin = isAdmin();
 
   const language = getLanguage()
-  let x = language === 'sk' ? wording.sk : wording.en // TODO
+  let x = language === 'sk' ? wording.sk : wording.en // TODO !!!
   x = x.navigation
-  console.log(x)
 
   const LoginNav = () => {
     return (
@@ -29,16 +29,12 @@ const Navigation = ({location}) => {
         <NavLink href='/logout'>{x.logout}</NavLink>
       </>
     )
-  };
+  }
 
-  const LogoutNav = () => {
-    return (
-      <NavLink href='/'>{x.login}</NavLink>
-    )
-  };
+  const LogoutNav = () => <NavLink href='/login'>{x.login}</NavLink>
 
   return (
-    <Navbar expand="md" bg="dark" variant="dark" className="sticky-nav">
+    <Navbar expand="md" bg="dark" variant="dark" className="sticky-nav" id="navigation">
       <Navbar.Brand href="#home">
         <img
           alt="logo"
@@ -50,7 +46,7 @@ const Navigation = ({location}) => {
       </Navbar.Brand>
       <Navbar.Toggle/>
       <Navbar.Collapse id="responsive-navbar-nav">
-      <Nav className="ml-auto" variant="pills" activeKey={location.pathname}>
+      <Nav className="ml-auto" variant="pills" activeKey={useLocation().pathname}>
         {user !== null ? <LoginNav/> : <LogoutNav/>}
       </Nav>
       </Navbar.Collapse>

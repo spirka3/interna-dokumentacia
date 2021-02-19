@@ -10,7 +10,9 @@ export const CustomAlert = ({notification}) => {
   //     setVisible(false);
   //   }, 5*1000);
   // }, [notification]);
-  if (notification === undefined) return null
+  if (notification === undefined) {
+    return null
+  }
 
   return (
       <>

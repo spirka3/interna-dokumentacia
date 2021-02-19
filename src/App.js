@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {BrowserRouter as Router, Switch, Route, withRouter} from "react-router-dom";
+import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import {Redirect} from "react-router";
 
 import './App.css';
@@ -15,65 +15,79 @@ import {isAdmin, getUser, removeUser} from "./helpers/functions";
 import Container from "react-bootstrap/Container";
 import IdleTimer from "./helpers/IdleTimer";
 import SavedRecordsPage from "./components/Pages/SavedRecordsPage";
+import Page404 from "./components/Pages/Page404";
+import {TIMEOUT} from "./config/config";
 
 function App() {
 
-  const user = getUser();
-  const admin = isAdmin();
+  const user = getUser()
+  const admin = isAdmin()
 
+  /** Set timer to logout not active user after TIMEOUT expired
+   *  onTimeOut the user will be logout and redirect to /login
+   *  - TIMEOUT can be changed in /config folder */
   useEffect(() => {
     const timer = new IdleTimer({
-      timeout: 60*10, // expire after 10 minutes
+      timeout: TIMEOUT,
       onTimeout: () => {
-        if (user !== null){
+        if (user !== null) {
           removeUser()
-          window.location.reload(false);
+          window.location.reload(false)
         }
       }
-    });
+    })
 
-    return () => {
-      timer.cleanUp();
-    };
-  }, []);
+    return () => {timer.cleanUp()}
+  }, [])
 
+  /** Show the component only when the user is logged in
+   *  Otherwise, redirect the user to login page */
   const Private = ({ component: Component, ...rest }) => {
-    // Show the component only when the user is logged in
-    // Otherwise, redirect the user to login page
     return (
       <>
         {user !== null ? <Route {...rest} render={props => <Component {...props} />} />
-          : <Redirect to="/" />
+          : <Redirect to="/login" />
         }
       </>
     )
   }
 
-  const NavWithRouter = withRouter(Navigation); // get page with location
-
   return (
     <Router>
-        <NavWithRouter/>
-        <Container>
-          <Switch>
-            <Route path='/' exact component={LoginPage} />
-            <Route path='/logout' exact component={LogoutPage} />
-            <Private path="/records-to-sign" component={RecordsToSignPage}/>
-            <Private path="/signed-records" component={SignedRecordsPage} />
-            {admin &&
-              <>
-                <Private path="/add-record" component={AddRecordPage}/>
-                <Private path="/saved-record" component={SavedRecordsPage}/>
-                <Private path="/settings" component={SettingsPage}/>
-              </>
-            }
-          </Switch>
-        </Container>
-        <div className="large-container">
-          {admin && <Private path="/finder" component={FinderPage}/>}
-        </div>
+      <Navigation/>
+      <Container>
+        <Switch>
+          {/* HomeRoute */}
+          <Route exact path="/"
+            render={() => {
+             return ( getUser() !== null
+               ? <Redirect to="/records-to-sign" component={RecordsToSignPage}/>
+               : <Redirect to="/login" component={LoginPage}/>
+             )}}
+          />
+          <Route path='/login' component={LoginPage}/>
+          <Route path='/logout' component={LogoutPage}/>
+          {/* Private Routes */}
+          <Private path="/records-to-sign" component={RecordsToSignPage}/>
+          <Private path="/signed-records" component={SignedRecordsPage}/>
+          {/* Admin Routes */}
+          {admin &&
+            <>
+              <Private path="/add-record" component={AddRecordPage}/>
+              <Private path="/saved-record" component={SavedRecordsPage}/>
+              <Private path="/settings" component={SettingsPage}/>
+            </>
+          }
+          {/* Not matched paths */}
+          <Route path="*" component={Page404}/>
+        </Switch>
+      </Container>
+      <div className="large-container">
+        {/* Routes with larger width then Container */}
+        {admin && <Private path="/finder" component={FinderPage}/>}
+      </div>
     </Router>
-  );
+  )
 }
 
-export default App;
+export default App

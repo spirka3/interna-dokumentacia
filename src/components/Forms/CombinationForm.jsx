@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {Col} from "react-bootstrap";
+import {Col, Modal} from "react-bootstrap";
 import Select from "react-select";
 import {setOf} from "../../helpers/functions";
 import {combinations} from "../../helpers/data";
+import {CustomAlert} from "../Others/CustomAlert";
 
-const CombinationForm = ({combinations, combination, setCombination}) => {
+const CombinationForm = ({combinations, combination, setCombination, notification, setNotification}) => {
 
   let combi = combinations
 
@@ -39,6 +40,7 @@ const CombinationForm = ({combinations, combination, setCombination}) => {
   const commitChanges = (select) => {
     setSelect(select)
     setToggle([!toggle[0]])
+    setNotification(undefined)
   }
 
   const isEmptyFilter = () => {
@@ -107,7 +109,7 @@ const CombinationForm = ({combinations, combination, setCombination}) => {
   function setCity(combs) {setCities(setOf(combs.map(c => c.city)))}
 
   return (
-    <Col>
+    <Col className="p-0">
       <Select isMulti={true} placeholder="Branches" options={branches} onChange={handleBranch}/>
       <br/>
       <Select isMulti={true} placeholder="Divisions" options={divisions} onChange={handleDivision}/>
@@ -115,8 +117,12 @@ const CombinationForm = ({combinations, combination, setCombination}) => {
       <Select isMulti={true} placeholder="Departments" options={departments} onChange={handleDepartment}/>
       <br/>
       <Select isMulti={true} placeholder="Cities" options={cities} onChange={handleCity}/>
+      {/* ALERTS */}
+      {notification &&
+        <CustomAlert notification={notification}/>
+      }
     </Col>
   )
-}
+};
 
 export default CombinationForm;

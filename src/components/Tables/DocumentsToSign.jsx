@@ -4,7 +4,13 @@ import {MissedBtn} from "../Buttons/TableBtns";
 import TableHeader from "../Others/TableHeader";
 import ConfirmModal from "../Modals/ConfirmModal";
 import EmptyTable from "./EmptyTable";
-import {fitBtn, nonExpandableDocs, orderBy, require_superior, successResponse} from "../../helpers/functions";
+import {
+  buttonColumn,
+  nonExpandableDocs,
+  orderBy,
+  require_superior,
+  successResponse
+} from "../../helpers/functions";
 import {FormattedDeadline, FormattedEmployeeDate, FormattedRelease, FullName, NameWithLink} from "../Others/Formatter";
 
 const DocumentsToSign = ({documents, fetchSign}) => {
@@ -67,14 +73,13 @@ const DocumentsToSign = ({documents, fetchSign}) => {
     sort: true,
     formatter: FormattedDeadline
   }, {
-    dataField: 'missedBtn',
+    ...buttonColumn(),
     formatter: MissedBtn,
     formatExtraData: {
       setModalInfo: setModalInfo,
       setShowModal: setShowModal,
       asSuperior: false
     },
-    headerStyle: fitBtn()
   }];
 
   const expandColumns = [{
@@ -92,13 +97,13 @@ const DocumentsToSign = ({documents, fetchSign}) => {
     sort: true,
     formatter: FormattedEmployeeDate
   },{
+    ...buttonColumn(),
     formatter: MissedBtn,
     formatExtraData: {
       setModalInfo: setModalInfo,
       setShowModal: setShowModal,
       asSuperior: true
-    },
-    headerStyle: fitBtn()
+    }
   }];
 
   const expandRow = {

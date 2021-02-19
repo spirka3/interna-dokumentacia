@@ -3,7 +3,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import EditBtn from "../Buttons/EditBtn";
 import EditRecordModal from "../Modals/EditRecordModal";
 import ReportBtn from "../Buttons/ReportBtn";
-import {fitBtn, orderBy} from "../../helpers/functions";
+import {buttonColumn, orderBy} from "../../helpers/functions";
 import EmptyTable from "./EmptyTable";
 import {FormattedRelease} from "../Others/Formatter";
 
@@ -57,18 +57,14 @@ const FoundRecords = ({filter, docs, setDocs, combs}) => {
     dataField: 'state',
     text: 'State'
   }, {
-    dataField: 'edit',
-    text: 'Edit',
+    ...buttonColumn('EditBtn'),
     formatter: EditBtn,
     formatExtraData: {
       setFormData: setFormData,
-    },
-    headerStyle: fitBtn()
+    }
   }, {
-    dataField: 'report',
-    text: 'Report',
-    formatter: ReportBtn,
-    headerStyle: fitBtn()
+    ...buttonColumn('ReportBtn'),
+    formatter: ReportBtn
   }];
 
   return (

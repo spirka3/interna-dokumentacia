@@ -1,22 +1,4 @@
-// JOZO
-- čítačka
-- preloziť web
-- nakodit stránku setting
-- spravit dynamický selector
-
-// PATO
-- spustiť web na serveri
-- spravit triedny diagram
-- spraviť import a export
-- spraviť report pre záznam
-- dopisat a aplikovat testovacie scenáre
-
-// MATO
-- CRUD
-- zamysliet sa nad bezpecnostou
-- tiež otestovať web cez scenáre
-
-
+TODO CHECK
 #03 -> ... nutnosť zadania hesla sa dá zrušiť pre kiosky alebo globálne nastavením premennej v konfiguračnom súbore
            (vyžadované vždy, vyžadované iba on-line, nevyžadované nikdy)
 #05 -> ... administrátor sa môže prepnúť do role ľubovoľného nadriadeného
@@ -33,3 +15,10 @@
 #32
 #34
 #35
+
+TODO MY JOB
+--> DocumentForm.js, foundTable <--
+
+
+Prirucka:
+ 1) Ak zmenim nieco na prazdny string, tak to ponecha stary

@@ -1,10 +1,13 @@
 import React, {useState} from "react";
-import {Button, Col, Container, Modal} from "react-bootstrap";
+import {Button, Col, Container, Form, Modal} from "react-bootstrap";
 import CombinationForm from "../Forms/CombinationForm";
 import uuid from 'react-uuid'
+import {badMsg} from "../../helpers/functions";
+import {CustomAlert} from "../Others/CustomAlert";
 
 const CombinationModal = ({setShowModal, combinations, setAssignedTo, setEmptyAssign}) => {
 
+  const [notification, setNotification] = useState();
   const [combination, setCombination] = useState({
     branch: [],
     city: [],
@@ -12,16 +15,28 @@ const CombinationModal = ({setShowModal, combinations, setAssignedTo, setEmptyAs
     division: []
   });
 
+  const validCombination = () => {
+    return combination.branch.length || combination.city.length || combination.department.length || combination.division.length
+  }
+
   const add = () => {
+    if (!validCombination()) {
+      setNotification(badMsg('not valid combination'))
+      return false
+    }
+    setNotification(undefined)
     setEmptyAssign([false])
     setAssignedTo(prevState => {
       return [...prevState, {...combination, id: uuid()}]
     });
+    return true
   }
 
   const addClose = () => {
-    add()
-    closeModal();
+    const successful = add()
+    if (successful) {
+      closeModal();
+    }
   }
 
   const closeModal = () => {
@@ -39,10 +54,12 @@ const CombinationModal = ({setShowModal, combinations, setAssignedTo, setEmptyAs
           combinations={combinations}
           combination={combination}
           setCombination={setCombination}
+          notification={notification}
+          setNotification={setNotification}
         />
       </Modal.Body>
       <Modal.Footer>
-        <Col className="text-center">
+        <Col className="text-right">
           <Button onClick={add} size="sm" className="mr-2">Add next</Button>
           <Button onClick={addClose} size="sm" className="mr-2">Add and close</Button>
           <Button onClick={closeModal} variant="secondary" size="sm">close</Button>

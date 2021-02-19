@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import EditBtn from "../Buttons/EditBtn";
 import EmptyTable from "./EmptyTable";
 import SendBtn from "../Buttons/SendBtn";
 import {FormattedDeadline, FormattedRelease} from "../Others/Formatter";
-import {fitBtn} from "../../helpers/functions";
+import {buttonColumn} from "../../helpers/functions";
 import {CustomAlert} from "../Others/CustomAlert";
 import TableHeader from "../Others/TableHeader";
 import EditRecordModal from "../Modals/EditRecordModal";
@@ -30,20 +30,18 @@ const SavedDocuments = ({documents}) => {
     sort: true,
     formatter: FormattedDeadline,
   }, {
-    dataField: 'editBtn',
+    ...buttonColumn('EditBtn'),
     formatter: EditBtn,
     formatExtraData: {
       setFormData: setFormData,
-    },
-    headerStyle: fitBtn()
+    }
   }, {
-    dataField: 'sendBtn',
+    ...buttonColumn('SendBtn'),
     formatter: SendBtn,
     formatExtraData: {
       setNotification: setNotification,
       setSavedRec: setSavedRec
-    },
-    headerStyle: fitBtn()
+    }
   }];
 
   return (

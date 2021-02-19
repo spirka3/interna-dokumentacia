@@ -37,7 +37,7 @@ const LoginPage = () => {
     return isLetter(e) || isNumber(e)
   }
 
-  function emptyCardInput() {
+  function resetCardInput() {
     cardInput = '';
   }
 
@@ -45,7 +45,7 @@ const LoginPage = () => {
     if(cardInput.length === cardInputLength) {
       findByCard(cardInput);
     }
-    emptyCardInput();
+    resetCardInput();
   }
 
   const event = (e) => {

@@ -6,7 +6,7 @@ import SkillMatrix from "../Tables/SkillMatrix";
 
 const FinderPage = () => {
 
-  const [toggle, setToggle] = useState(true)
+  const [showSkillMatrix, setShowSkillMatrix] = useState(false)
   const [filter, setFilter] = useState({
     type: [],
     branch: [],
@@ -53,21 +53,28 @@ const FinderPage = () => {
 
   return (
     <div style={{marginTop: '1%'}} className="finder">
-      <Filter filter={filter} setFilter={setFilter} combs={combs} />
-      {toggle
-        ? <FoundRecords
+      <Filter
+        filter={filter}
+        setFilter={setFilter}
+        combs={combs}
+        showSM={showSkillMatrix}
+        setShowSM={setShowSkillMatrix}
+        documents={documents}
+      />
+      {showSkillMatrix
+        ? <SkillMatrix
+            filter={filter}
+          />
+        : <FoundRecords
             filter={filter}
             docs={documents}
             setDocs={setDocuments}
             combs={combs}
           />
-        : <SkillMatrix
-            filter={filter}
-          />
       }
       {/* TODO PATO export */}
-      <Button className="mr-1" size="sm">Export</Button>
-      <Button onClick={()=>setToggle(!toggle)} size="sm">{`Show ${toggle ? 'skillMatrix' : 'table'}`}</Button>
+      {/*<Button className="mr-1" size="sm">Export</Button>*/}
+      {/*<Button onClick={()=>setToggle(!toggle)} size="sm">{`Show ${toggle ? 'skillMatrix' : 'table'}`}</Button>*/}
     </div>
   )
 }

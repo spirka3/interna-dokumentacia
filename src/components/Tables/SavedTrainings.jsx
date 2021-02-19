@@ -4,7 +4,7 @@ import EditBtn from "../Buttons/EditBtn";
 import EmptyTable from "./EmptyTable";
 import SendBtn from "../Buttons/SendBtn";
 import {FormattedDate} from "../Others/Formatter";
-import {fitBtn} from "../../helpers/functions";
+import {buttonColumn} from "../../helpers/functions";
 import {CustomAlert} from "../Others/CustomAlert";
 import TableHeader from "../Others/TableHeader";
 import EditRecordModal from "../Modals/EditRecordModal";
@@ -29,20 +29,18 @@ const SavedTrainings = ({trainings}) => {
     text: 'Place',
     sort: true
   }, {
-    dataField: 'editBtn',
+    ...buttonColumn('EditBtn'),
     formatter: EditBtn,
     formatExtraData: {
       setFormData: setFormData,
-    },
-    headerStyle: fitBtn()
+    }
   }, {
-    dataField: 'sendBtn',
+    ...buttonColumn('SendBtn'),
     formatter: SendBtn,
     formatExtraData: {
       setNotification: setNotification,
       setSavedRec: setSavedRec
-    },
-    headerStyle: fitBtn()
+    }
   }];
 
   return (

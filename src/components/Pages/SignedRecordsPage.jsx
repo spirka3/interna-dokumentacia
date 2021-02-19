@@ -12,7 +12,7 @@ const SignedRecordsPage = () => {
 
   if (error) {
     return <FetchError e={`Error: ${error.message}`}/>
-  } else if (!isLoaded || data === undefined) {
+  } else if (!isLoaded || !data) {
     return <FetchLoading/>
   }
 

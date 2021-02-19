@@ -25,15 +25,16 @@ const RecordsToSignPage = () => {
 
   if (error) {
     return <FetchError e={`Error: ${error.message}`}/>
-  } else if (!isLoaded || data === undefined) {
+  } else if (!isLoaded || !data) {
     return <FetchLoading/>
   }
   return (
     <>
+      {/*<DocumentsToSign {...{documents: data.documents, fetchSign}}/>*/}
       <DocumentsToSign documents={data.documents} fetchSign={fetchSign}/>
       <TrainingsToSign trainings={data.online_trainings} fetchSign={fetchSign}/>
     </>
   )
-};
+}
 
-export default RecordsToSignPage;
+export default RecordsToSignPage

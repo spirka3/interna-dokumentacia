@@ -5,11 +5,11 @@ import TableHeader from "../Others/TableHeader";
 import ConfirmModal from "../Modals/ConfirmModal";
 import EmptyTable from "./EmptyTable";
 import {FormattedDeadline, FormattedDate} from "../Others/Formatter";
-import {fitBtn, orderBy, successResponse} from "../../helpers/functions";
+import {buttonColumn, orderBy, successResponse} from "../../helpers/functions";
 
-const TrainingsToSign = ({trainings, fetchSign}) => {
+const TrainingsToSign = ({trainings: trn, fetchSign}) => {
 
-  const [trns, setTrns] = useState(trainings);
+  const [trainings, setTrainings] = useState(trn);
   const [modalInfo, setModalInfo] = useState([])
   const [showModal, setShowModal] = useState(false)
 
@@ -28,7 +28,7 @@ const TrainingsToSign = ({trainings, fetchSign}) => {
   }
 
   const updateTrainings = (signature_id) => {
-    setTrns(trns.filter(t => t.signatures[0].id !== signature_id))
+    setTrainings(trainings.filter(t => t.signatures[0].id !== signature_id))
   }
 
   const columns = [{
@@ -46,13 +46,12 @@ const TrainingsToSign = ({trainings, fetchSign}) => {
     sort: true,
     formatter: FormattedDeadline
   }, {
-    dataField: 'missedBtn',
+    ...buttonColumn(),
     formatter: MissedBtn,
     formatExtraData: {
       setModalInfo: setModalInfo,
       setShowModal: setShowModal
-    },
-    headerStyle: fitBtn()
+    }
   }];
 
   return (
@@ -61,7 +60,7 @@ const TrainingsToSign = ({trainings, fetchSign}) => {
       <BootstrapTable
         keyField="id"
         hover
-        data={trns}
+        data={trainings}
         columns={columns}
         noDataIndication={EmptyTable}
         defaultSorted={orderBy('deadline.Time')}
