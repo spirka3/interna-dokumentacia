@@ -32,24 +32,21 @@ function App() {
       onTimeout: () => {
         if (user !== null) {
           removeUser()
-          window.location.reload(false)
+          window.location.reload(false) // reload page
         }
       }
     })
 
-    return () => {timer.cleanUp()}
+    return () => { timer.cleanUp() }
   }, [])
 
   /** Show the component only when the user is logged in
    *  Otherwise, redirect the user to login page */
   const Private = ({ component: Component, ...rest }) => {
-    return (
-      <>
-        {user !== null ? <Route {...rest} render={props => <Component {...props} />} />
-          : <Redirect to="/login" />
-        }
-      </>
-    )
+    if (user === null) {
+      return <Redirect to="/login" />
+    }
+    return <Route {...rest} render={props => <Component {...props} />} />
   }
 
   return (
@@ -71,13 +68,11 @@ function App() {
           <Private path="/records-to-sign" component={RecordsToSignPage}/>
           <Private path="/signed-records" component={SignedRecordsPage}/>
           {/* Admin Routes */}
-          {admin &&
-            <>
-              <Private path="/add-record" component={AddRecordPage}/>
-              <Private path="/saved-record" component={SavedRecordsPage}/>
-              <Private path="/settings" component={SettingsPage}/>
-            </>
-          }
+          { admin && <>
+            <Private path="/add-record" component={AddRecordPage}/>
+            <Private path="/saved-record" component={SavedRecordsPage}/>
+            <Private path="/settings" component={SettingsPage}/>
+          </> }
           {/* Not matched paths */}
           <Route path="*" component={Page404}/>
         </Switch>

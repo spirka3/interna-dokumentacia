@@ -13,7 +13,6 @@ import {
   prefillDocumentForm,
   successResponse, getCombinationsNames, prepareCombinations, getFormID
 } from "../../helpers/functions";
-import {upsert} from "../../helpers/recordSubmitingFetches";
 
 const DocumentForm = ({setSavedRec, formData, setFormData, actual}) => {
   // formData = doc_form
@@ -69,7 +68,7 @@ const DocumentForm = ({setSavedRec, formData, setFormData, actual}) => {
         data = {...data, id: currentID}
         if (actual) {
           upsertConfirm(data, 'create/confirm') // TODO status 500
-            .then(r => setCurrentID(r.id))
+          // .then(r => setCurrentID(r.id))
         } else {
           upsertConfirm(data, 'update/confirm')
         }
@@ -81,7 +80,7 @@ const DocumentForm = ({setSavedRec, formData, setFormData, actual}) => {
   }
 
   const upsert = (data, action) => {
-    return fetch(`/doument/${action}`, {
+    return fetch(`/document/${action}`, {
       method: "POST",
       body: JSON.stringify(data)
     })
@@ -97,7 +96,6 @@ const DocumentForm = ({setSavedRec, formData, setFormData, actual}) => {
   }
 
   const upsertConfirm = (data, action) => {
-    console.log('JSON', JSON.stringify(data))
     return fetch(`/document/${action}`, {
       method: "POST",
       body: JSON.stringify(data)
@@ -109,7 +107,6 @@ const DocumentForm = ({setSavedRec, formData, setFormData, actual}) => {
       } else {
         setNotification(badMsg(`${action} failed`))
       }
-      console.log(res)
       return res.json()
     }).catch((e) => console.log('error', e))
   }

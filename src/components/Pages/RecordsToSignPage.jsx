@@ -30,7 +30,6 @@ const RecordsToSignPage = () => {
   }
   return (
     <>
-      {/*<DocumentsToSign {...{documents: data.documents, fetchSign}}/>*/}
       <DocumentsToSign documents={data.documents} fetchSign={fetchSign}/>
       <TrainingsToSign trainings={data.online_trainings} fetchSign={fetchSign}/>
     </>

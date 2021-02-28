@@ -6,9 +6,7 @@ const LogoutPage = () => {
 
   removeUser();
 
-  return (
-    <Redirect to="/"/>
-  )
+  return <Redirect to="/login"/>
 };
 
 export default LogoutPage;

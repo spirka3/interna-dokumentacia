@@ -1,4 +1,4 @@
 
-const minutes = 10 // set timeout in minutes to auto logout not active user
+const minutes = 10 // TODO move to db
 
 export const TIMEOUT = 60 * minutes

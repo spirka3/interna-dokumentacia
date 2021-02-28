@@ -68,7 +68,7 @@ const LoginPage = () => {
       role: data.role
     }
     sessionStorage.setItem('user', JSON.stringify(user))
-    window.location.reload(false);
+    window.location.reload(false) // reloadPage
   }
 
   const onSubmit = (data) => {

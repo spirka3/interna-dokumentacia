@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import BootstrapTable from "react-bootstrap-table-next";
-import {PlusSquare, XSquare} from 'react-bootstrap-icons';
+import {PlusSquare, XSquare, Pencil} from 'react-bootstrap-icons';
 import CombinationModal from "../Modals/CombinationModal";
 import EmptyTable from "./EmptyTable";
 import Button from "react-bootstrap/Button";
@@ -16,10 +16,16 @@ const Combinations = ({combinations, assignedTo, setAssignedTo, setEmptyAssign})
     })
   };
 
+  const editCombination = (row) => {
+    console.log('not implemented')
+  };
+
+  const EditIcon = (cell, row) => {
+    return <Pencil size="25" color="#f3c404f2" onClick={() => editCombination(row)}/>
+  };
+
   const DeleteIcon = (cell, row) => {
-    return (
-      <XSquare size="25" color="red" onClick={() => deleteCombination(row)}/>
-    )
+    return <XSquare size="25" color="red" onClick={() => deleteCombination(row)}/>
   };
 
   const AddIcon = () => {
@@ -56,7 +62,10 @@ const Combinations = ({combinations, assignedTo, setAssignedTo, setEmptyAssign})
     text: 'City',
     formatter: City
   }, {
-    ...buttonColumn(),
+    ...buttonColumn('edit'),
+    formatter: EditIcon
+  }, {
+    ...buttonColumn('del'),
     formatter: DeleteIcon
   }];
 

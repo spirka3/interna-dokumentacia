@@ -21,6 +21,7 @@ export const RowButtons = ({setAction, setModalInfo, setShowModal, handleAccept,
     <Row className="mb-3">
       <Col className="text-left">
         <ButtonGroup className="div-btn">
+          {/* https://react-bootstrap.github.io/components/overlays/ */}
           <Button onClick={() => setShowLegend(!showLegend)}>
             {showLegend ? 'Hide legend' : 'Show legend'}
           </Button>

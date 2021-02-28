@@ -1,18 +1,24 @@
 import React from "react";
-import {combinations, departments, divisions} from "./data";
 import uuid from "react-uuid";
+import {comboFields} from "./data";
 
 // Tables
 export const buttonColumn = (field='',text='') => {
   return {
     dataField: field,
     text: text,
-    headerStyle: { width: '1%'}
+    headerStyle: { width: '1%' }
   }
 }
 
-export const recordType = (record) => Object.keys(record).includes('link') ? "document" : "training"
+export const recordType = (record) => {
+  return Object.keys(record).includes('link')
+    ? "document"
+    : "training"
+}
+
 export const require_superior = (document) => document.require_superior
+
 export const nonExpandableDocs = (documents) => {
   return documents.map(doc => {
       if (!require_superior(doc))
@@ -35,34 +41,29 @@ export const isAdmin = () => getUser() !== null && getUser().role === 'admin'
 
 // Helpers
 export const goodMsg = (body) => {
-  return {
-    variant: 'success',
-    body: body
-  }
+  return { variant: 'success',  body: body }
 }
 
 export const badMsg = (body) => {
-  return {
-    variant: 'danger',
-    body: body
-  }
+  return { variant: 'danger', body: body }
 }
 
-export const successResponse = (response) => 200 <= response.status && response.status <= 299
+export const successResponse = (response) => {
+  return 200 <= response.status && response.status <= 299
+}
+
 export const getLanguage = () => JSON.parse(sessionStorage.getItem('language'))
 export const delay = ms => new Promise(res => setTimeout(res, ms));
 
 
 // Add record forms
-export const getFormID = (formData) => {
-  return formData ? formData.id : 0
-}
+export const getFormID = form => form ? form.id : 0
 
 export const getSelectOptions = (field) => {
   return <>
-        <option hidden value="">Select option ...</option>
-        { field.map(value => <option value={value} key={uuid()}>{value}</option>) }
-      </>
+    <option hidden value="">Select option ...</option>
+    { field.map(value => <option value={value} key={uuid()}>{value}</option>) }
+  </>
 }
 
 export const setOf = (array) => {
@@ -73,46 +74,45 @@ export const setOf = (array) => {
   return set // array of unique objects by their .value
 }
 
+// at least one field is not empty
+export const isValidCombination = combination => {
+  return comboFields.find(field => combination[field].length)
+}
+
 export const prepareCombinations = (combs) => {
   return combs.map(c => {
-    return {
-      branch: { value: c.branch_id, label: c.branch_name },
-      division: { value: c.division_id, label: c.division_name },
-      department: { value: c.department_id, label: c.department_name },
-      city: { value: c.city_id, label: c.city_name },
-    }
+    const combination = {}
+    comboFields.forEach(field => {
+      combination[field] = {
+        value: c[`${field}_id`],
+        label: c[`${field}_name`]
+      }
+    })
+    return combination
   })
 }
 
-export const getCombinationsNames = (formData, combinations) => { // FIXME
+export const getCombinationsNames = (formData, combinations) => {
   if (!formData) return []
-  const c = formData.assigned_to.split('&')
-  return c.map(e => {
-    const [b_id, c_id, dep_id, div_id] = e.split('; ')
-    return {
-      id: uuid(),
-      branch: [{ value: b_id, label: getBranchName(b_id, combinations) }],
-      division: [{ value: div_id, label: getDivisionName(div_id, combinations) }],
-      department: [{ value: dep_id, label: getDepartmentName(dep_id, combinations) }],
-      city: [{ value: c_id, label: getCityName(c_id, combinations) }]
-    }
+  return formData.assigned_to
+    .split('&')
+    .map(e => {
+      const idx = e.split('; ')
+      const combination = { id: uuid() }
+      comboFields.forEach((field, i) => {
+        combination[field] = [{
+          value: idx[i],
+          label: getFieldName(field, idx[i], combinations)
+        }]
+      })
+      return combination
   })
 }
 
-const getBranchName = (id, combinations) => {
-  return combinations.find(c=>''+c.branch.value === id).branch.label
-}
-
-const getDivisionName = (id, combinations) => {
-  return combinations.find(c=>''+c.division.value === id).division.label
-}
-
-const getDepartmentName = (id, combinations) => {
-  return combinations.find(c=>''+c.department.value === id).department.label
-}
-
-const getCityName = (id, combinations) => {
-  return combinations.find(c=>''+c.city.value === id).city.label
+const getFieldName = (field, id, combinations) => {
+  return combinations
+    .find(c => `${c[field].value}` === id)
+    [field].label
 }
 
 export const getEmployeesNames = (formData, employees) => {
@@ -167,51 +167,31 @@ const getDateObject = (date) => {
 const getDateString = (date) => date.Time.substr(0, 10)
 
 const resolveCombinations = (combinations) => {
-  let combs = flatBranch(combinations)
-  combs = flatDivision(combs)
-  combs = flatDepartment(combs)
-  combs = flatCity(combs)
+  let combs = combinations
+  comboFields.forEach(field => {
+    combs = flatField(field, combs)
+  })
   return stringify(combs).join('&')
 }
 
-const flatBranch = (combs) => {
+const flatField = (field, combs) => {
   const res = []
-  combs.forEach(c => { if (!c.branch.length) res.push(c)
-    c.branch.forEach(b => res.push({...c, branch: [b]}))
+  combs.forEach(c => {
+    if (!c[field].length)
+      res.push(c)
+    else
+      c[field].forEach(b => {
+        res.push({
+          ...c,
+          [field]: [b]
+        })
+      })
   })
   return res
 }
 
-const flatDivision = (combs) => {
-  const res = []
-  combs.forEach(c => { if (!c.division.length) res.push(c)
-    c.division.forEach(f => res.push({...c, division: [f]}))
-  })
-  return res
-}
-
-const flatDepartment = (combs) => {
-  const res = []
-  combs.forEach(c => { if (!c.department.length) res.push(c)
-    c.department.forEach(f => res.push({...c, department: [f]}))
-  })
-  return res
-}
-
-const flatCity = (combs) => {
-  const res = []
-  combs.forEach(c => { if (!c.city.length) res.push(c)
-    c.city.forEach(f => res.push({...c, city: [f]}))
-  })
-  return res
-}
-
-const getID = (field) => {
-  return field.length ? field[0].value : 'x'
-}
+const id = field => field.length ? field[0].value : 'x'
 
 const stringify = (combs) => {
-  return combs.map(c => {
-    return `${getID(c.branch)},${getID(c.city)},${getID(c.department)},${getID(c.division)}`
-  })
+  return combs.map(c => `${id(c.branch)}; ${id(c.city)}; ${id(c.department)}; ${id(c.division)}`)
 }

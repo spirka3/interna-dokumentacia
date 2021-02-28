@@ -174,8 +174,6 @@ export const combinations = [
 ];
 
 export const types = ['type0', 'type1', 'type2'];
-export const branches = [...new Set(combinations.map(c => c.branch))];
-export const divisions = [...new Set(combinations.map(c => c.division))];
-export const departments = [...new Set(combinations.map(c => c.department))];
-export const cities = [...new Set(combinations.map(c => c.city))];
+export const comboFields = ['city', 'branch', 'department', 'division']
+
 

@@ -3,7 +3,7 @@ import {ExclamationTriangle} from "react-bootstrap-icons";
 import {employees} from "../../helpers/data";
 
 export const FullName = (_, row) => {
-  if (row.employee === null) {
+  if (!row.employee) {
     return
   }
   return <>{row.employee.first_name} {row.employee.last_name}</>

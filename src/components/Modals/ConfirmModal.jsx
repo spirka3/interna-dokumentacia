@@ -19,7 +19,7 @@ const ConfirmModal = ({showModal, setShowModal, modalInfo, handleAccept}) => {
       </Modal.Header>
       <Modal.Body>
         {modalInfo.asSuperior
-          ? <p>{`D you really want do sign for ${employeeName()}`}</p>
+          ? <p>{`Do you really want do sign for ${employeeName()}`}</p>
           : <p>{`Do you really want do sign the document named ${modalInfo.name}`}</p>
         }
       </Modal.Body>

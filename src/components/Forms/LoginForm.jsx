@@ -8,11 +8,11 @@ const LoginForm = ({onSubmit, language, setLanguage, notification}) => {
   const {register, handleSubmit} = useForm();
 
   const active = id => language === id && 'active'
-  const changeLanguage = (e) => setLanguage(e.target.id)
+  const changeLanguage = e => setLanguage(e.target.id)
 
   return (
     <Container className="login-container">
-      <Form onSubmit={handleSubmit(onSubmit)} className="login-form">
+      <Form onSubmit={handleSubmit(onSubmit)}>
         {/* HEADER */}
         <h3 align="center">Login</h3>
         {/* LANGUAGE BTN */}

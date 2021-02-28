@@ -1,5 +1,4 @@
 import Alert from "react-bootstrap/Alert";
-import {useEffect, useState} from "react";
 
 export const CustomAlert = ({notification}) => {
 
@@ -10,16 +9,10 @@ export const CustomAlert = ({notification}) => {
   //     setVisible(false);
   //   }, 5*1000);
   // }, [notification]);
-  if (notification === undefined) {
+
+  if (!notification) {
     return null
   }
 
-  return (
-      <>
-      {/*{ visible ? */}
-        <Alert variant={notification.variant}>{notification.body}</Alert>
-        {/*: null*/}
-      {/*}*/}
-      </>
-    )
+  return <Alert variant={notification.variant}>{notification.body}</Alert>
 }

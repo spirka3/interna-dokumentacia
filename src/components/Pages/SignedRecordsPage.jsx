@@ -15,7 +15,6 @@ const SignedRecordsPage = () => {
   } else if (!isLoaded || !data) {
     return <FetchLoading/>
   }
-
   return (
     <>
       <SignedDocuments documents={data.documents}/>
