@@ -1,23 +1,19 @@
 import React, {useState} from "react";
-import BootstrapTable from "react-bootstrap-table-next";
-import {MissedBtn} from "../Buttons/TableBtns";
-import TableHeader from "../Others/TableHeader";
 import ConfirmModal from "../Modals/ConfirmModal";
-import EmptyTable from "./EmptyTable";
 import {
-  buttonColumn,
   nonExpandableDocs,
   orderBy,
   require_superior,
   successResponse
 } from "../../helpers/functions";
-import {FormattedDeadline, FormattedEmployeeDate, FormattedRelease, FullName, NameWithLink} from "../Others/Formatter";
+import MyBootstrapTable from "./MyBootstrapTable";
+import {documentsToSignColumns, documentsToSignExpandColumns} from "./columns";
 
-const DocumentsToSign = ({documents, fetchSign}) => {
+// const DocumentsToSign = ({showModal, setShowModal, data, fetchSign, modalInfo, setModalInfo}) => {
+const DocumentsToSign = ({data, fetchSign, modalInfo, setModalInfo}) => {
 
-  const [docs, setDocs] = useState(documents);
+  const [docs, setDocs] = useState(data.documents);
   const [showModal, setShowModal] = useState(false)
-  const [modalInfo, setModalInfo] = useState({})
 
   const handleAccept = () => {
     if (require_superior(modalInfo) === false) {
@@ -57,90 +53,37 @@ const DocumentsToSign = ({documents, fetchSign}) => {
     setDocs(update.filter(d => d.signatures.length));
   }
 
-  const columns = [{
-    dataField: 'name',
-    text: 'Name',
-    sort: true,
-    formatter: NameWithLink
-  }, {
-    dataField: 'release_date.Time',
-    text: 'Release',
-    sort: true,
-    formatter: FormattedRelease
-  }, {
-    dataField: 'deadline.Time',
-    text: 'Deadline',
-    sort: true,
-    formatter: FormattedDeadline
-  }, {
-    ...buttonColumn(),
-    formatter: MissedBtn,
-    formatExtraData: {
-      setModalInfo: setModalInfo,
-      setShowModal: setShowModal,
-      asSuperior: false
-    },
-  }];
-
-  const expandColumns = [{
-    dataField: 'employee.id',
-    text: 'Employee ID',
-    sort: true,
-  }, {
-    dataField: 'employee.last_name',
-    text: 'Full name',
-    sort: true,
-    formatter: FullName
-  }, {
-    dataField: 'e_date.Time',
-    text: 'Sign Date',
-    sort: true,
-    formatter: FormattedEmployeeDate
-  },{
-    ...buttonColumn(),
-    formatter: MissedBtn,
-    formatExtraData: {
-      setModalInfo: setModalInfo,
-      setShowModal: setShowModal,
-      asSuperior: true
-    }
-  }];
+  const columns = documentsToSignColumns(setModalInfo, setShowModal)
+  const expandColumns = documentsToSignExpandColumns(setModalInfo, setShowModal)
 
   const expandRow = {
     onlyOneExpanding: true,
-    nonExpandable: nonExpandableDocs(documents),
+    nonExpandable: nonExpandableDocs(docs),
     renderer: (cell) => (
-      <BootstrapTable
-        keyField="id"
+      <MyBootstrapTable
         classes="inner-table"
-        hover
         data={cell.signatures}
         columns={expandColumns}
-        defaultSorted={orderBy('employee.last_name')}
+        order={orderBy('employee.last_name')}
       />
     )
   };
 
   return (
     <>
-      <TableHeader title="Documents to sign"/>
-      <BootstrapTable
-        keyField="id"
-        hover
+      <MyBootstrapTable
+        title="Documents to sign"
         data={docs}
         columns={columns}
+        order={orderBy('deadline.Time')}
         expandRow={expandRow}
-        defaultSorted={orderBy('deadline.Time')}
-        noDataIndication={EmptyTable}
       />
-      {showModal &&
-        <ConfirmModal
-          showModal={showModal}
-          setShowModal={setShowModal}
-          modalInfo={modalInfo}
-          handleAccept={handleAccept}
-        />
-      }
+      <ConfirmModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        modalInfo={modalInfo}
+        handleAccept={handleAccept}
+      />
     </>
   )
 };

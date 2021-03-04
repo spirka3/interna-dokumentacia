@@ -6,6 +6,7 @@ import {FormattedEmployeeDate} from "../Others/Formatter";
 export const MissedBtn = (cell, row, index, {setModalInfo, setShowModal, asSuperior}) => {
 
   const handleClick = () => {
+    console.log(row)
     if (require_superior(row)) {
       return
     }

@@ -4,10 +4,10 @@ import EditBtn from "../Buttons/EditBtn";
 import EmptyTable from "./EmptyTable";
 import SendBtn from "../Buttons/SendBtn";
 import {FormattedDate} from "../Others/Formatter";
-import {buttonColumn} from "../../helpers/functions";
+import {buttonColumn, orderBy} from "../../helpers/functions";
 import {CustomAlert} from "../Others/CustomAlert";
-import TableHeader from "../Others/TableHeader";
 import EditRecordModal from "../Modals/EditRecordModal";
+import MyBootstrapTable from "./MyBootstrapTable";
 
 const SavedTrainings = ({trainings}) => {
 
@@ -45,13 +45,11 @@ const SavedTrainings = ({trainings}) => {
 
   return (
     <>
-      <TableHeader title="Saved trainings"/>
-      <BootstrapTable
-        keyField="id"
-        hover
+      <MyBootstrapTable
+        title="Saved trainings"
         data={savedRec}
         columns={columns}
-        noDataIndication={EmptyTable}
+        order={orderBy('deadline.Time')} // TODO
       />
       {notification &&
         <CustomAlert notification={notification}/>

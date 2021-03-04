@@ -1,9 +1,7 @@
 import React from "react";
-import BootstrapTable from "react-bootstrap-table-next";
-import TableHeader from "../Others/TableHeader";
-import EmptyTable from "./EmptyTable";
 import {orderBy} from "../../helpers/functions";
 import {FormattedDate, FormattedTrainingDate} from "../Others/Formatter";
+import MyBootstrapTable from "./MyBootstrapTable";
 
 const SignedTrainings = ({trainings}) => {
 
@@ -24,17 +22,12 @@ const SignedTrainings = ({trainings}) => {
   }];
 
   return (
-    <>
-      <TableHeader title="Signed Trainings"/>
-      <BootstrapTable
-        keyField="id"
-        hover
-        data={trainings}
-        columns={columns}
-        noDataIndication={EmptyTable}
-        defaultSorted={orderBy('date.Time', 'desc')}
-      />
-    </>
+    <MyBootstrapTable
+      title="Signed Trainings"
+      data={trainings}
+      columns={columns}
+      order={orderBy('date.Time', 'desc')}
+    />
   )
 }
 

@@ -1,9 +1,7 @@
 import React from "react";
-import BootstrapTable from 'react-bootstrap-table-next';
-import TableHeader from "../Others/TableHeader";
+import MyBootstrapTable from "./MyBootstrapTable";
 import {SignedBtn} from "../Buttons/TableBtns";
 import {nonExpandableDocs, orderBy} from "../../helpers/functions";
-import EmptyTable from "./EmptyTable";
 import {
   FormattedEmployeeDate,
   FormattedRelease,
@@ -57,30 +55,23 @@ const expandColumns = [{
     onlyOneExpanding: true,
     nonExpandable: nonExpandableDocs(documents),
     renderer: (cell) => (
-      <BootstrapTable
-        keyField="id"
+      <MyBootstrapTable
         classes="inner-table"
-        hover
         data={cell.signatures}
         columns={expandColumns}
-        defaultSorted={orderBy('employee.last_name')}
+        order={orderBy('employee.last_name')}
       />
     )
   };
 
   return (
-    <>
-      <TableHeader title="Signed Documents"/>
-      <BootstrapTable
-        keyField="id"
-        hover
-        data={documents}
-        columns={columns}
-        expandRow={expandRow}
-        noDataIndication={EmptyTable}
-        defaultSorted={orderBy('release_date.Time', 'desc')}
-      />
-    </>
+    <MyBootstrapTable
+      title="Signed Documents"
+      data={documents}
+      columns={columns}
+      expandRow={expandRow}
+      order={orderBy('release_date.Time', 'desc')}
+    />
   );
 }
 

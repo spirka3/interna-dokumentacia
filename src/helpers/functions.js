@@ -20,7 +20,10 @@ export const recordType = (record) => {
 export const require_superior = (document) => document.require_superior
 
 export const nonExpandableDocs = (documents) => {
-  return documents.map(doc => !require_superior(doc))
+  return documents.map(doc => {
+      if (!require_superior(doc)) return doc.id
+    }
+  )
 }
 
 export const orderBy = (field, order='asc') => {

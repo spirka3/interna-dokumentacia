@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import DocumentsToSign from "../Tables/DocumentsToSign";
 import TrainingsToSign from "../Tables/TrainingsToSign";
 import {getUser} from "../../helpers/functions";
@@ -23,15 +23,28 @@ const RecordsToSignPage = () => {
   const URL = `/unsigned/signatures/${getUser().id}`;
   const [data, isLoaded, error] = useDataApi(URL);
 
+  const [showModal, setShowModal] = useState(false)
+  const [modalInfo, setModalInfo] = useState([])
+
   if (error) {
     return <FetchError e={`Error: ${error.message}`}/>
   } else if (!isLoaded || !data) {
     return <FetchLoading/>
   }
+
+  const props = {
+    showModal,
+    setShowModal,
+    fetchSign,
+    data,
+    modalInfo,
+    setModalInfo
+  }
+
   return (
     <>
-      <DocumentsToSign documents={data.documents} fetchSign={fetchSign}/>
-      <TrainingsToSign trainings={data.online_trainings} fetchSign={fetchSign}/>
+      <DocumentsToSign {...props} />
+      <TrainingsToSign {...props} />
     </>
   )
 }

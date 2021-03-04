@@ -1,23 +1,19 @@
 import React, {useState} from "react";
-import BootstrapTable from "react-bootstrap-table-next";
-import {MissedBtn} from "../Buttons/TableBtns";
-import TableHeader from "../Others/TableHeader";
+import MyBootstrapTable from "./MyBootstrapTable";
 import ConfirmModal from "../Modals/ConfirmModal";
-import EmptyTable from "./EmptyTable";
-import {FormattedDeadline, FormattedDate} from "../Others/Formatter";
-import {buttonColumn, orderBy, successResponse} from "../../helpers/functions";
+import {orderBy, successResponse} from "../../helpers/functions";
+import {trainingsToSignColumns} from "./columns";
 
-const TrainingsToSign = ({trainings: trn, fetchSign}) => {
+const TrainingsToSign = ({showModal, setShowModal, data, fetchSign, modalInfo, setModalInfo}) => {
 
-  const [trainings, setTrainings] = useState(trn);
-  const [modalInfo, setModalInfo] = useState([])
-  const [showModal, setShowModal] = useState(false)
+  const [trainings, setTrainings] = useState(data.online_trainings);
 
   const handleAccept = () => {
     signAsEmployee(modalInfo.signatures[0].id)
     setShowModal(false);
   }
 
+  // TODO axios
   const signAsEmployee = (signature_id) => {
     fetchSign('/sign/training', signature_id)
       .then(res => {
@@ -31,48 +27,22 @@ const TrainingsToSign = ({trainings: trn, fetchSign}) => {
     setTrainings(trainings.filter(t => t.signatures[0].id !== signature_id))
   }
 
-  const columns = [{
-    dataField: 'name',
-    text: 'Name',
-    sort: true
-  }, {
-    dataField: 'date.Time',
-    text: 'Date',
-    sort: true,
-    formatter: FormattedDate
-  }, {
-    dataField: 'deadline.Time',
-    text: 'Deadline',
-    sort: true,
-    formatter: FormattedDeadline
-  }, {
-    ...buttonColumn(),
-    formatter: MissedBtn,
-    formatExtraData: {
-      setModalInfo: setModalInfo,
-      setShowModal: setShowModal
-    }
-  }];
+  const columns = trainingsToSignColumns(setModalInfo, setShowModal)
 
   return (
     <>
-      <TableHeader title="Trainings to sign"/>
-      <BootstrapTable
-        keyField="id"
-        hover
+      <MyBootstrapTable
+        title="Trainings to sign"
         data={trainings}
         columns={columns}
-        noDataIndication={EmptyTable}
-        defaultSorted={orderBy('deadline.Time')}
+        order={orderBy('deadline.Time')}
       />
-      {showModal &&
-        <ConfirmModal
-          showModal={showModal}
-          setShowModal={setShowModal}
-          modalInfo={modalInfo}
-          handleAccept={handleAccept}
-        />
-      }
+      <ConfirmModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        modalInfo={modalInfo}
+        handleAccept={handleAccept}
+      />
     </>
   )
 }
