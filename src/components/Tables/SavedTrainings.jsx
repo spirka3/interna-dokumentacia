@@ -1,7 +1,5 @@
 import React, {useState} from "react";
-import BootstrapTable from 'react-bootstrap-table-next';
 import EditBtn from "../Buttons/EditBtn";
-import EmptyTable from "./EmptyTable";
 import SendBtn from "../Buttons/SendBtn";
 import {FormattedDate} from "../Others/Formatter";
 import {buttonColumn, orderBy} from "../../helpers/functions";

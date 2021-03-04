@@ -45,10 +45,9 @@ const CombinationModal = ({prefill, combinations, setAssignedTo, setEmptyAssign,
   }
 
   const getEmployees = (assignedTo) => {
-    return fetch('/filter_employees', {
+    return fetch(`/employees${assignedTo}`, {
       mode: 'no-cors',
-      method: "POST",
-      body: assignedTo
+      method: "GET",
     })
       .then(data => {
         console.log(data)

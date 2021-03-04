@@ -72,7 +72,7 @@ const LoginPage = () => {
   }
 
   const onSubmit = (data) => {
-    fetch('/login', {
+    fetch('/auth/login', {
       method: "POST",
       body: new URLSearchParams(`email=${data.email}&password=${data.password}`)
     })
@@ -82,7 +82,7 @@ const LoginPage = () => {
   }
 
   const findByCard = (input) => {
-    fetch('/kiosk', {
+    fetch('/auth/kiosk', {
       method: "POST",
       body: new URLSearchParams(`card=${input}`)
     })

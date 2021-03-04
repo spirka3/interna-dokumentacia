@@ -17,7 +17,7 @@ export const recordType = (record) => {
     : "training"
 }
 
-export const require_superior = (document) => document.require_superior
+export const require_superior = rec => rec.require_superior === true
 
 export const nonExpandableDocs = (documents) => {
   return documents.map(doc => {

@@ -10,7 +10,7 @@ const FinderPage = () => {
 
   const [cs, setCs] = useState([]);
   useEffect(() => {
-    fetch('/combination', {
+    fetch('/combinations', {
       method: "GET",
     })
       .then(response => response.json())
@@ -23,7 +23,7 @@ const FinderPage = () => {
 
   const [e, setE] = useState([]);
   useEffect(() => {
-    fetch('/all_employees', {
+    fetch('/employees/all', {
       method: "GET",
     })
       .then(response => response.json())

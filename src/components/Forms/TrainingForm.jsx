@@ -30,7 +30,7 @@ const TrainingForm = ({setRecords, formData, setFormData, actual}) => {
   useEffect(() => setNotification(undefined), emptyAttendees)
 
   useEffect(() => {
-    fetch('/all_employees', {
+    fetch('/employees/all', {
       method: "GET",
     })
       .then(response => response.json())

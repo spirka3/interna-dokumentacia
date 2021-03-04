@@ -32,7 +32,7 @@ const DocumentForm = ({setRecords, formData, setFormData, actual}) => {
   useEffect(() => setNotification(undefined), emptyAssign)
 
   useEffect(() => {
-    fetch('/combination', {
+    fetch('/combinations', {
       method: "GET",
     })
       .then(response => response.json())
