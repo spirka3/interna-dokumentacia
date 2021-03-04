@@ -10,9 +10,13 @@ export const MissedBtn = (cell, row, index, {setModalInfo, setShowModal, asSuper
     if (require_superior(row)) {
       return
     }
-    setModalInfo({...row, asSuperior: asSuperior});
     setShowModal(true);
+    setModalInfo({
+      ...row,
+      asSuperior: asSuperior
+    });
   }
+
   return (
     <Button onClick={handleClick} size="sm" className="btn-block">
       {require_superior(row) ? 'Details' : 'Sign'}

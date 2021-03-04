@@ -28,7 +28,7 @@ const SignedDocuments = ({documents}) => {
     text: 'Signed date',
     sort: true,
     formatter: SignedBtn
-  }];
+  }]
 
 const expandColumns = [{
     dataField: 'employee.id',
@@ -49,7 +49,7 @@ const expandColumns = [{
     text: 'My Sign',
     sort: true,
     formatter: FormattedSuperiorDate
-  }];
+  }]
 
   const expandRow = {
     onlyOneExpanding: true,
@@ -62,7 +62,7 @@ const expandColumns = [{
         order={orderBy('employee.last_name')}
       />
     )
-  };
+  }
 
   return (
     <MyBootstrapTable
@@ -72,7 +72,7 @@ const expandColumns = [{
       expandRow={expandRow}
       order={orderBy('release_date.Time', 'desc')}
     />
-  );
+  )
 }
 
 export default SignedDocuments;

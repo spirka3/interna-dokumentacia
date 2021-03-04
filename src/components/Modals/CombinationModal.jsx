@@ -26,15 +26,7 @@ const CombinationModal = ({prefill, combinations, setAssignedTo, setEmptyAssign,
     console.log(assignedTo)
 
     // FIX status 500
-    fetch('/filter_employees', {
-      mode: 'no-cors',
-      method: "POST",
-      body: assignedTo
-    })
-      .then(data => {
-        console.log(data)
-      })
-      .catch(() => console.log("Errrrrrrrrrrror"))
+    getEmployees(assignedTo)
 
     setEmployees([
       {value: 'ja', label: 'Ja'},

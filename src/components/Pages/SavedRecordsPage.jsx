@@ -1,26 +1,71 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import MyBootstrapTable from "../Tables/MyBootstrapTable";
+import {savedDocumentsColumns, savedTrainingsColumns} from "../Tables/columns";
 import useDataApi from "../../helpers/useDataApi";
 import {FetchError, FetchLoading} from "../Others/FetchComponents";
-import SavedTrainings from "../Tables/SavedTrainings";
-import SavedDocuments from "../Tables/SavedDocuments";
+import {orderBy, recordType} from "../../helpers/functions";
+import {CustomAlert} from "../Others/CustomAlert";
+import EditRecordModal from "../Modals/EditRecordModal";
 
 const SavedRecordsPage = () => {
 
-  const [documents, isLoaded, error] = useDataApi('/document/edited');
-  const [trainings, isLoaded2, error2] = useDataApi('/training/edited');
+  const [doc_data, isLoaded, error] = useDataApi('/document/edited');
+  const [trn_data, isLoaded2, error2] = useDataApi('/training/edited');
+
+  const [documents, setDocuments] = useState([]);
+  const [trainings, setTrainings] = useState([]);
+
+  const [notification, setNotification] = useState()
+  const [formData, setFormData] = useState()
+
+  useEffect(() => {
+    if (doc_data && trn_data) {
+      setDocuments(doc_data)
+      setTrainings(trn_data)
+    }
+  }, [doc_data, trn_data]);
+
 
   if (error) {
     return <FetchError e={`Error: ${error.message}`} />
   } else if (error2) {
     return <FetchError e={`Error: ${error2.message}`} />
-  } else if (!isLoaded || !documents || !isLoaded2 || !trainings) {
+  } else if (!isLoaded || !doc_data || !isLoaded2 || !trn_data) {
     return <FetchLoading/>
   }
 
+  const trn_columns = savedTrainingsColumns(setFormData, setTrainings, setNotification)
+  const doc_columns = savedDocumentsColumns(setFormData, setDocuments, setNotification)
+
   return (
     <>
-      <SavedDocuments documents={documents}/>
-      <SavedTrainings trainings={trainings}/>
+      {/* DOCUMENTS */}
+      <MyBootstrapTable
+        title="Saved trainings"
+        data={documents}
+        columns={doc_columns}
+        order={orderBy('deadline.Time')}
+      />
+      {/* TRAININGS */}
+      <MyBootstrapTable
+        title="Saved documents"
+        data={trainings}
+        columns={trn_columns}
+        order={orderBy('deadline.Time')}
+      />
+      {notification &&
+        <CustomAlert notification={notification}/>
+      }
+      {formData &&
+        <EditRecordModal
+          setRecords={recordType(formData) === 'document'
+            ? setDocuments
+            : setTrainings
+          }
+          formData={formData}
+          setFormData={setFormData}
+        />
+      }
     </>
   );
 };

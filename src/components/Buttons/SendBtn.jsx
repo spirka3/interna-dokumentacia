@@ -21,7 +21,8 @@ const SendBtn = (cell, row, index, {setSavedRec, setNotification}) => {
   }
 
   const updateSavedRec = () => {
-    setSavedRec(prev => prev.filter(doc => doc.id !== row.id));
+    console.log('okok')
+    setSavedRec(prev => prev.filter(rec => rec.id !== row.id));
   }
 
   return (

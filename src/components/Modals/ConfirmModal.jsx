@@ -10,7 +10,7 @@ const ConfirmModal = ({showModal, setShowModal, modalInfo, handleAccept}) => {
     closeModal();
   };
 
-  const employeeName = () => modalInfo.employee.first_name + ' ' + modalInfo.employee.last_name
+  const employeeName =()=> `${modalInfo.employee.first_name} ${modalInfo.employee.last_name}`
 
   return (
     <Modal show={showModal} onHide={closeModal} centered>

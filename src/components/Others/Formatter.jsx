@@ -33,12 +33,9 @@ export const FormattedTrainingDate = (_, row) => {
 
 export const FormattedEmployeeDate = (_, row) => {
   const date = formatted(row.e_date.Time)
-  if (date === '01.01.0001') {
-    return <>-</> // Employee didn't signed yet
-  }
-  else {
-    return <>{date}</>
-  }
+  if (date === '01.01.0001')
+    return <>-</> // employee didn't signed yet
+  return <>{date}</>
 }
 
 export const NameWithLink = (_, row) => {

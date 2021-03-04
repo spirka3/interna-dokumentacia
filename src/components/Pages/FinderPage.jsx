@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import Filter from "../Others/Filter";
 import FoundRecords from "../Tables/FoundRecords";
 import SkillMatrix from "../Tables/SkillMatrix";
-import {prepareEmployees, myFetch, prepareCombinations, resolveCombinations} from "../../helpers/functions";
+import {prepareEmployees, myFetch, prepareCombinations} from "../../helpers/functions";
 
 const FinderPage = () => {
 

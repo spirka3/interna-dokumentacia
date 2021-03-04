@@ -125,10 +125,7 @@ const DocumentForm = ({setRecords, formData, setFormData, actual}) => {
   }
 
   return (
-    <Form
-      onChange={()=>setNotification(undefined)}
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <Form onChange={()=>setNotification(undefined)} onSubmit={handleSubmit(onSubmit)}>
       {/* TYPE */}
       <Form.Group as={Row}>
         <Form.Label column sm="3">Type*</Form.Label>
@@ -222,21 +219,13 @@ const DocumentForm = ({setRecords, formData, setFormData, actual}) => {
         setEmptyAssign={setEmptyAssign}
       />
       {/* ALERTS */}
-      {notification &&
-        <CustomAlert notification={notification}/>
-      }
+      {notification && <CustomAlert notification={notification}/> }
       {/* SAVE | SEND BUTTONS */}
       <div className="pt-1 btn-block text-right">
-        <Button
-          type="submit" className="mr-1"
-          onClick={()=>setAction('save')}
-        >
+        <Button type="submit" className="mr-1" onClick={()=>setAction('save')}>
           Save
         </Button>
-        <Button
-          type="submit" variant="danger"
-          onClick={()=>setAction('send')}
-        >
+        <Button type="submit" variant="danger" onClick={()=>setAction('send')}>
           {actual ? 'Send as new version' : 'Send'}
         </Button>
       </div>

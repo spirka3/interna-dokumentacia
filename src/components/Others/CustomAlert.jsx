@@ -2,6 +2,7 @@ import Alert from "react-bootstrap/Alert";
 
 export const CustomAlert = ({notification}) => {
 
+  // maybe ?
   // const [visible, setVisible] = useState(true);
   // useEffect(() => {
   //   setVisible(true);

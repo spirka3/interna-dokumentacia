@@ -6,11 +6,13 @@ import {
   FullName,
   NameWithLink
 } from "../Others/Formatter";
-import {buttonColumn} from "../../helpers/functions";
 import {MissedBtn} from "../Buttons/TableBtns";
+import EditBtn from "../Buttons/EditBtn";
+import SendBtn from "../Buttons/SendBtn";
+import {buttonColumn} from "../../helpers/functions";
 
-export const trainingsToSignColumns = (setModalInfo, setShowModal) =>
-  [{
+export const trainingsToSignColumns = (setModalInfo, setShowModal) => [
+  {
     dataField: 'name',
     text: 'Name',
     sort: true
@@ -31,10 +33,11 @@ export const trainingsToSignColumns = (setModalInfo, setShowModal) =>
       setModalInfo: setModalInfo,
       setShowModal: setShowModal
     }
-  }];
+  }
+];
 
-export const documentsToSignColumns = (setModalInfo, setShowModal) =>
-  [{
+export const documentsToSignColumns = (setModalInfo, setShowModal) => [
+  {
     dataField: 'name',
     text: 'Name',
     sort: true,
@@ -57,10 +60,11 @@ export const documentsToSignColumns = (setModalInfo, setShowModal) =>
       setShowModal: setShowModal,
       asSuperior: false
     },
-  }];
+  }
+];
 
-export const documentsToSignExpandColumns = (setModalInfo, setShowModal) =>
-  [{
+export const documentsToSignExpandColumns = (setModalInfo, setShowModal) => [
+  {
     dataField: 'employee.id',
     text: 'Employee ID',
     sort: true,
@@ -82,4 +86,67 @@ export const documentsToSignExpandColumns = (setModalInfo, setShowModal) =>
       setShowModal: setShowModal,
       asSuperior: true
     }
-  }];
+  }
+];
+
+export const savedDocumentsColumns = (setFormData, setSavedRec, setNotification) => [
+  {
+    dataField: 'name',
+    text: 'Name',
+    sort: true
+  }, {
+    dataField: 'release_date.Time',
+    text: 'Release',
+    sort: true,
+    formatter: FormattedRelease,
+  }, {
+    dataField: 'deadline.Time',
+    text: 'Deadline',
+    sort: true,
+    formatter: FormattedDeadline,
+  }, {
+    ...buttonColumn('EditBtn'),
+    formatter: EditBtn,
+    formatExtraData: {
+      setFormData: setFormData,
+    }
+  }, {
+    ...buttonColumn('SendBtn'),
+    formatter: SendBtn,
+    formatExtraData: {
+      setNotification: setNotification,
+      setSavedRec: setSavedRec
+    }
+  }
+];
+
+
+export const savedTrainingsColumns = (setFormData, setSavedRec, setNotification) => [
+  {
+    dataField: 'name',
+    text: 'Name',
+    sort: true
+  }, {
+    dataField: 'date.Time',
+    text: 'Release',
+    sort: true,
+    formatter: FormattedDate
+  }, {
+    dataField: 'place',
+    text: 'Place',
+    sort: true
+  }, {
+    ...buttonColumn('EditBtn'),
+    formatter: EditBtn,
+    formatExtraData: {
+      setFormData: setFormData,
+    }
+  }, {
+    ...buttonColumn('SendBtn'),
+    formatter: SendBtn,
+    formatExtraData: {
+      setNotification: setNotification,
+      setSavedRec: setSavedRec
+    }
+  }
+];
