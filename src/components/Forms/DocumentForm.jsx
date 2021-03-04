@@ -14,7 +14,7 @@ import {
   successResponse, getCombinationsNames, prepareCombinations, getFormID
 } from "../../helpers/functions";
 
-const DocumentForm = ({setSavedRec, formData, setFormData, actual}) => {
+const DocumentForm = ({setRecords, formData, setFormData, actual}) => {
   // formData = doc_form
   const {register, handleSubmit} = useForm({
     defaultValues: prefillDocumentForm(formData)
@@ -102,7 +102,7 @@ const DocumentForm = ({setSavedRec, formData, setFormData, actual}) => {
     }).then(res => {
       if (successResponse(res)) {
         setNotification(goodMsg(`${action} was successful`))
-        if (setSavedRec) filterSavedRec(data)   // update table data
+        if (setRecords) filterSavedRec(data)   // update table data
         if (setFormData) setFormData(undefined) // hide modal
       } else {
         setNotification(badMsg(`${action} failed`))
@@ -112,11 +112,11 @@ const DocumentForm = ({setSavedRec, formData, setFormData, actual}) => {
   }
 
   const filterSavedRec = (data) => {
-    setSavedRec(prevState => prevState.filter(p => p.id !== data.id))
+    setRecords(prevState => prevState.filter(p => p.id !== data.id))
   }
 
   const updateSavedRec = (data) => {
-    setSavedRec(prevState => {
+    setRecords(prevState => {
       let update = prevState
       const foundID = prevState.findIndex(p => p.id === data.id)
       update[foundID] = data
@@ -218,6 +218,7 @@ const DocumentForm = ({setSavedRec, formData, setFormData, actual}) => {
         combinations={combinations}
         assignedTo={assignedTo}
         setAssignedTo={setAssignedTo}
+        emptyAssign={emptyAssign}
         setEmptyAssign={setEmptyAssign}
       />
       {/* ALERTS */}

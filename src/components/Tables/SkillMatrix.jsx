@@ -51,7 +51,7 @@ const SkillMatrix = () => {
   }
 
   function getState(document, state){
-    return state.includes('s') ? 'es' : 'e' // FIXME treba vediet kedy ma aj superior podpisovat
+    return state.includes('s') ? 'es' : 'e' // TODO treba vediet kedy ma aj superior podpisovat
   }
 
   const handleAccept = () => {

@@ -20,11 +20,7 @@ export const recordType = (record) => {
 export const require_superior = (document) => document.require_superior
 
 export const nonExpandableDocs = (documents) => {
-  return documents.map(doc => {
-      if (!require_superior(doc))
-        return  doc.id
-    }
-  )
+  return documents.map(doc => !require_superior(doc))
 }
 
 export const orderBy = (field, order='asc') => {
@@ -92,6 +88,15 @@ export const prepareCombinations = (combs) => {
   })
 }
 
+export const prepareEmployees = (employees) => {
+  return employees.map(e => {
+    return {
+      value: e.id,
+      label: `${e.first_name} ${e.last_name}, [${e.id}]`
+    }
+  })
+}
+
 export const getCombinationsNames = (formData, combinations) => {
   if (!formData) return []
   return formData.assigned_to
@@ -109,16 +114,14 @@ export const getCombinationsNames = (formData, combinations) => {
   })
 }
 
-const getFieldName = (field, id, combinations) => {
-  return combinations
-    .find(c => `${c[field].value}` === id)
-    [field].label
+export const getFieldName = (field, id, combinations) => {
+  return combinations.find(c => `${c[field].value}` === id)[field].label
 }
 
 export const getEmployeesNames = (formData, employees) => {
   if (!formData) return []
   return formData.unreleased_id_employees.split(',')
-    .map(a => employees.find(e => ''+e.id === a))
+    .map(a => employees.find(e => e.id == a))
 }
 
 export const prefillDocumentForm = (data) => {
@@ -166,7 +169,7 @@ const getDateObject = (date) => {
 
 const getDateString = (date) => date.Time.substr(0, 10)
 
-const resolveCombinations = (combinations) => {
+export const resolveCombinations = (combinations) => {
   let combs = combinations
   comboFields.forEach(field => {
     combs = flatField(field, combs)
@@ -194,4 +197,13 @@ const id = field => field.length ? field[0].value : 'x'
 
 const stringify = (combs) => {
   return combs.map(c => `${id(c.branch)}; ${id(c.city)}; ${id(c.department)}; ${id(c.division)}`)
+}
+
+
+// fetch
+export const myFetch = (url) => {
+  return fetch(url, {
+    mode: 'no-cors',
+    method: "GET"
+  }).then(result => result.json())
 }

@@ -59,7 +59,7 @@ const SavedDocuments = ({documents}) => {
       }
       {formData &&
         <EditRecordModal
-          setSavedRec={setSavedRec}
+          setRecords={setSavedRec}
           formData={formData}
           setFormData={setFormData}
         />

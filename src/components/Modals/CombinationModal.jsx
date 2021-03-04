@@ -2,22 +2,78 @@ import React, {useState} from "react";
 import {Button, Col, Container, Modal} from "react-bootstrap";
 import CombinationForm from "../Forms/CombinationForm";
 import uuid from 'react-uuid'
-import {badMsg, isValidCombination} from "../../helpers/functions";
+import {badMsg, isValidCombination, resolveCombinations} from "../../helpers/functions";
 
-const CombinationModal = ({setShowModal, combinations, setAssignedTo, setEmptyAssign}) => {
+const CombinationModal = ({prefill, combinations, setAssignedTo, setEmptyAssign, closeModal}) => {
 
   const [notification, setNotification] = useState();
-  const [showEmployees, setShowEmployees] = useState(false);
-  const [combination, setCombination] = useState({
-    branch: [],
-    city: [],
-    department: [],
-    division: [],
-    removedEmployees: []
-  });
+  const [employees, setEmployees] = useState(null);
+  const [combination, setCombination] = useState(prefill ? prefill : {
+      branch: [],
+      division: [],
+      department: [],
+      city: [],
+      removedEmployees: []
+    }
+  )
 
   const preview = () => {
-    setShowEmployees(true)
+    if (!isValidCombination(combination)) { // TODO or empty
+      setNotification(badMsg('Neboli najdeni ziadni zamestnanci'))
+      return
+    }
+    const assignedTo = resolveCombinations([combination])
+    console.log(assignedTo)
+
+    // FIX status 500
+    fetch('/filter_employees', {
+      mode: 'no-cors',
+      method: "POST",
+      body: assignedTo
+    })
+      .then(data => {
+        console.log(data)
+      })
+      .catch(() => console.log("Errrrrrrrrrrror"))
+
+    setEmployees([
+      {value: 'ja', label: 'Ja'},
+      {value: 'ty', label: 'Ty'},
+      {value: 'on', label: 'On'}
+    ])
+
+  }
+
+  const getEmployees = (assignedTo) => {
+    return fetch('/filter_employees', {
+      mode: 'no-cors',
+      method: "POST",
+      body: assignedTo
+    })
+      .then(data => {
+        console.log(data)
+      })
+      .catch(() => console.log("Errrrrrrrrrrror"))
+  }
+
+  const save = () => {
+    if (!isValidCombination(combination)) {
+      setNotification(badMsg('not valid combination'))
+      return false
+    }
+    setNotification(undefined)
+    setEmptyAssign([false])
+
+    setAssignedTo(prev => {
+      return prev.map(c => {
+        if (c.id === prefill?.id) {
+          return {...combination, id: uuid()}
+        }
+        return c
+      })
+    })
+    closeModal()
+    return true
   }
 
   const add = () => {
@@ -35,13 +91,7 @@ const CombinationModal = ({setShowModal, combinations, setAssignedTo, setEmptyAs
 
   const addClose = () => {
     const successful = add()
-    if (successful) {
-      closeModal();
-    }
-  }
-
-  const closeModal = () => {
-    setShowModal(false);
+    if (successful) closeModal()
   }
 
   return (
@@ -52,7 +102,8 @@ const CombinationModal = ({setShowModal, combinations, setAssignedTo, setEmptyAs
       </Modal.Header>
       <Modal.Body>
         <CombinationForm
-          showEmployees={showEmployees}
+          prefill={prefill}
+          employees={employees}
           combinations={combinations}
           combination={combination}
           setCombination={setCombination}
@@ -62,9 +113,14 @@ const CombinationModal = ({setShowModal, combinations, setAssignedTo, setEmptyAs
       </Modal.Body>
       <Modal.Footer>
         <Col className="text-center">
-          <Button onClick={preview} size="sm" className="mr-2" disabled={false}>Preview</Button>
-          <Button onClick={add} size="sm" className="mr-2">Add next</Button>
-          <Button onClick={addClose} size="sm" className="mr-2">Add and close</Button>
+          <Button onClick={preview} size="sm" className="mr-2">Preview</Button>
+          {prefill
+            ? <Button onClick={save} size="sm" className="mr-2">Save</Button>
+            : <>
+                <Button onClick={add} size="sm" className="mr-2">Add next</Button>
+                <Button onClick={addClose} size="sm" className="mr-2">Add and close</Button>
+              </>
+          }
           <Button onClick={closeModal} variant="secondary" size="sm">close</Button>
         </Col>
       </Modal.Footer>

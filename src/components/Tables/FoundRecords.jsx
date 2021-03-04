@@ -3,59 +3,79 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import EditBtn from "../Buttons/EditBtn";
 import EditRecordModal from "../Modals/EditRecordModal";
 import ReportBtn from "../Buttons/ReportBtn";
-import {buttonColumn, orderBy} from "../../helpers/functions";
+import {buttonColumn, getCombinationsNames, getFieldName, orderBy} from "../../helpers/functions";
 import EmptyTable from "./EmptyTable";
 import {FormattedRelease} from "../Others/Formatter";
 
-const FoundRecords = ({filter, docs, setDocs, combs}) => {
+const FoundRecords = ({found, setFound, cs}) => {
 
   const [formData, setFormData] = useState();
 
   useEffect(() => {
-    if(docs.length > 0 && combs.length > 0) {
-      docs.forEach(d => {
-        let branchId = d.assigned_to[0]
-        let cityId = d.assigned_to[3]
-        let departmentId = d.assigned_to[6]
-        let divisionId = d.assigned_to[9]
-        let combination = combs.filter(c => c.city_id == cityId
-          && c.department_id == departmentId
-          && c.division_id == divisionId)
-        //console.log(`combination: ${cityId} ${departmentId} ${divisionId}`)
-        //console.log(combination)
-        if(combination.length > 0) {
-          d.city = combination[0].city_name
+    if(found.length && cs.length) {
+      const rec = found.map(d => {
+        const [b_id, c_id, de_id, di_id] = d.assigned_to.split('; ')
+        const combination = cs.find(c =>
+          c.city.value == c_id &&
+          c.branch.value == b_id &&
+          c.department.value == de_id &&
+          c.division.value == di_id
+        )
+        if(combination) {
+          return {
+            ...d,
+            branch: combination.branch.label,
+            department: combination.department.label,
+            division: combination.division.label,
+            city: combination.city.label,
+            record_type: 'document'
+          }
         }
+        return d
       })
-      setDocs(docs)
+      console.log(found)
+      setFound(rec)
     }
   }, [])
 
-  const columns = [{
+  const columns = [
+  {
     dataField: 'name',
-    text: "Name"
+    text: "Name",
+    sort: true
   }, {
-    dataField: 'release',
+    dataField: 'release_date.Time',
     text: 'Release',
-    formatter: FormattedRelease
+    formatter: FormattedRelease,
+    sort: true
   }, {
     dataField: 'type',
-    text: 'Type'
+    text: 'Type',
+    sort: true
+  }, {
+    dataField: 'branch',
+    text: 'Branch',
+    sort: true
   }, {
     dataField: 'division',
-    text: 'Division'
+    text: 'Division',
+    sort: true
   }, {
     dataField: 'department',
-    text: 'Department'
+    text: 'Department',
+    sort: true
   }, {
     dataField: 'city',
-    text: 'City'
+    text: 'City',
+    sort: true
   }, {
     dataField: 'record_type',
-    text: 'Record Type'
+    text: 'Record Type',
+    sort: true
   }, {
-    dataField: 'state',
-    text: 'State'
+    dataField: 'Complete',
+    text: 'State',
+    sort: true
   }, {
     ...buttonColumn('EditBtn'),
     formatter: EditBtn,
@@ -72,7 +92,7 @@ const FoundRecords = ({filter, docs, setDocs, combs}) => {
       <BootstrapTable
         keyField="id"
         hover
-        data={docs}
+        data={found}
         columns={columns}
         defaultSorted={orderBy('name')}
         noDataIndication={EmptyTable}
@@ -82,7 +102,7 @@ const FoundRecords = ({filter, docs, setDocs, combs}) => {
       />
       {formData &&
         <EditRecordModal
-          setSavedRec={setDocs}
+          setRecords={setFound}
           formData={formData}
           setFormData={setFormData}
           actual={true}

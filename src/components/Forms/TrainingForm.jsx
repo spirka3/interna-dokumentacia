@@ -14,7 +14,7 @@ import {
 } from "../../helpers/functions";
 import {trn_form} from "../../helpers/data";
 
-const TrainingForm = ({setSavedRec, formData, setFormData, actual}) => {
+const TrainingForm = ({setRecords, formData, setFormData, actual}) => {
   // formData = trn_form
   const {register, handleSubmit} = useForm({
     defaultValues: prefillTrainingForm(formData)
@@ -97,7 +97,7 @@ const TrainingForm = ({setSavedRec, formData, setFormData, actual}) => {
     }).then(res => {
       if (successResponse(res)) {
         setNotification(goodMsg(`${action} was successful`))
-        if (setSavedRec) filterSavedRec(data)   // update table data
+        if (setRecords) filterSavedRec(data)   // update table data
         if (setFormData) setFormData(undefined) // hide modal
       } else {
         setNotification(badMsg(`${action} failed`))
@@ -107,11 +107,11 @@ const TrainingForm = ({setSavedRec, formData, setFormData, actual}) => {
   }
 
   const filterSavedRec = (data) => {
-    setSavedRec(prevState => prevState.filter(p => p.id !== data.id))
+    setRecords(prevState => prevState.filter(p => p.id !== data.id))
   }
 
   const updateSavedRec = (data) => {
-    setSavedRec(prevState => {
+    setRecords(prevState => {
       let update = prevState
       const foundID = prevState.findIndex(p => p.id === data.id)
       update[foundID] = data

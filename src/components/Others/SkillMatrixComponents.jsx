@@ -20,7 +20,7 @@ export const RowButtons = ({setAction, setModalInfo, setShowModal, handleAccept,
   return (
     <Row className="mb-3">
       <Col className="text-left">
-        <ButtonGroup className="div-btn">
+        <ButtonGroup className="div-btn" size="sm">
           {/* https://react-bootstrap.github.io/components/overlays/ */}
           <Button onClick={() => setShowLegend(!showLegend)}>
             {showLegend ? 'Hide legend' : 'Show legend'}
@@ -28,11 +28,11 @@ export const RowButtons = ({setAction, setModalInfo, setShowModal, handleAccept,
         </ButtonGroup>
       </Col>
       <Col className="text-right">
-        <ButtonGroup className="div-btn" onClick={handleClick}>
-          <Button id="sign">Sign</Button>
-          <Button id="cancelDuty">Cancel duty</Button>
-          <Button id="trainAgain">Train again</Button>
-          <Button id="cancel" onClick={handleClick}>Cancel</Button>
+        <ButtonGroup className="div-btn" onClick={handleClick} size="sm">
+          <Button id="sign" size="sm">Sign</Button>
+          <Button id="cancelDuty" size="sm">Cancel duty</Button>
+          <Button id="trainAgain" size="sm">Train again</Button>
+          <Button id="cancel" size="sm" onClick={handleClick}>Cancel</Button>
         </ButtonGroup>
       </Col>
     </Row>

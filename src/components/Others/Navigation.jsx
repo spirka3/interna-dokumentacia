@@ -35,7 +35,7 @@ const Navigation = () => {
 
   return (
     <Navbar expand="md" bg="dark" variant="dark" className="sticky-nav" id="navigation">
-      <Navbar.Brand href="#home">
+      <Navbar.Brand href="/">
         <img
           alt="logo"
           src="/gefco_logo.png"

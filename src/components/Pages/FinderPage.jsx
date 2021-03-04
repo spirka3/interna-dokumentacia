@@ -2,78 +2,87 @@ import React, {useEffect, useState} from "react";
 import Filter from "../Others/Filter";
 import FoundRecords from "../Tables/FoundRecords";
 import SkillMatrix from "../Tables/SkillMatrix";
+import {prepareEmployees, myFetch, prepareCombinations, resolveCombinations} from "../../helpers/functions";
 
 const FinderPage = () => {
 
   const [showSkillMatrix, setShowSkillMatrix] = useState(false)
-  const [filter, setFilter] = useState({
-    type: [],
-    branch: [],
-    city: [],
-    department: [],
-    division: [],
-    record: [],
-    employeeName: '',
-    recordName: ''
-  });
 
-  const [documents, setDocuments] = useState([])
-  const [combs, setCombs] = useState([])
-
-  const myFetch = (url) => {
-    return fetch(url, {
-      mode: 'no-cors',
-      method: "GET"
-    }).then(result => result.json())
-  }
-
+  const [cs, setCs] = useState([]);
   useEffect(() => {
+    fetch('/combination', {
+      method: "GET",
+    })
+      .then(response => response.json())
+      .then(res => {
+        const combs = prepareCombinations(res)
+        setCs(combs)
+      })
+      .catch((e) => console.log(e))
+  },[])
+
+  const [e, setE] = useState([]);
+  useEffect(() => {
+    fetch('/all_employees', {
+      method: "GET",
+    })
+      .then(response => response.json())
+      .then(res => {
+        setE(prepareEmployees(res))
+      })
+      .catch((e) => console.log(e))
+  },[])
+
+  const [found, setFound] = useState([])
+  useEffect(() => {
+    myFetch("/document/actual")
+      .then(data => setFound(data))
+  }, [])
+
+  const handleSearch = (filter) => {
+    console.log(filter)
     fetch("http://localhost:7777/document/filter", {
       mode: 'no-cors',
       method: "POST",
       body: JSON.stringify(filter)
-    }).then(function (res) {
+    }).then(res => {
       if (res.ok) {
+        console.log(res)
         alert("Perfect! ");
       } else if (res.status === 401) {
+        console.log(res)
         alert("Oops! ");
       }
-    }, function (e) {
+    }, error => {
+      console.log(error)
       alert("Error submitting form!");
     });
+  }
 
-    myFetch("/document/actual")
-      .then(actual => {
-        setDocuments(actual)
-      })
-    myFetch("/combination")
-      .then(data => setCombs(data))
-  }, [])
+  if (!cs.length) return <h1>Loading.. combinations</h1>
+  if (!e.length) return <h1>Loading.. employees</h1>
+  if (!found.length) return <h1>Loading.. records</h1>
 
   return (
     <div style={{marginTop: '1%'}} className="finder">
       <Filter
-        filter={filter}
-        setFilter={setFilter}
-        combs={combs}
         showSM={showSkillMatrix}
         setShowSM={setShowSkillMatrix}
-        documents={documents}
+        cs={cs}
+        e={e}
+        found={found}
+        handleSearch={handleSearch}
       />
       {showSkillMatrix
         ? <SkillMatrix
-            filter={filter}
+            found={found}
           />
         : <FoundRecords
-            filter={filter}
-            docs={documents}
-            setDocs={setDocuments}
-            combs={combs}
+            found={found}
+            setFound={setFound}
+            cs={cs}
           />
       }
-      {/* TODO PATO export */}
-      {/*<Button className="mr-1" size="sm">Export</Button>*/}
-      {/*<Button onClick={()=>setToggle(!toggle)} size="sm">{`Show ${toggle ? 'skillMatrix' : 'table'}`}</Button>*/}
     </div>
   )
 }

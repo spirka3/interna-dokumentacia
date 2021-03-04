@@ -16,6 +16,9 @@ TODO CHECK
 #34
 #35
 
+FIX ME
+saved -> @send -> nezobrazi sa vo found
+found -> @sendAsNewVerison -> nezobrazi sa vo found ani jedna verzia
 
 Prirucka:
  1) Ak zmenim nieco na prazdny string, tak to ponecha stary

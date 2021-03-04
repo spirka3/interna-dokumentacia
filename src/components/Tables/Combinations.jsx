@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import BootstrapTable from "react-bootstrap-table-next";
-import {PlusSquare, XSquare, Pencil} from 'react-bootstrap-icons';
+import {Plus, XSquare, Pencil} from 'react-bootstrap-icons';
 import CombinationModal from "../Modals/CombinationModal";
 import EmptyTable from "./EmptyTable";
 import Button from "react-bootstrap/Button";
@@ -9,30 +9,38 @@ import {buttonColumn} from "../../helpers/functions";
 const Combinations = ({combinations, assignedTo, setAssignedTo, setEmptyAssign}) => {
 
   const [showModal, setShowModal] = useState(false)
+  const [prefill, setPrefill] = useState();
+
+  const openModal = () => setShowModal(true)
+  const closeModal = () => {
+    setPrefill(undefined)
+    setShowModal(false)
+  }
+
+  const EditIcon = (_, row) => {
+    return <Pencil size="25" color="black" onClick={() => editCombination(row)}/>
+  }
+
+  const editCombination = (row) => {
+    setPrefill(row)
+    openModal()
+  }
+
+  const DeleteIcon = (_, row) => {
+    return <XSquare size="25" color="red" onClick={() => deleteCombination(row)}/>
+  }
 
   const deleteCombination = (row) => {
     setAssignedTo(prevState => {
-     return prevState.filter(c => c.id !== row.id)
+      return prevState.filter(c => c.id !== row.id)
     })
-  };
-
-  const editCombination = (row) => {
-    console.log('not implemented')
-  };
-
-  const EditIcon = (cell, row) => {
-    return <Pencil size="25" color="#f3c404f2" onClick={() => editCombination(row)}/>
-  };
-
-  const DeleteIcon = (cell, row) => {
-    return <XSquare size="25" color="red" onClick={() => deleteCombination(row)}/>
-  };
+  }
 
   const AddIcon = () => {
     return (
-      <Button variant="success" onClick={() => setShowModal(true)} size="sm" className="mb-2">
-        <strong>Add combination {" "}</strong>
-        <PlusSquare size="20" color="white"/>
+      <Button variant="success" onClick={openModal} size="sm" className="mb-2">
+        <Plus size="20" color="white"/>
+        <span>add combination</span>
       </Button>
     )
   };
@@ -75,7 +83,6 @@ const Combinations = ({combinations, assignedTo, setAssignedTo, setEmptyAssign})
         keyField="id"
         data={assignedTo}
         columns={columns}
-        bordered={false}
         noDataIndication={EmptyTable}
         // horizontal scroll
         wrapperClasses="table-responsive"
@@ -84,10 +91,11 @@ const Combinations = ({combinations, assignedTo, setAssignedTo, setEmptyAssign})
       <AddIcon/>
       {showModal &&
         <CombinationModal
+          prefill={prefill}
           combinations={combinations}
-          setShowModal={setShowModal}
           setAssignedTo={setAssignedTo}
           setEmptyAssign={setEmptyAssign}
+          closeModal={closeModal}
         />
       }
     </>

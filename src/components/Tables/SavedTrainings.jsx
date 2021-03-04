@@ -58,7 +58,7 @@ const SavedTrainings = ({trainings}) => {
       }
       {formData &&
         <EditRecordModal
-          setSavedRec={setSavedRec}
+          setRecords={setSavedRec}
           formData={formData}
           setFormData={setFormData}
         />

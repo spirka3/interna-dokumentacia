@@ -156,6 +156,16 @@ export const combinations = [
   department: { value: 'De2', label: 'De2' },
   city: { value: 'C2', label: 'C2'},
 },{
+    branch: { value: 'A1', label: 'A1' },
+    division: { value: 'D1', label: 'D1' },
+    department: { value: 'De3', label: 'De3' },
+    city: { value: 'C2', label: 'C2'},
+  },{
+    branch: { value: 'A1', label: 'A1' },
+    division: { value: 'D2', label: 'D2' },
+    department: { value: 'De4', label: 'De4' },
+    city: { value: 'C2', label: 'C2'},
+  },{
   branch: { value: 'B2', label: 'B2' },
   division: { value: 'D2', label: 'D2' },
   department: { value: 'De2', label: 'De2' },
@@ -173,7 +183,19 @@ export const combinations = [
 }
 ];
 
-export const types = ['type0', 'type1', 'type2'];
 export const comboFields = ['city', 'branch', 'department', 'division']
+
+export const types = ['type0', 'type1', 'type2'];
+export const types2 = [
+  { value: 'type0', label: 'type0' },
+  { value: 'type1', label: 'type1' },
+  { value: 'type2', label: 'type2' }
+]
+
+export const records = [
+  { value: 'documents', label: 'documents' },
+  { value: 'document-training', label: 'document-training' },
+  { value: 'online-training', label: 'online-training' }
+]
 
 
