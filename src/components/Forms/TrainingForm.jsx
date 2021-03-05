@@ -42,7 +42,7 @@ const TrainingForm = ({setRecords, formData, setFormData, actual}) => {
   },[])
 
   const onSubmit = (data) => {
-    if (attendees.length === 0){
+    if (!attendees.length){
       setNotification(badMsg("At least one employee is required"))
       return
     }
@@ -57,20 +57,20 @@ const TrainingForm = ({setRecords, formData, setFormData, actual}) => {
         updateSavedRec(data)
       } else {
         upsert(data, 'create')
-          .then(r => setCurrentID(r.id))
+          .then(r => setCurrentID(r?.id))
       }
     if (action === "send"){
       if (currentID) {
         data = {...data, id: currentID}
         if (actual) {
           upsertConfirm(data, 'create/confirm')
-            .then(r => setCurrentID(r.id))
+            .then(r => setCurrentID(r?.id))
         } else {
           upsertConfirm(data, 'update/confirm')
         }
       } else {
         upsertConfirm(data, 'create/confirm')
-          .then(r => setCurrentID(r.id))
+          .then(r => setCurrentID(r?.id))
       }
     }
   }

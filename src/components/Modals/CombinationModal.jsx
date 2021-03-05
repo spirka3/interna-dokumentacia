@@ -26,18 +26,29 @@ const CombinationModal = ({prefill, combinations, setAssignedTo, setEmptyAssign,
     console.log(assignedTo)
 
     // FIX status 500
-    getEmployees(assignedTo)
+    // getEmployees(assignedTo)
 
-    setEmployees([
-      {value: 'ja', label: 'Ja'},
-      {value: 'ty', label: 'Ty'},
-      {value: 'on', label: 'On'}
-    ])
+    fetch(`/employees/${assignedTo}`, {
+      mode: 'no-cors',
+      method: "GET",
+    })
+      .then(data => data.json())
+      .then(data => resolveEmployees(data))
+      .catch((e) => console.log("Errrrrrrrrrrror", e))
+  }
 
+  const resolveEmployees = (data) => {
+    setEmployees(data.map(d => {
+      return {
+        value: d.id,
+        label: `${d.first_name} ${d.last_name}`
+      }
+    }))
   }
 
   const getEmployees = (assignedTo) => {
-    return fetch(`/employees${assignedTo}`, {
+    console.log(assignedTo)
+    return fetch(`/employees/${assignedTo}`, {
       mode: 'no-cors',
       method: "GET",
     })

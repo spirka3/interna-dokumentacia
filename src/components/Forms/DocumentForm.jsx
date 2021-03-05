@@ -48,7 +48,7 @@ const DocumentForm = ({setRecords, formData, setFormData, actual}) => {
   const onSubmit = (data) => {
     if (assignedTo.length === 0){
       setNotification(badMsg("At least one combination is required"))
-      return
+      // return
     }
 
     data = correctDocumentFormData(data, assignedTo)
@@ -61,20 +61,20 @@ const DocumentForm = ({setRecords, formData, setFormData, actual}) => {
         updateSavedRec(data)
       } else {
         upsert(data, 'create')
-          .then(r => setCurrentID(r.id)) // FIX .then len ked success, plati pre vsetky
+          .then(r => setCurrentID(r?.id))
       }
     if (action === "send"){
       if (currentID) {
         data = {...data, id: currentID}
         if (actual) {
-          upsertConfirm(data, 'create/confirm') // FIX status 500
-          // .then(r => setCurrentID(r.id))
+          upsertConfirm(data, 'create/confirm')
+            .then(r => setCurrentID(r?.id))
         } else {
           upsertConfirm(data, 'update/confirm')
         }
       } else {
         upsertConfirm(data, 'create/confirm')
-          .then(r => setCurrentID(r.id))
+            .then(r => setCurrentID(r?.id))
       }
     }
   }

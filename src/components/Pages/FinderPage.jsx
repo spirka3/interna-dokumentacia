@@ -41,10 +41,9 @@ const FinderPage = () => {
 
   const handleSearch = (filter) => {
     console.log(filter)
-    fetch("http://localhost:7777/document/filter", {
+    fetch(`http://localhost:7777/document/filter/${filter}`, {
       mode: 'no-cors',
-      method: "POST",
-      body: JSON.stringify(filter)
+      method: "GET"
     }).then(res => {
       if (res.ok) {
         console.log(res)

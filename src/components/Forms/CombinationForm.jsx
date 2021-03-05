@@ -7,7 +7,7 @@ import {CustomAlert} from "../Others/CustomAlert";
 
 const CombinationForm = ({prefill, employees, combinations: cc, combination, setCombination, notification, setNotification}) => {
 
-  let combi = combinations
+  let combi = cc
 
   const [select, setSelect] = useState()
   const [toggle, setToggle] = useState([false])
@@ -42,36 +42,15 @@ const CombinationForm = ({prefill, employees, combinations: cc, combination, set
     let update = combi
 
     // start of inner functions
-    function updateField(i) {
-      const fields = Object.keys(combination)
-      const field = fields[i]
-      if (i > 0){
-        const prevField = fields[i-1]
-        console.log('--> skipped', field)
-        console.log('--> prev', combination[prevField])
-        if (!combination[prevField].length) return true
-      }
-      console.log(field)
+    function updateField(field) {
       const values = combination[field].map(d => d.value)
       if (values.length) {
         update = update.filter(c => values.includes(c[field].value))
       } else {
-        // FIX
-        update = combi
-        for (let i = 0; i < fields.length; i++){
-          const field = fields[i]
-          if (field === 'id') continue
-          if (i > 0){
-            const prevField = fields[i-1]
-            if (!combination[prevField].length) continue
-          }
-          const values = combination[field].map(d => d.value)
-          if (values.length) {
-            update = update.filter(c => values.includes(c[field].value))
-          }
+        for (const field in combination) {
+          // todo
         }
       }
-      console.log('----------')
       return values.length
     }
 
@@ -83,10 +62,10 @@ const CombinationForm = ({prefill, employees, combinations: cc, combination, set
     function setCity() {setCities(getSetOf('city'))}
     // end of inner functions
 
-    if (!updateField(0)) setBranch()
-    if (!updateField(1)) setDivision()
-    if (!updateField(2)) setDepartment()
-    if (!updateField(3)) setCity()
+    if (!updateField('branch')) setBranch()
+    if (!updateField('division')) setDivision()
+    if (!updateField('department')) setDepartment()
+    if (!updateField('city')) setCity()
 
     if (select !== 'branch') setBranch()
     if (select !== 'division') setDivision()

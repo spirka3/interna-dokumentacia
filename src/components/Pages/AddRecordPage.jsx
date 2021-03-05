@@ -7,10 +7,7 @@ const AddRecordPage = () => {
 
   const [formType, setFormType] = useState('document');
 
-  const handleClick = (event) => {
-    setFormType(event.target.id)
-  };
-
+  const handleClick = event => setFormType(event.target.id)
   const active = id => formType === id && 'active'
 
   return (
@@ -19,8 +16,8 @@ const AddRecordPage = () => {
         <Button id="document" className={active("document")}>Document</Button>
         <Button id="training" className={active("training")}>Online training</Button>
       </ButtonGroup>
-      {formType === 'document' && <DocumentForm/> }
-      {formType === 'training' && <TrainingForm/> }
+      {formType === 'document' && <DocumentForm /> }
+      {formType === 'training' && <TrainingForm /> }
     </Container>
   )
 }
