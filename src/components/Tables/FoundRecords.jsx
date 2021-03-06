@@ -73,7 +73,7 @@ const FoundRecords = ({found, setFound, cs}) => {
     text: 'Record Type',
     sort: true
   }, {
-    dataField: 'Complete',
+    dataField: 'complete',
     text: 'State',
     sort: true
   }, {

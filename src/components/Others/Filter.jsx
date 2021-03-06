@@ -81,8 +81,14 @@ const Filter = ({showSM, setShowSM, cs, e, found, handleSearch}) => {
 
   const search = () => {
     console.log(filter)
-    const r = resolveCombinations([filter])
-    handleSearch(r)
+    const res = {
+      branch: filter.branch.map(v => v.value).join(','),
+      city: filter.city.map(v => v.value).join(','),
+      department: filter.department.map(v => v.value).join(','),
+      division: filter.division.map(v => v.value).join(',')
+    }
+    // const r = resolveCombinations([filter])
+    handleSearch(res)
   }
 
   const selector = (name, label, options) => {

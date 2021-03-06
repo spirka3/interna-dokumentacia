@@ -26,11 +26,11 @@ const FinderPage = () => {
     fetch('/employees/all', {
       method: "GET",
     })
-      .then(response => response.json())
-      .then(res => {
-        setE(prepareEmployees(res))
-      })
-      .catch((e) => console.log(e))
+    .then(response => response.json())
+    .then(res => {
+      setE(prepareEmployees(res))
+    })
+    .catch((e) => console.log(e))
   },[])
 
   const [found, setFound] = useState([])
@@ -41,21 +41,41 @@ const FinderPage = () => {
 
   const handleSearch = (filter) => {
     console.log(filter)
-    fetch(`http://localhost:7777/document/filter/${filter}`, {
-      mode: 'no-cors',
-      method: "GET"
-    }).then(res => {
-      if (res.ok) {
-        console.log(res)
-        alert("Perfect! ");
-      } else if (res.status === 401) {
-        console.log(res)
-        alert("Oops! ");
-      }
-    }, error => {
-      console.log(error)
-      alert("Error submitting form!");
-    });
+    fetch(`/document/filter`, {
+      method: "POST",
+      body: JSON.stringify(filter)
+    })
+    .then(res => res.json())
+    .then(r => prepareFoundRec(r))
+  }
+
+  const prepareFoundRec = (found) => {
+    console.log('a')
+    if(found.length && cs.length) {
+      console.log('b')
+      const rec = found.map(d => {
+        const [b_id, c_id, de_id, di_id] = d.assigned_to.split('; ')
+        const combination = cs.find(c =>
+          c.city.value == c_id &&
+          c.branch.value == b_id &&
+          c.department.value == de_id &&
+          c.division.value == di_id
+        )
+        if(combination) {
+          return {
+            ...d,
+            branch: combination.branch.label,
+            department: combination.department.label,
+            division: combination.division.label,
+            city: combination.city.label,
+            record_type: 'document'
+          }
+        }
+        return d
+      })
+      console.log(found)
+      setFound(rec)
+    }
   }
 
   if (!cs.length) return <h1>Loading.. combinations</h1>
