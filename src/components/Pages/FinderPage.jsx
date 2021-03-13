@@ -1,11 +1,12 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import Filter from "../Others/Filter";
 import FoundRecords from "../Tables/FoundRecords";
 import SkillMatrix from "../Tables/SkillMatrix";
-import {prepareEmployees, myFetch, prepareCombinations} from "../../helpers/functions";
+import {prepareEmployees, getFetch, prepareCombinations, getCombinationsNames} from "../../helpers/functions";
+import {PairContext} from "../../App";
 
 const FinderPage = () => {
-
+  const pairs = useContext(PairContext)
   const [showSkillMatrix, setShowSkillMatrix] = useState(false)
 
   const [cs, setCs] = useState([]);
@@ -35,9 +36,9 @@ const FinderPage = () => {
 
   const [found, setFound] = useState([])
   useEffect(() => {
-    myFetch("/document/actual")
-      .then(data => setFound(data))
-  }, [])
+    getFetch("/document/actual")
+      .then(data => prepareFoundRec(data))
+  }, [cs])
 
   const handleSearch = (filter) => {
     console.log(filter)
@@ -49,31 +50,25 @@ const FinderPage = () => {
     .then(r => prepareFoundRec(r))
   }
 
+  function getLabels(cs, field){
+    return cs.map(c => c[field].map((f) => f.label)).join(",")
+  }
+
   const prepareFoundRec = (found) => {
-    console.log('a')
     if(found.length && cs.length) {
-      console.log('b')
-      const rec = found.map(d => {
-        const [b_id, c_id, de_id, di_id] = d.assigned_to.split('; ')
-        const combination = cs.find(c =>
-          c.city.value == c_id &&
-          c.branch.value == b_id &&
-          c.department.value == de_id &&
-          c.division.value == di_id
-        )
-        if(combination) {
-          return {
-            ...d,
-            branch: combination.branch.label,
-            department: combination.department.label,
-            division: combination.division.label,
-            city: combination.city.label,
-            record_type: 'document'
-          }
-        }
-        return d
-      })
       console.log(found)
+      const rec = found.map(doc => {
+        const doc_cs = getCombinationsNames(doc, pairs)
+        return {
+          ...doc,
+          branches: getLabels(doc_cs, 'branches'),
+          departments: getLabels(doc_cs, 'departments'),
+          divisions: getLabels(doc_cs, 'divisions'),
+          cities: getLabels(doc_cs, 'cities'),
+          record_type: 'document'
+        }
+      })
+      console.log(rec)
       setFound(rec)
     }
   }

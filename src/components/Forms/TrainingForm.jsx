@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import MyHookForm from "./MyHookForm";
 import {Row, Col, Form, Button} from "react-bootstrap";
@@ -10,11 +10,14 @@ import {
   goodMsg,
   correctTrainingFormData,
   successResponse,
-  prefillTrainingForm, getEmployeesNames, getFormID
+  prefillTrainingForm, getEmployeesNames, getFormID, getEmployeeLabel
 } from "../../helpers/functions";
 import {trn_form} from "../../helpers/data";
+import {PairContext} from "../../App";
 
 const TrainingForm = ({setRecords, formData, setFormData, actual}) => {
+  const pairs = useContext(PairContext);
+
   // formData = trn_form
   const {register, handleSubmit} = useForm({
     defaultValues: prefillTrainingForm(formData)
@@ -42,7 +45,7 @@ const TrainingForm = ({setRecords, formData, setFormData, actual}) => {
   },[])
 
   const onSubmit = (data) => {
-    if (!attendees.length){
+    if (!attendees.length) {
       setNotification(badMsg("At least one employee is required"))
       return
     }
@@ -50,7 +53,7 @@ const TrainingForm = ({setRecords, formData, setFormData, actual}) => {
     data = correctTrainingFormData(data, attendees)
     console.log(data)
 
-    if (action === "save")
+    if (action === "save") {
       if (currentID) {
         data = {...data, id: currentID}
         upsert(data, 'update')
@@ -59,7 +62,8 @@ const TrainingForm = ({setRecords, formData, setFormData, actual}) => {
         upsert(data, 'create')
           .then(r => setCurrentID(r?.id))
       }
-    if (action === "send"){
+    }
+    if (action === "send") {
       if (currentID) {
         data = {...data, id: currentID}
         if (actual) {
@@ -197,12 +201,16 @@ const TrainingForm = ({setRecords, formData, setFormData, actual}) => {
           <Typeahead
             id="basic-typeahead-single"
             name="employees"
-            labelKey={e => `${e.first_name} ${e.last_name} [${e.id}]`}
+            labelKey={(e) => getEmployeeLabel(e, pairs.departments)}
             multiple
-            onChange={addAttendees}
-            options={employees}
             placeholder="Choose an employees..."
             selected={attendees}
+            options={employees}
+            onChange={(selected) => {
+              addAttendees(selected)
+              // this._typeahead.getInstance().focus();
+            }}
+            // ref={typeahead => this._typeahead = typeahead}
           />
         </Col>
       </Form.Group>

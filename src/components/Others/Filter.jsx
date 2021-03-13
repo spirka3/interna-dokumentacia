@@ -1,21 +1,15 @@
 import React, {useEffect, useState} from "react";
 import {Button, Col, Form, Row} from "react-bootstrap";
-import {combinations, employees as e, records, types2} from "../../helpers/data";
+import {records, types2} from "../../helpers/data";
 import Select from 'react-select'
-import {
-  getEmployeesNames,
-  isValidCombination,
-  prepareCombinations,
-  resolveCombinations,
-  setOf
-} from "../../helpers/functions";
+import {emptyCombination, setOf} from "../../helpers/functions";
 
 const Filter = ({showSM, setShowSM, cs, e, found, handleSearch}) => {
 
   const [filter, setFilter] = useState({
     // type: [], record: [],
-    branch: [], city: [],
-    department: [], division: [],
+    branches: [], cities: [],
+    departments: [], divisions: [],
     // employeeName: '', superiorName: '',
     // recordName: ''
   });
@@ -42,7 +36,7 @@ const Filter = ({showSM, setShowSM, cs, e, found, handleSearch}) => {
   }
 
   useEffect(() => {
-    if (!isValidCombination(filter)) {
+    if (emptyCombination(filter)) {
       setSelect('reset')
     }
     updateDropBox()
@@ -55,9 +49,19 @@ const Filter = ({showSM, setShowSM, cs, e, found, handleSearch}) => {
     function updateField(field) {
       const values = filter[field].map(d => d.value)
       if (values.length) {
-        update = update.filter(c => values.includes(c[field].value))
+        const _field = getSingularFieldName(field)
+        update = update.filter(c => values.includes(c[_field].value))
       }
       return values.length
+    }
+
+    function getSingularFieldName(field){
+      switch (field) {
+        case 'branches': return 'branch'
+        case 'divisions': return 'division'
+        case 'departments': return 'department'
+        case 'cities': return 'city'
+      }
     }
 
     const getSetOf = field => setOf(update.map(c => c[field]))
@@ -68,52 +72,52 @@ const Filter = ({showSM, setShowSM, cs, e, found, handleSearch}) => {
     function setCity() {setCities(getSetOf('city'))}
     // end of inner functions
 
-    if (!updateField('branch')) setBranch()
-    if (!updateField('division')) setDivision()
-    if (!updateField('department')) setDepartment()
-    if (!updateField('city')) setCity()
+    if (!updateField('branches')) setBranch()
+    if (!updateField('divisions')) setDivision()
+    if (!updateField('departments')) setDepartment()
+    if (!updateField('cities')) setCity()
 
-    if (select !== 'branch') setBranch()
-    if (select !== 'division') setDivision()
-    if (select !== 'department') setDepartment()
-    if (select !== 'city') setCity()
+    if (select !== 'branches') setBranch()
+    if (select !== 'divisions') setDivision()
+    if (select !== 'departments') setDepartment()
+    if (select !== 'cities') setCity()
   }
 
   const search = () => {
     console.log(filter)
     const res = {
-      branch: filter.branch.map(v => v.value).join(','),
-      city: filter.city.map(v => v.value).join(','),
-      department: filter.department.map(v => v.value).join(','),
-      division: filter.division.map(v => v.value).join(',')
+      branch: filter.branches.map(v => v.value).join(','),
+      city: filter.cities.map(v => v.value).join(','),
+      department: filter.departments.map(v => v.value).join(','),
+      division: filter.divisions.map(v => v.value).join(',')
     }
     // const r = resolveCombinations([filter])
     handleSearch(res)
   }
 
-  const selector = (name, label, options) => {
-    return (
-      <Col>
-        <Select
-          isMulti={true}
-          name={name}
-          placeholder={label}
-          options={options}
-          onChange={(data, e) => handleSelect(data, e)}
-        />
-      </Col>
-    )
-  }
+  const selector = (name, label, options) => (
+    <Col>
+      <Select
+        isMulti={true}
+        name={name}
+        placeholder={label}
+        options={options}
+        onChange={
+          (data, e) => handleSelect(data, e)
+        }
+      />
+    </Col>
+  )
 
   return (
     <Form className="pb-4">
       <Row className='pb-2'>
-        { selector("type", "Types", types2) }
-        { selector("branch", "Branches", branches) }
-        { selector("division", "Divisions", divisions) }
-        { selector("department","Departments", departments) }
-        { selector("city","Cities", cities) }
-        { selector("record","Record", records) }
+        {/*{ selector("type", "Types", types2) }*/}
+        { selector("branches", "branches", branches) }
+        { selector("divisions", "Divisions", divisions) }
+        { selector("departments","departments", departments) }
+        { selector("cities","Cities", cities) }
+        {/*{ selector("record","Record", records) }*/}
       </Row>
       <Row>
         { selector("employeeName", "Employee Name", e) }

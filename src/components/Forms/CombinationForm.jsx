@@ -1,24 +1,20 @@
 import React, {useEffect, useState} from "react";
 import Col from "react-bootstrap/Col";
 import Select from "react-select";
-import {badMsg, goodMsg, isValidCombination, setOf, successResponse} from "../../helpers/functions";
-import {combinations, comboFields} from "../../helpers/data";
+import { emptyCombination, setOf } from "../../helpers/functions";
 import {CustomAlert} from "../Others/CustomAlert";
 
-const CombinationForm = ({prefill, employees, combinations: cc, combination, setCombination, notification, setNotification}) => {
-
-  let combi = cc
+const CombinationForm = ({prefill, disabled, setDisabled, employees, combinations: cs, combination, setCombination, notification, setNotification}) => {
 
   const [select, setSelect] = useState()
   const [toggle, setToggle] = useState([false])
 
-  const [branches, setBranches] = useState(setOf(combi.map(c => c.branch)))
-  const [divisions, setDivisions] = useState(setOf(combi.map(c => c.division)))
-  const [departments, setDepartments] = useState(setOf(combi.map(c => c.department)))
-  const [cities, setCities] = useState(setOf(combi.map(c => c.city)))
+  const [branches, setBranches] = useState(setOf(cs.map(c => c.branch)))
+  const [divisions, setDivisions] = useState(setOf(cs.map(c => c.division)))
+  const [departments, setDepartments] = useState(setOf(cs.map(c => c.department)))
+  const [cities, setCities] = useState(setOf(cs.map(c => c.city)))
 
-  const handleSelect = (data, event) => {
-    const field = event.name
+  const handleSelect = (data, {name: field}) => {
     setCombination({...combination, [field]: data})
     if (field !== 'removedEmployees'){
       commitChanges(field)
@@ -26,32 +22,55 @@ const CombinationForm = ({prefill, employees, combinations: cc, combination, set
   }
 
   const commitChanges = (select) => {
+    const _disabled = ['branches']
+    if (select === 'divisions') {
+      setDisabled([...disabled, ..._disabled])
+    }
+    _disabled.push('divisions')
+    if (select === 'departments') {
+      setDisabled([...disabled, ..._disabled])
+    }
+    _disabled.push('departments')
+    if (select === 'cities') {
+      setDisabled([...disabled, ..._disabled])
+    }
+    _disabled.push('cities')
+    if (select === 'removedEmployees') {
+      setDisabled([...disabled, ..._disabled])
+    }
+
     setSelect(select)
     setToggle([!toggle[0]])
     setNotification(undefined)
   }
 
   useEffect(() => {
-    if (!isValidCombination(combination)) {
+    if (!emptyCombination(combination)) {
       setSelect('reset')
     }
     updateDropBox()
-  }, [toggle]);
+  }, [toggle])
 
   const updateDropBox = () => {
-    let update = combi
+    let update = cs
 
     // start of inner functions
     function updateField(field) {
       const values = combination[field].map(d => d.value)
       if (values.length) {
-        update = update.filter(c => values.includes(c[field].value))
-      } else {
-        for (const field in combination) {
-          // todo
-        }
+        const _field = getSingularFieldName(field)
+        update = update.filter(c => values.includes(c[_field].value))
       }
       return values.length
+    }
+
+    function getSingularFieldName(field){
+      switch (field) {
+        case 'branches': return 'branch'
+        case 'divisions': return 'division'
+        case 'departments': return 'department'
+        case 'cities': return 'city'
+      }
     }
 
     const getSetOf = field => setOf(update.map(c => c[field]))
@@ -62,46 +81,48 @@ const CombinationForm = ({prefill, employees, combinations: cc, combination, set
     function setCity() {setCities(getSetOf('city'))}
     // end of inner functions
 
-    if (!updateField('branch')) setBranch()
-    if (!updateField('division')) setDivision()
-    if (!updateField('department')) setDepartment()
-    if (!updateField('city')) setCity()
+    if (!updateField('branches')) setBranch()
+    if (!updateField('divisions')) setDivision()
+    if (!updateField('departments')) setDepartment()
+    if (!updateField('cities')) setCity()
 
-    if (select !== 'branch') setBranch()
-    if (select !== 'division') setDivision()
-    if (select !== 'department') setDepartment()
-    if (select !== 'city') setCity()
+    if (select !== 'branches') setBranch()
+    if (select !== 'divisions') setDivision()
+    if (select !== 'departments') setDepartment()
+    if (select !== 'cities') setCity()
   }
 
-  const selector = (name, label, options) => {
-    const defaultValue = prefill ? prefill[name] : []
-    return (
-      <>
-        {label}
-        <Select
-          defaultValue={defaultValue}
-          isMulti={true}
-          name={name}
-          options={options}
-          placeholder={label}
-          onChange={(data, e) => handleSelect(data, e)}
-        />
-        <br/>
-      </>
-    )
-  }
+  const selector = (name, label, options) => (
+    <>
+      {label}
+      <Select
+        isMulti={true}
+        placeholder=''
+        name={name}
+        options={options}
+        defaultValue={
+          prefill ? prefill[name] : []
+        }
+        isDisabled={
+          prefill && name !== 'removedEmployees'
+          || disabled.includes(name)
+        }
+        onChange={
+          (data, e) => handleSelect(data, e)
+        }
+      />
+      <br/>
+    </>
+  )
 
   return (
     <Col className="p-0">
-      { selector("branch", "Branches", branches) }
-      { selector("division", "Divisions", divisions) }
-      { selector("department","Departments", departments) }
-      { selector("city","Cities", cities) }
-      {employees &&
-        selector("removedEmployees", "Remove employees", employees) }
-      {notification &&
-        <CustomAlert notification={notification}/>
-      }
+      { selector("branches", "branches", branches) }
+      { selector("divisions", "divisions", divisions) }
+      { selector("departments","departments", departments) }
+      { selector("cities","Cities", cities) }
+      { employees && selector("removedEmployees", "Remove employees", employees) }
+      { notification && <CustomAlert notification={notification}/> }
     </Col>
   )
 }

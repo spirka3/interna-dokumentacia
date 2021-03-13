@@ -1,39 +1,39 @@
-import React, {useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Button, Col, Container, Modal} from "react-bootstrap";
 import CombinationForm from "../Forms/CombinationForm";
 import uuid from 'react-uuid'
-import {badMsg, isValidCombination, resolveCombinations} from "../../helpers/functions";
+import {badMsg, getEmployeeLabel, getFetch, resolveCombinations} from "../../helpers/functions";
+import {PairContext} from "../../App";
+import {comboFields} from "../../helpers/data";
 
 const CombinationModal = ({prefill, combinations, setAssignedTo, setEmptyAssign, closeModal}) => {
+  const pairs = useContext(PairContext);
 
+  const [disabled, setDisabled] = useState([]);
   const [notification, setNotification] = useState();
-  const [employees, setEmployees] = useState(null);
+  const [employees, setEmployees] = useState();
   const [combination, setCombination] = useState(prefill ? prefill : {
-      branch: [],
-      division: [],
-      department: [],
-      city: [],
+      branches: [],
+      divisions: [],
+      departments: [],
+      cities: [],
       removedEmployees: []
     }
   )
 
   const preview = () => {
-    if (!isValidCombination(combination)) { // TODO or empty
-      setNotification(badMsg('Neboli najdeni ziadni zamestnanci'))
-      return
-    }
+    setDisabled(comboFields)
+    console.log(combination)
     const assignedTo = resolveCombinations([combination])
     console.log(assignedTo)
-
-    // FIX status 500
-    // getEmployees(assignedTo)
-
-    fetch(`/employees/${assignedTo}`, {
-      mode: 'no-cors',
-      method: "GET",
-    })
-      .then(data => data.json())
-      .then(data => resolveEmployees(data))
+    getFetch(`/employees/${assignedTo}`)
+      .then(data => {
+        if (!data.length) {
+          setNotification(badMsg('not valid combination'))
+          return
+        }
+        resolveEmployees(data)
+      })
       .catch((e) => console.log("Errrrrrrrrrrror", e))
   }
 
@@ -41,31 +41,20 @@ const CombinationModal = ({prefill, combinations, setAssignedTo, setEmptyAssign,
     setEmployees(data.map(d => {
       return {
         value: d.id,
-        label: `${d.first_name} ${d.last_name}`
+        label: getEmployeeLabel(d, pairs.departments)
       }
     }))
   }
 
-  const getEmployees = (assignedTo) => {
-    console.log(assignedTo)
-    return fetch(`/employees/${assignedTo}`, {
-      mode: 'no-cors',
-      method: "GET",
-    })
-      .then(data => {
-        console.log(data)
-      })
-      .catch(() => console.log("Errrrrrrrrrrror"))
-  }
+  useEffect(() => {
+    if (prefill) {
+      preview()
+    }
+  }, []);
+
+
 
   const save = () => {
-    if (!isValidCombination(combination)) {
-      setNotification(badMsg('not valid combination'))
-      return false
-    }
-    setNotification(undefined)
-    setEmptyAssign([false])
-
     setAssignedTo(prev => {
       return prev.map(c => {
         if (c.id === prefill?.id) {
@@ -74,26 +63,28 @@ const CombinationModal = ({prefill, combinations, setAssignedTo, setEmptyAssign,
         return c
       })
     })
+
     closeModal()
-    return true
   }
 
   const add = () => {
-    if (!isValidCombination(combination)) {
-      setNotification(badMsg('not valid combination'))
-      return false
-    }
-    setNotification(undefined)
-    setEmptyAssign([false])
-    setAssignedTo(prevState => {
-      return [...prevState, {...combination, id: uuid()} ]
-    });
-    return true
-  }
+    const assignedTo = resolveCombinations([combination])
+    getFetch(`/employees/${assignedTo}`)
+      .then(data => {
+        if (!data.length) {
+          setNotification(badMsg('not valid combination'))
+          return
+        }
 
-  const addClose = () => {
-    const successful = add()
-    if (successful) closeModal()
+        setNotification(undefined)
+        setEmptyAssign([false])
+
+        setAssignedTo(prevState => {
+          return [...prevState, {...combination, id: uuid()} ]
+        })
+
+        closeModal()
+      })
   }
 
   return (
@@ -105,6 +96,8 @@ const CombinationModal = ({prefill, combinations, setAssignedTo, setEmptyAssign,
       <Modal.Body>
         <CombinationForm
           prefill={prefill}
+          disabled={disabled}
+          setDisabled={setDisabled}
           employees={employees}
           combinations={combinations}
           combination={combination}
@@ -115,12 +108,11 @@ const CombinationModal = ({prefill, combinations, setAssignedTo, setEmptyAssign,
       </Modal.Body>
       <Modal.Footer>
         <Col className="text-center">
-          <Button onClick={preview} size="sm" className="mr-2">Preview</Button>
           {prefill
             ? <Button onClick={save} size="sm" className="mr-2">Save</Button>
             : <>
-                <Button onClick={add} size="sm" className="mr-2">Add next</Button>
-                <Button onClick={addClose} size="sm" className="mr-2">Add and close</Button>
+                <Button onClick={preview} size="sm" className="mr-2">Preview</Button>
+                <Button onClick={add} size="sm" className="mr-2">Add</Button>
               </>
           }
           <Button onClick={closeModal} variant="secondary" size="sm">close</Button>

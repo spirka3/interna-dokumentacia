@@ -1,42 +1,16 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import EditBtn from "../Buttons/EditBtn";
 import EditRecordModal from "../Modals/EditRecordModal";
 import ReportBtn from "../Buttons/ReportBtn";
-import {buttonColumn, getCombinationsNames, getFieldName, orderBy} from "../../helpers/functions";
+import {buttonColumn, orderBy} from "../../helpers/functions";
 import EmptyTable from "./EmptyTable";
 import {FormattedRelease} from "../Others/Formatter";
+import MyBootstrapTable from "./MyBootstrapTable";
 
-const FoundRecords = ({found, setFound, cs}) => {
+const FoundRecords = ({found, setFound}) => {
 
   const [formData, setFormData] = useState();
-
-  useEffect(() => {
-    if(found.length && cs.length) {
-      const rec = found.map(d => {
-        const [b_id, c_id, de_id, di_id] = d.assigned_to.split('; ')
-        const combination = cs.find(c =>
-          c.city.value == c_id &&
-          c.branch.value == b_id &&
-          c.department.value == de_id &&
-          c.division.value == di_id
-        )
-        if(combination) {
-          return {
-            ...d,
-            branch: combination.branch.label,
-            department: combination.department.label,
-            division: combination.division.label,
-            city: combination.city.label,
-            record_type: 'document'
-          }
-        }
-        return d
-      })
-      console.log(found)
-      setFound(rec)
-    }
-  }, [])
 
   const columns = [
   {
@@ -53,24 +27,24 @@ const FoundRecords = ({found, setFound, cs}) => {
     text: 'Type',
     sort: true
   }, {
-    dataField: 'branch',
-    text: 'Branch',
+    dataField: 'branches',
+    text: 'Branches',
     sort: true
   }, {
-    dataField: 'division',
-    text: 'Division',
+    dataField: 'divisions',
+    text: 'Divisions',
     sort: true
   }, {
-    dataField: 'department',
-    text: 'Department',
+    dataField: 'departments',
+    text: 'Departments',
     sort: true
   }, {
-    dataField: 'city',
-    text: 'City',
+    dataField: 'cities',
+    text: 'Cities',
     sort: true
   }, {
     dataField: 'record_type',
-    text: 'Record Type',
+    text: 'Record',
     sort: true
   }, {
     dataField: 'complete',
@@ -89,13 +63,10 @@ const FoundRecords = ({found, setFound, cs}) => {
 
   return (
     <>
-      <BootstrapTable
-        keyField="id"
-        hover
+      <MyBootstrapTable
         data={found}
         columns={columns}
         defaultSorted={orderBy('name')}
-        noDataIndication={EmptyTable}
         // horizontal scroll
         wrapperClasses="table-responsive"
         rowClasses="text-nowrap"

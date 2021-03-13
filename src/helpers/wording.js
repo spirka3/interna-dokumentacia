@@ -2,18 +2,18 @@ export const wording = {
   'sk': {
     loginPage: {
       header: 'Prihlasovanie',
-      email: 'Email',
+      login: 'Login',
       password: 'Heslo',
-      submit: 'Prihlasit sa',
+      submit: 'Prihlásiť sa',
       notification: {
-        wrongLogin: 'Zle prihlasovacie udaje',
-        wrongCard: 'Nepodarilo sa prihlasenie kartou'
+        wrongLogin: 'Zlé prihlasovacie údaje',
+        wrongCard: 'Nepodarilo sa prihlásenie kartou'
       }
     },
     navigation: {
       login: 'Prihlasit sa',
-      recordsToSign: 'Na podpisanie',
-      signedRecords: 'Podpisané',
+      recordsToSign: 'Na podpísanie',
+      signedRecords: 'Podpísané',
       addRecord: 'Pridať',
       savedRecords: 'Uložené',
       finder: 'Vyhľadávanie',
@@ -24,7 +24,7 @@ export const wording = {
   'en': {
     loginPage: {
       header: 'Login',
-      email: 'Email',
+      login: 'Login',
       password: 'Password',
       submit: 'Login',
       notification: {
@@ -34,10 +34,10 @@ export const wording = {
     },
     navigation: {
       login: 'Login',
-      recordsToSign: 'Records to sign',
-      signedRecords: 'Signed records',
-      addRecord: 'Add record',
-      savedRecords: 'Saved records',
+      recordsToSign: 'To sign',
+      signedRecords: 'Signed',
+      addRecord: 'Add new',
+      savedRecords: 'Saved',
       finder: 'Finder',
       settings: 'Settings',
       logout: 'Logout',

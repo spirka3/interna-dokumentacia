@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import MyHookForm from "./MyHookForm";
 import {Form, Row, Col, Button} from "react-bootstrap";
@@ -13,8 +13,11 @@ import {
   prefillDocumentForm,
   successResponse, getCombinationsNames, prepareCombinations, getFormID
 } from "../../helpers/functions";
+import {PairContext} from "../../App";
 
 const DocumentForm = ({setRecords, formData, setFormData, actual}) => {
+  const pairs = useContext(PairContext);
+  console.log(formData)
   // formData = doc_form
   const {register, handleSubmit} = useForm({
     defaultValues: prefillDocumentForm(formData)
@@ -37,10 +40,8 @@ const DocumentForm = ({setRecords, formData, setFormData, actual}) => {
     })
       .then(response => response.json())
       .then(res => {
-        const combs = prepareCombinations(res)
-        setCombinations(combs)
-        const assign = getCombinationsNames(formData, combs)
-        setAssignedTo(assign)
+        setCombinations(prepareCombinations(res))
+        setAssignedTo(getCombinationsNames(formData, pairs))
       })
       .catch((e) => console.log(e))
   },[])
@@ -48,7 +49,7 @@ const DocumentForm = ({setRecords, formData, setFormData, actual}) => {
   const onSubmit = (data) => {
     if (assignedTo.length === 0){
       setNotification(badMsg("At least one combination is required"))
-      // return
+      return
     }
 
     data = correctDocumentFormData(data, assignedTo)
@@ -84,31 +85,33 @@ const DocumentForm = ({setRecords, formData, setFormData, actual}) => {
       method: "POST",
       body: JSON.stringify(data)
     })
-      .then(res => {
-        if (successResponse(res)) {
-          setNotification(goodMsg(`${action} was successful`))
-        } else {
-          setNotification(badMsg(`${action} failed`))
-        }
-        return res.json()
-      })
-      .catch((e) => console.log('error', e))
+    .then(res => {
+      if (successResponse(res)) {
+        setNotification(goodMsg(`${action} was successful`))
+      } else {
+        setNotification(badMsg(`${action} failed`))
+      }
+      return res.json()
+    })
+    .catch((e) => console.log('error', e))
   }
 
   const upsertConfirm = (data, action) => {
     return fetch(`/document/${action}`, {
       method: "POST",
       body: JSON.stringify(data)
-    }).then(res => {
+    })
+    .then(res => {
       if (successResponse(res)) {
         setNotification(goodMsg(`${action} was successful`))
-        if (setRecords) filterSavedRec(data)   // update table data
+        if (setRecords) filterSavedRec(data)    // update table data
         if (setFormData) setFormData(undefined) // hide modal
       } else {
         setNotification(badMsg(`${action} failed`))
       }
       return res.json()
-    }).catch((e) => console.log('error', e))
+    })
+    .catch((e) => console.log('error', e))
   }
 
   const filterSavedRec = (data) => {

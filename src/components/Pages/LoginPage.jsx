@@ -1,13 +1,20 @@
 import React, {useEffect, useState} from "react";
 import {Redirect} from "react-router";
-import useSessionStorage from "@rooks/use-sessionstorage";
 import LoginForm from "../Forms/LoginForm";
-import {badMsg, getUser} from "../../helpers/functions";
+import {badMsg, getUser, reloadPage} from "../../helpers/functions";
+import {wording} from "../../helpers/wording";
 
 const LoginPage = () => {
 
-  const [language, setLanguage] = useSessionStorage("language", "sk");
-  const [notification, setNotification] = useState();
+  const [notification, setNotification] = useState()
+  const [language, setLanguage] = useState('sk')
+
+  const {
+    notification: {
+      wrongLogin,
+      wrongCard,
+    }
+  } = wording[language].loginPage
 
   let cardInput = '';
   const maxCardInputTimeDifference = 40;
@@ -22,14 +29,12 @@ const LoginPage = () => {
   function isLetter(e) {
     let aKeycode = 65;
     let zKeycode = 90;
-
     return e.keyCode >= aKeycode && e.keyCode <= zKeycode
   }
 
   function isNumber(e) {
     let zeroKeycode = 48;
     let nineKeycode = 57;
-
     return e.keyCode >= zeroKeycode && e.keyCode <= nineKeycode
   }
 
@@ -68,7 +73,7 @@ const LoginPage = () => {
       role: data.role
     }
     sessionStorage.setItem('user', JSON.stringify(user))
-    window.location.reload(false) // reloadPage
+    reloadPage()
   }
 
   const onSubmit = (data) => {
@@ -78,7 +83,7 @@ const LoginPage = () => {
     })
       .then(response => response.json())
       .then(data => { setUser(data) })
-      .catch(() => setNotification(badMsg("Wrong login input")))
+      .catch(() => setNotification(badMsg(wrongLogin)))
   }
 
   const findByCard = (input) => {
@@ -88,12 +93,12 @@ const LoginPage = () => {
     })
       .then(response => response.json())
       .then(data => { setUser(data) })
-      .catch(() => setNotification(badMsg("Wrong card input")))
+      .catch(() => setNotification(badMsg(wrongCard)))
   }
 
-  if (getUser() !== null)
-    return <Redirect to="/records-to-sign"/>
-
+  if (getUser()) {
+    return <Redirect to="/records-to-sign" />
+  }
   return (
     <LoginForm
       onSubmit={onSubmit}

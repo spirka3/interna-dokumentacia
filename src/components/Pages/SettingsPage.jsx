@@ -48,10 +48,9 @@ const SettingsPage = ({submitError}) => {
     }
   }
 
-
   const placeholderOption = () => {
     return (
-      <option key={-1} disabled value="default">Select pobocka</option>
+      <option key={-1} disabled value="default">Select division</option>
     )
   }
 
@@ -163,37 +162,32 @@ const SettingsPage = ({submitError}) => {
   return (
     <div>
       <script crossOrigin="true"/>
-      <Form className="pl-3">
-        <Row className="pt-3">Choose division</Row>
-        <Row>
-          <select defaultValue="default" id="selectDivision">
-            {createMenu()}
-          </select>
-        </Row>
-        <Row className="pt-3">
-          <input type="file" required onChange={changeEmployees}/>
-        </Row>
-        <Row className="pt-3">
-          <Button type="button" onClick={uploadEmployees} >Upload</Button>
-        </Row>
+      <p className="pt-5"><strong>IMPORT EMPLOYEES</strong></p>
+      <Form>
+        <select className="mb-3" defaultValue="default" id="selectDivision">
+          {createMenu()}
+        </select>
+        <span> Choose division</span>
+        <br/>
+        <input type="file" required onChange={changeEmployees}/>
+        <Button type="button" onClick={uploadEmployees} >Upload</Button>
         { isError(employeesError) && renderError(employeesError)}
         { isOk(employeesError) && renderOk()}
       </Form>
-
-      <Form className="pt-5">
+      <hr/>
+      <p className="pt-5"><strong>IMPORT CARDS</strong></p>
+      <Form>
         <p>Upload file with employee card information.</p>
-        <Form.Group>
-          <Form.File id="cardsFile" label="Select file." onChange={changeCards}/>
-        </Form.Group>
+        <input type='file' id="cardsFile" onChange={changeCards}/>
         <Button type="button" onClick={uploadCards}>Upload</Button>
         { isError(cardsError) && renderError(cardsError)}
         { isOk(cardsError) && renderOk()}
       </Form>
-      <div className="form-check">
+      <hr/>
+      {/* SHOW DELETED EMPLOYEES */}
+      <div className="form-check mt-5">
         <input className="form-check-input" type="checkbox" value="" id="checkShowDeleted" onClick={changeShowDeleted}/>
-        <label className="form-check-label" htmlFor="checkShowDeleted">
-          Show deleted employees.
-        </label>
+        <strong>SHOW DELETED EMPLOYEES</strong>
       </div>
     </div>
   )

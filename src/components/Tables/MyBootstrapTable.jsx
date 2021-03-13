@@ -2,22 +2,32 @@ import BootstrapTable from "react-bootstrap-table-next";
 import EmptyTable from "./EmptyTable";
 import React from "react";
 
-const MyBootstrapTable = ({title, data, columns, order, expandRow, classes}) => {
-
+const MyBootstrapTable = ({
+  title,
+  data,
+  columns,
+  order,
+  expandRow,
+  classes,
+  ...rest
+}) => {
   const TableHeader = () => {
-    if (! title)
-      return null
+    if (!title) return null;
     return (
-      <h3 style={{
-        borderRadius: '0.25em',
-        textAlign: 'center',
-        border: '2px solid gray',
-        margin: "2% 0",
-        padding: '0.5em',
-        marginTop: '1.5%'
-      }}>{title}</h3>
-    )
-  }
+      <h3
+        style={{
+          borderRadius: "0.25em",
+          textAlign: "center",
+          border: "2px solid gray",
+          margin: "2% 0",
+          padding: "0.5em",
+          marginTop: "1.5%",
+        }}
+      >
+        {title}
+      </h3>
+    );
+  };
 
   return (
     <>
@@ -31,9 +41,10 @@ const MyBootstrapTable = ({title, data, columns, order, expandRow, classes}) => 
         noDataIndication={EmptyTable}
         defaultSorted={order}
         expandRow={expandRow}
+        {...rest}
       />
     </>
-  )
+  );
 };
 
-export default MyBootstrapTable
+export default MyBootstrapTable;

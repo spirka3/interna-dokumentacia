@@ -11,6 +11,7 @@ body {
 }
 .nav-link {
     color: #ffffff !important;
+    padding-left: 8px !important;
 }
 
 /*
@@ -54,6 +55,11 @@ body {
 /*
  *    Finder.jsx
 */
+
+.container.finder {
+    all: unset !important;
+}
+
 .large-container {
     margin: 2% 3%;
 }

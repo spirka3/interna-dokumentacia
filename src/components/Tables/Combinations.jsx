@@ -1,95 +1,116 @@
-import React, {useState} from "react";
-import BootstrapTable from "react-bootstrap-table-next";
-import {Plus, XSquare, Pencil} from 'react-bootstrap-icons';
+import React, { useState } from "react";
+import { Plus, XSquare, Pencil } from "react-bootstrap-icons";
 import CombinationModal from "../Modals/CombinationModal";
-import EmptyTable from "./EmptyTable";
 import Button from "react-bootstrap/Button";
-import {buttonColumn} from "../../helpers/functions";
+import { buttonColumn } from "../../helpers/functions";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import MyBootstrapTable from "./MyBootstrapTable";
 
-const Combinations = ({combinations, assignedTo, setAssignedTo, setEmptyAssign}) => {
-
-  const [showModal, setShowModal] = useState(false)
+const Combinations = ({
+  combinations,
+  assignedTo,
+  setAssignedTo,
+  setEmptyAssign,
+}) => {
+  const [showModal, setShowModal] = useState(false);
   const [prefill, setPrefill] = useState();
 
-  const openModal = () => setShowModal(true)
+  const openModal = () => setShowModal(true);
   const closeModal = () => {
-    setPrefill(undefined)
-    setShowModal(false)
-  }
-
-  const EditIcon = (_, row) => {
-    return <Pencil size="25" color="black" onClick={() => editCombination(row)}/>
-  }
-
-  const editCombination = (row) => {
-    setPrefill(row)
-    openModal()
-  }
-
-  const DeleteIcon = (_, row) => {
-    return <XSquare size="25" color="red" onClick={() => deleteCombination(row)}/>
-  }
-
-  const deleteCombination = (row) => {
-    setAssignedTo(prevState => {
-      return prevState.filter(c => c.id !== row.id)
-    })
-  }
-
-  const AddIcon = () => {
-    return (
-      <Button variant="success" onClick={openModal} size="sm" className="mb-2">
-        <Plus size="20" color="white"/>
-        <span>add combination</span>
-      </Button>
-    )
+    setPrefill(undefined);
+    setShowModal(false);
   };
 
-  const getLabels = (field) => {
-    return <>{field.map(f => f.label).join(',')}</>
-  }
-  const Branch = (_, row) => getLabels(row.branch)
-  const Division = (_, row) => getLabels(row.division)
-  const Department = (_, row) => getLabels(row.department)
-  const City = (_, row) => getLabels(row.city)
+  const editCombination = (row) => {
+    console.log(row)
+    setPrefill(row);
+    openModal();
+  };
 
-  const columns = [{
-    dataField: 'branch',
-    text: 'Branch',
-    formatter: Branch
-  }, {
-    dataField: 'division',
-    text: 'Division',
-    formatter: Division
-  }, {
-    dataField: 'department',
-    text: 'Department',
-    formatter: Department
-  }, {
-    dataField: 'city',
-    text: 'City',
-    formatter: City
-  }, {
-    ...buttonColumn('edit'),
-    formatter: EditIcon
-  }, {
-    ...buttonColumn('del'),
-    formatter: DeleteIcon
-  }];
+  const EditIcon = (_, row) => (
+    <OverlayTrigger
+      placement={"right"}
+      overlay={
+        <Tooltip id={`tooltip-right`} className="text-left">
+          {!row.removedEmployees || !row.removedEmployees.length ? (
+            <p>Empty</p>
+          ) : (
+            row.removedEmployees.map((e) => <p key={e.value}>{e.label}</p>)
+          )}
+        </Tooltip>
+      }
+    >
+      <Pencil size="25" color="black" onClick={() => editCombination(row)} />
+    </OverlayTrigger>
+  );
+
+  const DeleteIcon = (_, row) => (
+    <XSquare size="25" color="red" onClick={() => deleteCombination(row)} />
+  );
+
+  const deleteCombination = (row) => {
+    setAssignedTo((prevState) => {
+      return prevState.filter((c) => c.id !== row.id);
+    });
+  };
+
+  const AddIcon = () => (
+    <Button variant="success" onClick={openModal} size="sm" className="mb-2">
+      <Plus size="20" color="white" />
+      <span>add combination</span>
+    </Button>
+  );
+
+  const getLabels = (field) => {
+    return <>{field?.map((f) => f.label).join(",")}</>;
+  };
+  const Branches = (_, row) => getLabels(row.branches);
+  const Divisions = (_, row) => getLabels(row.divisions);
+  const Departments = (_, row) => getLabels(row.departments);
+  const Cities = (_, row) => getLabels(row.cities);
+
+  const columns = [
+    {
+      dataField: "branches",
+      text: "branches",
+      formatter: Branches,
+    },
+    {
+      dataField: "divisions",
+      text: "Divisions",
+      formatter: Divisions,
+    },
+    {
+      dataField: "departments",
+      text: "departments",
+      formatter: Departments,
+    },
+    {
+      dataField: "cities",
+      text: "cities",
+      formatter: Cities,
+    },
+    {
+      ...buttonColumn("edit"),
+      formatter: EditIcon,
+    },
+    {
+      ...buttonColumn("del"),
+      formatter: DeleteIcon,
+    },
+  ];
 
   return (
     <>
-      <BootstrapTable
-        keyField="id"
+      <MyBootstrapTable
         data={assignedTo}
         columns={columns}
-        noDataIndication={EmptyTable}
         // horizontal scroll
         wrapperClasses="table-responsive"
         rowClasses="text-nowrap"
       />
-      <AddIcon/>
-      {showModal &&
+      <AddIcon />
+      {showModal && (
         <CombinationModal
           prefill={prefill}
           combinations={combinations}
@@ -97,9 +118,9 @@ const Combinations = ({combinations, assignedTo, setAssignedTo, setEmptyAssign})
           setEmptyAssign={setEmptyAssign}
           closeModal={closeModal}
         />
-      }
+      )}
     </>
-  )
-}
+  );
+};
 
 export default Combinations;

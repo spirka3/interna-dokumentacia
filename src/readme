@@ -1,24 +1,44 @@
-TODO CHECK
-#03 -> ... nutnosť zadania hesla sa dá zrušiť pre kiosky alebo globálne nastavením premennej v konfiguračnom súbore
-           (vyžadované vždy, vyžadované iba on-line, nevyžadované nikdy)
-#05 -> ... administrátor sa môže prepnúť do role ľubovoľného nadriadeného
-#11
- ..
-#15
-#16 -> ... v zozname je zobrazené aj jeho ANET, oddelenie a divízia
-#17
-#18
-#21 ->
-#24
- ..
-#30
-#32
-#34
-#35
 
-FIX ME
-saved -> @send -> nezobrazi sa vo found
-found -> @sendAsNewVersion -> nezobrazi sa vo found ani jedna verzia
+MATO
+TODO #17 -> otestovat odosielanie mailov pri online skoleni
+done TODO #24 -> filter podla zamestnanca
+TODO #24 -> skill-matrix len po dvojkobinacii
+done TODO #24 -> skill-matrix podla nadriadeneho
+TODO #28 -> export skill-matrix
+TODO #29 -> import zamestnancov
+TODO #30 -> import kariet
+done TODO #00 -> removedEmployees
+done FIX => complete field
+FIX => viem zmenit veci na prazdny string
 
-Prirucka:
- 1) Ak zmenim nieco na prazdny string, tak to ponecha stary
+
+JANCI
+done TODO #12 -> combinations
+TODO #12 -> removedEmplyees
+done #16 -> zobrazit aj jeho ANET, oddelenie a divízia
+TODO #24 -> 3 rozne dopyty, record dat prec,
+TODO #24 -> skill-matrix len po dvojkobinacii
+TODO #24 -> skill-matrix podla nadriadeneho [/skill/matrix/:id]
+TODO #24 -> filter podla zamestnanca        [/signed /tosign]
+TODO #25 -> report
+TODO #35 -> preklad
+TODO change font
+TODO skillmatrix -> manipulate
+done -> po odhlaseni redirect to login
+
+
+TEST email notifications
+TEST correct movement between tables
+TEST new employee
+
+
+TODO IN FUTURE
+#03 -> ...nutnosť zadania hesla sa dá zrušiť pre kiosky alebo globálne nastavením premennej v konfiguračnom súbore(vyžadované vždy, vyžadované iba on-line, nevyžadované nikdy)
+#05 -> ...administrátor sa môže prepnúť do role ľubovoľného nadriadeného
+#14 -> Všetkým nadriadeným sa pošle informačný mail o tom, že ich podriadení majú oboznámenie s dokumentom podpísať
+#21 -> Opakovane preskolenie
+#28 -> Export filter a report
+
+
+
+
