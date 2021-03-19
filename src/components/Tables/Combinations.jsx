@@ -55,7 +55,7 @@ const Combinations = ({
   };
 
   const AddIcon = () => (
-    <Button variant="success" onClick={openModal} size="sm" className="mb-2">
+    <Button variant="dark" onClick={openModal} size="sm" className="mb-2">
       <Plus size="20" color="white" />
       <span>add combination</span>
     </Button>

@@ -1,16 +1,18 @@
-import React, {useContext, useEffect, useState} from "react";
-import BootstrapTable from 'react-bootstrap-table-next';
+import React, {useState} from "react";
 import EditBtn from "../Buttons/EditBtn";
 import EditRecordModal from "../Modals/EditRecordModal";
 import ReportBtn from "../Buttons/ReportBtn";
 import {buttonColumn, orderBy} from "../../helpers/functions";
-import EmptyTable from "./EmptyTable";
 import {FormattedRelease} from "../Others/Formatter";
 import MyBootstrapTable from "./MyBootstrapTable";
 
-const FoundRecords = ({found, setFound}) => {
+const FoundDocuments = ({found, setFound, setReport}) => {
 
   const [formData, setFormData] = useState();
+
+  const Percentage = (col, row) => {
+    return Math.round(row.complete * 100) / 100 + '%'
+  }
 
   const columns = [
   {
@@ -43,12 +45,9 @@ const FoundRecords = ({found, setFound}) => {
     text: 'Cities',
     sort: true
   }, {
-    dataField: 'record_type',
-    text: 'Record',
-    sort: true
-  }, {
     dataField: 'complete',
     text: 'State',
+    formatter: Percentage,
     sort: true
   }, {
     ...buttonColumn('EditBtn'),
@@ -58,7 +57,10 @@ const FoundRecords = ({found, setFound}) => {
     }
   }, {
     ...buttonColumn('ReportBtn'),
-    formatter: ReportBtn
+    formatter: ReportBtn,
+      formatExtraData: {
+        setReport: setReport,
+      }
   }];
 
   return (
@@ -83,4 +85,4 @@ const FoundRecords = ({found, setFound}) => {
   );
 };
 
-export default FoundRecords;
+export default FoundDocuments;

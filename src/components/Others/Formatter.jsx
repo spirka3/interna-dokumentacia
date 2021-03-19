@@ -9,7 +9,7 @@ export const FullName = (_, row) => {
   return <>{row.employee.first_name} {row.employee.last_name}</>
 }
 
-const formatted = (date) => date.substr(0,10).split("-").reverse().join(".");
+export const formatted = (date) => date.substr(0,10).split("-").reverse().join(".");
 
 export const FormattedDate = (_, row) => {
   return <>{formatted(row.date.Time)}</>

@@ -31,7 +31,7 @@ const Navigation = () => {
   const LogoutNav = () => <NavLink href="/login">{x.login}</NavLink>;
 
   return (
-    <Navbar expand="md" bg="dark" variant="dark">
+    <Navbar expand="md" bg="dark" variant="dark" sticky="top" className='navigation'>
       <Navbar.Brand href="/">
         <img
           alt="logo"

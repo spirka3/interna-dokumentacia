@@ -1,11 +1,9 @@
 import {Button} from "react-bootstrap";
 import React from "react";
 
-const ReportBtn = (cell, row) => {
+const ReportBtn = (cell, row, index, {setReport}) => {
 
-  const handleClick = () => {
-    console.log('Show me the report') // TODO ME implement report
-  }
+  const handleClick = () => setReport(row)
 
   return(
     <Button onClick={handleClick} size={"sm"}>

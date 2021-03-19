@@ -5,7 +5,11 @@ const EditBtn = (cell, row, index, {setFormData}) => {
 
   const handleClick = () => setFormData(row)
 
-  return <Button onClick={handleClick} size="sm" id="editBtn">Edit</Button>
+  return (
+    <Button variant='outline-primary' onClick={handleClick} size="sm" id="editBtn">
+      Edit
+    </Button>
+  )
 };
 
 export default EditBtn;

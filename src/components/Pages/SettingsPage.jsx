@@ -1,10 +1,15 @@
 import React, {useState, useEffect} from "react";
-import {Button, Form, Row, Alert} from "react-bootstrap";
+import {Button, Form, Row, Alert, Col} from "react-bootstrap";
 import {ExclamationTriangle} from 'react-bootstrap-icons';
+import {getSelectOptions} from "../../helpers/functions";
 
 const SettingsPage = ({submitError}) => {
 
-  const [divisions, setDivisions] = useState({})
+  // TODO:
+
+  const import_types = ['import_1', 'import_2', 'import_3', 'import_5']
+  const [selectedType, setSelectedType] = useState()
+
   const [cardsFile, setCards] = useState(null)
   const [employeesFile, setEmployees] = useState({})
   const [cardsError, setCardsError] = useState("")
@@ -25,32 +30,9 @@ const SettingsPage = ({submitError}) => {
     }
   }, [showDeleted])
 
-  useEffect(() => {
-    fetch('/divisions', {
-      method: 'get',
-      mode: 'no-cors'
-    }).then(
-      result => result.json()
-    ).then(result => {
-      renderDivs(result)
-      setDivisions(result)
-    })
-
-  }, [])
-
-  const renderDivs = (result) => {
-    let select = document.getElementById("selectDivision")
-    for(let i=0; i<result.length; i++) {
-      let name = result[i]['name']
-      let value = result[i]['id']
-      let option = new Option(name, value)
-      select.options.add(option)
-    }
-  }
-
   const placeholderOption = () => {
     return (
-      <option key={-1} disabled value="default">Select division</option>
+      <option key={-1} disabled value="default">Select import type</option>
     )
   }
 
@@ -101,13 +83,10 @@ const SettingsPage = ({submitError}) => {
     const data = new FormData();
     let name = `employees_upload_${Date.now()}`
 
-    const select = document.getElementById("selectDivision");
-    const divId = select.value;
-
-    if(divId !== "default" && employeesFile.name !== undefined) {
+    if(selectedType && employeesFile.name !== undefined) {
       data.append('file', employeesFile)
       data.append('name', name)
-      data.append('division', divId)
+      data.append('import', selectedType)
 
       fetch("http://localhost:7777/file/upload", {
         mode: 'no-cors',
@@ -125,7 +104,7 @@ const SettingsPage = ({submitError}) => {
       });
     } else {
       let msg = ""
-      if(divId === "default") msg = "Division is not set"
+      if(!selectedType) msg = "Import is not set"
       else msg = "File is not set"
       setEmployeesError(msg)
     }
@@ -164,10 +143,18 @@ const SettingsPage = ({submitError}) => {
       <script crossOrigin="true"/>
       <p className="pt-5"><strong>IMPORT EMPLOYEES</strong></p>
       <Form>
-        <select className="mb-3" defaultValue="default" id="selectDivision">
-          {createMenu()}
+
+        <select
+          onChange={(e) => setSelectedType(e.target.value)}
+          // ref={register({validate: v => v !== ""})}
+          name="type"
+          required
+          value={selectedType}
+        >
+          {getSelectOptions(import_types)}
         </select>
-        <span> Choose division</span>
+
+        <span> Choose import</span>
         <br/>
         <input type="file" required onChange={changeEmployees}/>
         <Button type="button" onClick={uploadEmployees} >Upload</Button>

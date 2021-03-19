@@ -17,7 +17,7 @@ import {PairContext} from "../../App";
 
 const TrainingForm = ({setRecords, formData, setFormData, actual}) => {
   const pairs = useContext(PairContext);
-
+  console.log(formData)
   // formData = trn_form
   const {register, handleSubmit} = useForm({
     defaultValues: prefillTrainingForm(formData)
@@ -218,10 +218,10 @@ const TrainingForm = ({setRecords, formData, setFormData, actual}) => {
       {notification && <CustomAlert notification={notification}/> }
       {/* SAVE | SEND BUTTONS */}
       <div className="pt-1 btn-block text-right">
-        <Button type="submit" className="mr-1" onClick={()=>setAction('save')}>
+        <Button variant='outline-primary' type="submit" className="mr-1" onClick={()=>setAction('save')}>
           Save
         </Button>
-        <Button type="submit" variant="danger" onClick={()=>setAction('send')}>
+        <Button type="submit" onClick={()=>setAction('send')}>
           Send
         </Button>
       </div>

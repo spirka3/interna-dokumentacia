@@ -12,6 +12,7 @@ import SavedRecordsPage from "./components/Pages/SavedRecordsPage";
 import SettingsPage from "./components/Pages/SettingsPage";
 import Page404 from "./components/Pages/Page404";
 import FinderPage from "./components/Pages/FinderPage";
+import ReportPage from "./components/Pages/ReportPage";
 
 const Routes = () => {
 
@@ -47,6 +48,7 @@ const Routes = () => {
             <Private path="/add-record" component={AddRecordPage}/>
             <Private path="/saved-record" component={SavedRecordsPage}/>
             <Private path="/settings" component={SettingsPage}/>
+            <Private path="/report" component={ReportPage}/>
           </> }
           <Route path="*" component={Page404}/>
         </Switch>

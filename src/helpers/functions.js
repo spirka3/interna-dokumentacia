@@ -7,6 +7,7 @@ export const buttonColumn = (field = "", text = "") => {
   return {
     dataField: field,
     text: text,
+    sort: true,
     headerStyle: { width: "1%" },
   };
 };
@@ -126,7 +127,7 @@ export const getFieldName = (field, id, pairs) => {
 };
 
 export const getEmployeesNames = (formData, employees) => {
-  if (!formData) return [];
+  if (!formData || !formData.unreleased_id_employees) return [];
   return formData.unreleased_id_employees
     .split(",")
     .map((a) => employees.find((e) => e.id == a));

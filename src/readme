@@ -1,35 +1,37 @@
 
 MATO
 TODO #17 -> otestovat odosielanie mailov pri online skoleni
-done TODO #24 -> filter podla zamestnanca
+done #24 -> filter podla zamestnanca
 TODO #24 -> skill-matrix len po dvojkobinacii
-done TODO #24 -> skill-matrix podla nadriadeneho
+done #24 -> skill-matrix podla nadriadeneho
 TODO #28 -> export skill-matrix
 TODO #29 -> import zamestnancov
 TODO #30 -> import kariet
-done TODO #00 -> removedEmployees
-done FIX => complete field
+TODO #25 -> report
+done #00 -> removedEmployees
+done => complete field
 FIX => viem zmenit veci na prazdny string
 
 
 JANCI
-done TODO #12 -> combinations
+done #12 -> combinations
 TODO #12 -> removedEmplyees
 done #16 -> zobrazit aj jeho ANET, oddelenie a divízia
-TODO #24 -> 3 rozne dopyty, record dat prec,
-TODO #24 -> skill-matrix len po dvojkobinacii
-TODO #24 -> skill-matrix podla nadriadeneho [/skill/matrix/:id]
-TODO #24 -> filter podla zamestnanca        [/signed /tosign]
+done #24 -> filter podla zamestnanca
+done #24 -> filter podla kombinacie
+TODO #24 -> filter podla nadriadeneho
+TODO #24 -> skill-matrix podla dvojkobinacii
+TODO #24 -> skill-matrix podla nadriadeneho
 TODO #25 -> report
 TODO #35 -> preklad
-TODO change font
-TODO skillmatrix -> manipulate
 done -> po odhlaseni redirect to login
+fix => filter by branch | city
 
 
 TEST email notifications
 TEST correct movement between tables
 TEST new employee
+TEST skillmatrix -> manipulacia
 
 
 TODO IN FUTURE

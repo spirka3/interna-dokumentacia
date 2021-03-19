@@ -26,7 +26,7 @@ const SendBtn = (cell, row, index, {setSavedRec, setNotification}) => {
   }
 
   return (
-    <Button id="save" variant="danger" size="sm" onClick={handleClick}>Send</Button>
+    <Button id="save" size="sm" onClick={handleClick}>Send</Button>
   );
 };
 

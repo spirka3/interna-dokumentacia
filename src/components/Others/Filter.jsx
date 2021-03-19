@@ -4,14 +4,13 @@ import {records, types2} from "../../helpers/data";
 import Select from 'react-select'
 import {emptyCombination, setOf} from "../../helpers/functions";
 
-const Filter = ({showSM, setShowSM, cs, e, found, handleSearch}) => {
+const Filter = ({showSM, setShowSM, cs, e, es, matrixBySuperior, searchByEmployee, searchByCombination}) => {
 
   const [filter, setFilter] = useState({
-    // type: [], record: [],
-    branches: [], cities: [],
-    departments: [], divisions: [],
-    // employeeName: '', superiorName: '',
-    // recordName: ''
+    branches: [],
+    cities: [],
+    departments: [],
+    divisions: [],
   });
 
   const [select, setSelect] = useState()
@@ -83,7 +82,7 @@ const Filter = ({showSM, setShowSM, cs, e, found, handleSearch}) => {
     if (select !== 'cities') setCity()
   }
 
-  const search = () => {
+  const handleCombination = () => {
     console.log(filter)
     const res = {
       branch: filter.branches.map(v => v.value).join(','),
@@ -92,13 +91,22 @@ const Filter = ({showSM, setShowSM, cs, e, found, handleSearch}) => {
       division: filter.divisions.map(v => v.value).join(',')
     }
     // const r = resolveCombinations([filter])
-    handleSearch(res)
+    searchByCombination(res)
+  }
+
+  const handleEmployee = (data) => {
+    searchByEmployee(data)
+  }
+
+  const handleToggleSearch = () => {
+    matrixBySuperior(e)
+    setShowSM(!showSM)
   }
 
   const selector = (name, label, options) => (
     <Col>
       <Select
-        isMulti={true}
+        isMulti
         name={name}
         placeholder={label}
         options={options}
@@ -110,34 +118,42 @@ const Filter = ({showSM, setShowSM, cs, e, found, handleSearch}) => {
   )
 
   return (
-    <Form className="pb-4">
+    <Form>
       <Row className='pb-2'>
-        {/*{ selector("type", "Types", types2) }*/}
+        <Col>
+          <Select
+            defaultValue={e}
+            name={"employeeName"}
+            placeholder={"Employee Name"}
+            options={es}
+            onChange={handleEmployee}
+          />
+        </Col>
         { selector("branches", "branches", branches) }
         { selector("divisions", "Divisions", divisions) }
         { selector("departments","departments", departments) }
         { selector("cities","Cities", cities) }
         {/*{ selector("record","Record", records) }*/}
+        <Button className="mr-1" onClick={handleCombination}>
+          Search
+        </Button>
       </Row>
       <Row>
-        { selector("employeeName", "Employee Name", e) }
-        { selector("superiorName", "Superior Name", e) }
-
+        {/*<Col/>*/}
         {/* BUTTONS */}
-        <Col className="text-right">
-          <Button className="mr-1" onClick={search}>
-            Search
-          </Button>
-          <Button className="mr-1"
-            disabled={!found.length}
-            onClick={() => setShowSM(!showSM)}
+          <Button
+            className='ml-3'
+            // disabled={
+            //   e === undefined &&
+            //   filter.branches.length !== 0 ||
+            //   filter.divisions.length !== 0 ||
+            // ( filter.cities.length === 0 && filter.departments.length === 0)
+            // }
+            onClick={handleToggleSearch}
           >
             {`Show ${showSM ? 'table' : 'skillMatrix'}`}
           </Button>
-          <Button disabled={!found.length}>
-            Export
-          </Button>
-        </Col>
+          {/* TODO <Button onClick={export}>Export</Button */ }
       </Row>
     </Form>
   )

@@ -118,3 +118,15 @@ body {
     padding: 10px 0 0 10px !important;
     width: 400px !important;
 }
+
+.navigation {
+    height: 75px !important;
+}
+
+.corner-toolbar {
+    padding-top: 5px;
+    background-color: white;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 75px;
+}

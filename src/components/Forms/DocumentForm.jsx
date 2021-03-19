@@ -225,10 +225,10 @@ const DocumentForm = ({setRecords, formData, setFormData, actual}) => {
       {notification && <CustomAlert notification={notification}/> }
       {/* SAVE | SEND BUTTONS */}
       <div className="pt-1 btn-block text-right">
-        <Button type="submit" className="mr-1" onClick={()=>setAction('save')}>
+        <Button variant='outline-primary' type="submit" className="mr-1" onClick={()=>setAction('save')}>
           Save
         </Button>
-        <Button type="submit" variant="danger" onClick={()=>setAction('send')}>
+        <Button type="submit" onClick={()=>setAction('send')}>
           {actual ? 'Send as new version' : 'Send'}
         </Button>
       </div>
