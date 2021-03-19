@@ -91,17 +91,23 @@ const FinderPage = () => {
   }
 
   const matrixBySuperior = (superior) => {
-    // setE(superior)
-    // setDocuments([])
-    //
-    // const id = superior.value
-    // fetch(`/skill/matrix/${id}`, {
-    //   method: "GET",
-    // })
-    //   .then(res => res.json())
-    //   .then(r => {
-    //     console.log(r)
-    //   })
+    setE(superior)
+    setDocuments([])
+
+    const id = superior.value
+    fetch(`/skill/matrix`, {
+      method: "POST",
+      body: {
+        superior_id: id,
+        // employeeId: id,
+        // documentId: id,
+        // filter: "",
+      }
+    })
+      // .then(res => res.json())
+      .then(r => {
+        console.log(r)
+      })
   }
 
   function addCompleteness(records, percentage) {
