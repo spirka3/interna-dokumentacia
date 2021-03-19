@@ -1,15 +1,13 @@
 
 MATO
-TODO #17 -> otestovat odosielanie mailov pri online skoleni
 done #24 -> filter podla zamestnanca
-TODO #24 -> skill-matrix len po dvojkobinacii
+done #24 -> skill-matrix len po dvojkobinacii
 done #24 -> skill-matrix podla nadriadeneho
-TODO #28 -> export skill-matrix
 TODO #29 -> import zamestnancov
 TODO #30 -> import kariet
-TODO #25 -> report
+done #25 -> report
 done #00 -> removedEmployees
-done => complete field
+done #00 => complete field
 FIX => viem zmenit veci na prazdny string
 
 
@@ -19,12 +17,11 @@ TODO #12 -> removedEmplyees
 done #16 -> zobrazit aj jeho ANET, oddelenie a divízia
 done #24 -> filter podla zamestnanca
 done #24 -> filter podla kombinacie
-TODO #24 -> filter podla nadriadeneho
 TODO #24 -> skill-matrix podla dvojkobinacii
 TODO #24 -> skill-matrix podla nadriadeneho
 TODO #25 -> report
 TODO #35 -> preklad
-done -> po odhlaseni redirect to login
+done #00 -> po odhlaseni redirect to login
 fix => filter by branch | city
 
 
@@ -39,8 +36,7 @@ TODO IN FUTURE
 #05 -> ...administrátor sa môže prepnúť do role ľubovoľného nadriadeného
 #14 -> Všetkým nadriadeným sa pošle informačný mail o tom, že ich podriadení majú oboznámenie s dokumentom podpísať
 #21 -> Opakovane preskolenie
-#28 -> Export filter a report
-
+#28 -> export skill-matrix
 
 
 

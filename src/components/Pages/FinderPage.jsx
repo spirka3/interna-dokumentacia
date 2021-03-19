@@ -92,22 +92,25 @@ const FinderPage = () => {
 
   const matrixBySuperior = (superior) => {
     setE(superior)
-    setDocuments([])
+    // setDocuments([])
 
     const id = superior.value
+    console.log(id)
+
     fetch(`/skill/matrix`, {
       method: "POST",
-      body: {
-        superior_id: id,
-        // employeeId: id,
-        // documentId: id,
-        // filter: "",
-      }
+      body: new URLSearchParams(`superior_id=${id}`)
     })
-      // .then(res => res.json())
+      .then(res => res.json())
       .then(r => {
         console.log(r)
       })
+
+    // const inferiors = getInferiors(superior.id)
+    // const signatures = {}
+    // inferiors.forEach(inf => {
+    //   signatures[inf] = getSignatures(inf.id)
+    // })
   }
 
   function addCompleteness(records, percentage) {
@@ -190,3 +193,21 @@ const FinderPage = () => {
 }
 
 export default FinderPage;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

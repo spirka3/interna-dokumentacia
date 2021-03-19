@@ -60,6 +60,7 @@ const FoundDocuments = ({found, setFound, setReport}) => {
     formatter: ReportBtn,
       formatExtraData: {
         setReport: setReport,
+
       }
   }];
 
