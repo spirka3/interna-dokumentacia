@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 import Col from "react-bootstrap/Col";
 import Select from "react-select";
-import { emptyCombination, setOf } from "../../helpers/functions";
-import {CustomAlert} from "../Others/CustomAlert";
+import { emptyCombination, setOf } from "../../utils/functions";
+import {CustomAlert} from "../CustomAlert";
 
 const CombinationForm = ({prefill, disabled, setDisabled, employees, combinations: cs, combination, setCombination, notification, setNotification}) => {
 

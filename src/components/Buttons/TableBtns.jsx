@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
-import {require_superior} from "../../helpers/functions";
-import {FormattedEmployeeDate} from "../Others/Formatter";
+import {require_superior} from "../../utils/functions";
+import {FormattedEmployeeDate} from "../../utils/Formatter";
 
 export const MissedBtn = (cell, row, index, {setModalInfo, setShowModal, asSuperior}) => {
 

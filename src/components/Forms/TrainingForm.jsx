@@ -4,15 +4,15 @@ import MyHookForm from "./MyHookForm";
 import {Row, Col, Form, Button} from "react-bootstrap";
 import {Typeahead} from 'react-bootstrap-typeahead'
 import 'react-bootstrap-typeahead/css/Typeahead.css';
-import {CustomAlert} from "../Others/CustomAlert";
+import {CustomAlert} from "../CustomAlert";
 import {
   badMsg,
   goodMsg,
   correctTrainingFormData,
   successResponse,
   prefillTrainingForm, getEmployeesNames, getFormID, getEmployeeLabel
-} from "../../helpers/functions";
-import {trn_form} from "../../helpers/data";
+} from "../../utils/functions";
+import {trn_form} from "../../utils/data";
 import {PairContext} from "../../App";
 
 const TrainingForm = ({setRecords, formData, setFormData, actual}) => {

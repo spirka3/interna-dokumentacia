@@ -1,5 +1,4 @@
 import BootstrapTable from "react-bootstrap-table-next";
-import EmptyTable from "./EmptyTable";
 import React from "react";
 
 const MyBootstrapTable = ({
@@ -28,6 +27,8 @@ const MyBootstrapTable = ({
       </h3>
     );
   };
+
+  const EmptyTable = () => <p>Table is empty</p>
 
   return (
     <>

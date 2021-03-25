@@ -1,18 +1,18 @@
 import React from 'react';
 import Container from "react-bootstrap/Container";
 import {Route, Switch} from "react-router-dom";
-import {getUser, isAdmin} from "./helpers/functions";
+import {getUser, isAdmin} from "./utils/functions";
 import {Redirect} from "react-router";
-import RecordsToSignPage from "./components/Pages/RecordsToSignPage";
-import LoginPage from "./components/Pages/LoginPage";
-import LogoutPage from "./components/Pages/LogoutPage";
-import SignedRecordsPage from "./components/Pages/SignedRecordsPage";
-import AddRecordPage from "./components/Pages/AddRecordPage";
-import SavedRecordsPage from "./components/Pages/SavedRecordsPage";
-import SettingsPage from "./components/Pages/SettingsPage";
-import Page404 from "./components/Pages/Page404";
-import FinderPage from "./components/Pages/FinderPage";
-import ReportPage from "./components/Pages/ReportPage";
+import RecordsToSignPage from "./unsigned-records/RecordsToSignPage";
+import LoginPage from "./auth/LoginPage";
+import LogoutPage from "./auth/LogoutPage";
+import SignedRecordsPage from "./signed-records/SignedRecordsPage";
+import AddRecordPage from "./add-record/AddRecordPage";
+import SavedRecordsPage from "./saved-records/SavedRecordsPage";
+import SettingsPage from "./settings/SettingsPage";
+import Page404 from "./Page404";
+import FinderPage from "./finder/FinderPage";
+import ReportPage from "./finder/report/ReportPage";
 
 const Routes = () => {
 

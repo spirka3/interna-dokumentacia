@@ -2,9 +2,9 @@ import React, {useContext, useEffect, useState} from "react";
 import {Button, Col, Container, Modal} from "react-bootstrap";
 import CombinationForm from "../Forms/CombinationForm";
 import uuid from 'react-uuid'
-import {badMsg, getEmployeeLabel, getFetch, resolveCombinations} from "../../helpers/functions";
+import {badMsg, getEmployeeLabel, getFetch, resolveCombinations} from "../../utils/functions";
 import {PairContext} from "../../App";
-import {comboFields} from "../../helpers/data";
+import {comboFields} from "../../utils/data";
 
 const CombinationModal = ({prefill, combinations, setAssignedTo, setEmptyAssign, closeModal}) => {
   const pairs = useContext(PairContext);

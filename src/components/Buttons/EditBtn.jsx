@@ -6,7 +6,7 @@ const EditBtn = (cell, row, index, {setFormData}) => {
   const handleClick = () => setFormData(row)
 
   return (
-    <Button variant='outline-primary' onClick={handleClick} size="sm" id="editBtn">
+    <Button variant='outline-primary' onClick={handleClick} size="sm">
       Edit
     </Button>
   )

@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
-import {badMsg, goodMsg, recordType, successResponse} from "../../helpers/functions";
+import {badMsg, goodMsg, recordType, successResponse} from "../../utils/functions";
 
 const SendBtn = (cell, row, index, {setSavedRec, setNotification}) => {
 
@@ -21,7 +21,6 @@ const SendBtn = (cell, row, index, {setSavedRec, setNotification}) => {
   }
 
   const updateSavedRec = () => {
-    console.log('okok')
     setSavedRec(prev => prev.filter(rec => rec.id !== row.id));
   }
 

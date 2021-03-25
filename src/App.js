@@ -1,13 +1,13 @@
 import React, {createContext, useEffect, useState} from 'react';
-
-import './App.css';
-import Navigation from "./components/Others/Navigation.jsx";
-import {getUser, removeUser, getFetch, redirectTo} from "./helpers/functions";
-import IdleTimer from "./helpers/IdleTimer";
-import {TIMEOUT} from "./config/config";
 import Routes from "./Routes";
 import {BrowserRouter} from "react-router-dom";
-import {comboFields} from "./helpers/data";
+
+import Navigation from "./Navigation.jsx";
+import {getUser, removeUser, getFetch, redirectTo} from "./utils/functions";
+import IdleTimer from "./utils/IdleTimer";
+import {TIMEOUT} from "./utils/config/config";
+
+import {comboFields} from "./utils/data";
 
 export const PairContext = createContext(undefined)
 

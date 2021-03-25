@@ -3,8 +3,8 @@ import {useForm} from "react-hook-form";
 import MyHookForm from "./MyHookForm";
 import {Form, Row, Col, Button} from "react-bootstrap";
 import Combinations from "../Tables/Combinations";
-import {CustomAlert} from "../Others/CustomAlert";
-import {doc_form, types as t} from "../../helpers/data";
+import {CustomAlert} from "../CustomAlert";
+import {doc_form, types as t} from "../../utils/data";
 import {
   badMsg,
   goodMsg,
@@ -12,7 +12,7 @@ import {
   getSelectOptions,
   prefillDocumentForm,
   successResponse, getCombinationsNames, prepareCombinations, getFormID
-} from "../../helpers/functions";
+} from "../../utils/functions";
 import {PairContext} from "../../App";
 
 const DocumentForm = ({setRecords, formData, setFormData, actual}) => {
@@ -79,7 +79,6 @@ const DocumentForm = ({setRecords, formData, setFormData, actual}) => {
       }
     }
   }
-
   const upsert = (data, action) => {
     return fetch(`/document/${action}`, {
       method: "POST",
@@ -95,7 +94,6 @@ const DocumentForm = ({setRecords, formData, setFormData, actual}) => {
     })
     .catch((e) => console.log('error', e))
   }
-
   const upsertConfirm = (data, action) => {
     return fetch(`/document/${action}`, {
       method: "POST",
@@ -117,7 +115,6 @@ const DocumentForm = ({setRecords, formData, setFormData, actual}) => {
   const filterSavedRec = (data) => {
     setRecords(prevState => prevState.filter(p => p.id !== data.id))
   }
-
   const updateSavedRec = (data) => {
     setRecords(prevState => {
       let update = prevState

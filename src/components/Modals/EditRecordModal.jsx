@@ -2,7 +2,7 @@ import React from "react";
 import Modal from "react-bootstrap/Modal";
 import DocumentForm from "../Forms/DocumentForm";
 import TrainingForm from "../Forms/TrainingForm";
-import {recordType} from "../../helpers/functions";
+import {recordType} from "../../utils/functions";
 
 const EditRecordModal = ({setRecords, formData, setFormData, actual}) => {
 
