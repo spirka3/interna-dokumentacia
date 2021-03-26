@@ -1,11 +1,20 @@
-import {Col, Form, Row} from "react-bootstrap";
+import { Col, Form, Row } from "react-bootstrap";
 import React from "react";
 
-const MyHookForm = ({label, name, placeholder, type, register, as, required}) => {
-
+const MyFormGroup = ({
+  label,
+  name,
+  placeholder,
+  type,
+  register,
+  as,
+  required,
+}) => {
   return (
     <Form.Group as={Row}>
-      <Form.Label column sm="3">{label}</Form.Label>
+      <Form.Label column sm="3">
+        {label}
+      </Form.Label>
       <Col>
         <Form.Control
           name={name}
@@ -18,6 +27,6 @@ const MyHookForm = ({label, name, placeholder, type, register, as, required}) =>
       </Col>
     </Form.Group>
   );
-}
+};
 
-export default MyHookForm;
+export default MyFormGroup;

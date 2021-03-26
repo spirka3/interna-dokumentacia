@@ -38,11 +38,7 @@ const LoginForm = ({ onSubmit, language, setLanguage, notification }) => {
         {/* NAME */}
         <Form.Group>
           <Form.Label>{login}</Form.Label>
-          <Form.Control
-            name="email" // TODO login
-            ref={register}
-            required
-          />
+          <Form.Control name="login" ref={register} required />
         </Form.Group>
         {/* PASS */}
         <Form.Group>

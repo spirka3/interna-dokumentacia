@@ -1,49 +1,74 @@
-import React, {useEffect, useState} from 'react';
-import {badMsg, buttonColumn, getFetch, orderBy, resolveCombinations} from "../../utils/functions";
+import React, { useEffect, useState } from "react";
+import { buttonColumn, getFetch, orderBy } from "../../utils/functions";
 import MyBootstrapTable from "../../components/Tables/MyBootstrapTable";
-import {formatted} from "../../utils/Formatter";
+import { formatted } from "../../utils/Formatter";
 
-const ReportPage = ({location: {state}}) => {
-  const record = state.report.documents[0]
-  console.log(record)
+const ReportPage = ({ location: { search } }) => {
+  const [record, setRecord] = useState();
   const [employees, setEmployees] = useState([]);
 
   useEffect(() => {
-    setEmployees(record.signatures.map(sign => {
-      const {employee} = sign
-      const name = `${employee.first_name} ${employee.first_name} `
-      return {
-        name: name,
-        date: formatted(sign.e_date?.Time)
-      }
-    }))
+    const split = search.split("=");
+    if (split.length !== 2) return null;
+
+    const [query, id] = split;
+    if (query !== "?id") return null;
+    if (parseInt(id) != id) return null;
+
+    // getFetch(`/report/${row.id}`)
+    fetch(`/skill/matrix`, {
+      method: "POST",
+      body: new URLSearchParams(`document_id=${id}`),
+    })
+      .then((res) => res.json())
+      .then((r) => {
+        console.log(r);
+        const rec = r.documents[0];
+        setRecord(rec);
+
+        setEmployees(
+          rec.signatures.map((sign) => {
+            const { employee: e } = sign;
+            return {
+              name: `${e.first_name} ${e.first_name}`,
+              date: formatted(sign.e_date?.Time),
+            };
+          })
+        );
+      });
   }, []);
+
+  if (!record) return null;
 
   const columns = [
     {
       ...buttonColumn("id"),
-    }, {
-      dataField: 'name',
-      text: 'Full name',
+    },
+    {
+      dataField: "name",
+      text: "Full name",
       sort: true,
-    }, {
-      dataField: 'date',
-      text: 'Sign Date',
-      sort: true
-    }
+    },
+    {
+      dataField: "date",
+      text: "Sign Date",
+      sort: true,
+    },
   ];
+
+  const title = `${record.name}, ${formatted(record.release_date?.Time)}`;
 
   return (
     <MyBootstrapTable
-      title={`${record.name}, ${formatted(record.release_date.Time)}`}
+      title={title}
       data={employees}
       columns={columns}
-      defaultSorted={orderBy('name')}
+      defaultSorted={orderBy("name")}
       // horizontal scroll
       wrapperClasses="table-responsive"
       rowClasses="text-nowrap"
     />
-  )
+  );
 };
 
 export default ReportPage;

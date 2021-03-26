@@ -24,9 +24,8 @@ function App() {
   useEffect(() => {
     const _pairs = {}
     comboFields.forEach(field => {
-      getFetch(`/${field}`)
-        .then(data => _pairs[field] = data)
-      })
+      getFetch(`/${field}`).then(data => _pairs[field] = data)
+    })
     setPairs(_pairs)
   },[])
 

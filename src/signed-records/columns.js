@@ -2,68 +2,76 @@ import {
   FormattedDate,
   FormattedEmployeeDate,
   FormattedRelease,
-  FormattedSuperiorDate, FormattedTrainingDate,
+  FormattedSuperiorDate,
+  FormattedTrainingDate,
   FullName,
-  NameWithLink
+  NameWithLink,
 } from "../utils/Formatter";
-import {SignedBtn} from "../components/Buttons/TableBtns";
+import { SignedBtn } from "../components/Buttons/TableBtns";
 
 export const signedDocumentsColumns = () => [
   {
-    dataField: 'name',
-    text: 'Name',
+    dataField: "name",
+    text: "Name",
     sort: true,
-    formatter: NameWithLink
-  }, {
-    dataField: 'release_date.Time',
-    text: 'Release',
+    formatter: NameWithLink,
+  },
+  {
+    dataField: "release_date.Time",
+    text: "Release",
     sort: true,
-    formatter: FormattedRelease
-  }, {
-    dataField: 'signatures[0].e_date.Time',
-    text: 'signed-records date',
+    formatter: FormattedRelease,
+  },
+  {
+    dataField: "signatures[0].e_date.Time",
+    text: "Signed date",
     sort: true,
-    formatter: SignedBtn
-  }
-]
+    formatter: SignedBtn,
+  },
+];
 
 export const signedDocumentsExpandColumns = () => [
   {
-    dataField: 'employee.id',
-    text: 'Employee ID',
-    sort: true
-  }, {
-    dataField: 'employee.last_name',
-    text: 'Full name',
+    dataField: "employee.id",
+    text: "Employee ID",
     sort: true,
-    formatter: FullName
-  }, {
-    dataField: 'e_date.Time',
-    text: 'Employee Sign',
+  },
+  {
+    dataField: "employee.last_name",
+    text: "Full name",
     sort: true,
-    formatter: FormattedEmployeeDate
-  },{
-    dataField: 's_date.Time',
-    text: 'My Sign',
+    formatter: FullName,
+  },
+  {
+    dataField: "e_date.Time",
+    text: "Employee Sign",
     sort: true,
-    formatter: FormattedSuperiorDate
-  }
-]
+    formatter: FormattedEmployeeDate,
+  },
+  {
+    dataField: "s_date.Time",
+    text: "My Sign",
+    sort: true,
+    formatter: FormattedSuperiorDate,
+  },
+];
 
 export const signedTrainingsExpandColumns = () => [
   {
-    dataField: 'name',
-    text: 'Name',
-    sort: true
-  }, {
-    dataField: 'date.Time',
-    text: 'Took place',
+    dataField: "name",
+    text: "Name",
     sort: true,
-    formatter: FormattedDate
-  }, {
-    dataField: 'signatures[0].date.Time', // always array with length of 1 [by SQL query]
-    text: 'signed-records date',
+  },
+  {
+    dataField: "date.Time",
+    text: "Took place",
     sort: true,
-    formatter: FormattedTrainingDate
-  }
+    formatter: FormattedDate,
+  },
+  {
+    dataField: "signatures[0].date.Time", // always array with length of 1 [by SQL query]
+    text: "Signed date",
+    sort: true,
+    formatter: FormattedTrainingDate,
+  },
 ];

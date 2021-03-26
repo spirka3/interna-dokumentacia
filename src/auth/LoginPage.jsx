@@ -1,22 +1,18 @@
-import React, {useEffect, useState} from "react";
-import {Redirect} from "react-router";
+import React, { useEffect, useState } from "react";
+import { Redirect } from "react-router";
 import LoginForm from "./LoginForm";
-import {badMsg, getUser, reloadPage} from "../utils/functions";
-import {wording} from "../utils/wording";
+import { badMsg, getUser, reloadPage } from "../utils/functions";
+import { wording } from "../utils/wording";
 
 const LoginPage = () => {
-
-  const [notification, setNotification] = useState()
-  const [language, setLanguage] = useState('sk')
+  const [notification, setNotification] = useState();
+  const [language, setLanguage] = useState("sk");
 
   const {
-    notification: {
-      wrongLogin,
-      wrongCard,
-    }
-  } = wording[language].loginPage
+    notification: { wrongLogin, wrongCard },
+  } = wording[language].loginPage;
 
-  let cardInput = '';
+  let cardInput = "";
   const maxCardInputTimeDifference = 40;
   const cardInputLength = 10;
   let t = cardInputTimeout();
@@ -29,75 +25,81 @@ const LoginPage = () => {
   function isLetter(e) {
     let aKeycode = 65;
     let zKeycode = 90;
-    return e.keyCode >= aKeycode && e.keyCode <= zKeycode
+    return e.keyCode >= aKeycode && e.keyCode <= zKeycode;
   }
 
   function isNumber(e) {
     let zeroKeycode = 48;
     let nineKeycode = 57;
-    return e.keyCode >= zeroKeycode && e.keyCode <= nineKeycode
+    return e.keyCode >= zeroKeycode && e.keyCode <= nineKeycode;
   }
 
   function isValuable(e) {
-    return isLetter(e) || isNumber(e)
+    return isLetter(e) || isNumber(e);
   }
 
   function resetCardInput() {
-    cardInput = '';
+    cardInput = "";
   }
 
   function checkInput() {
-    if(cardInput.length === cardInputLength) {
+    if (cardInput.length === cardInputLength) {
       findByCard(cardInput);
     }
     resetCardInput();
   }
 
   const event = (e) => {
-    let engInput = String.fromCharCode(e.keyCode).toLowerCase()
-    if(isValuable(e)) {
+    let engInput = String.fromCharCode(e.keyCode).toLowerCase();
+    if (isValuable(e)) {
       cardInput += engInput;
       clearTimeout(t);
       t = cardInputTimeout();
     }
-  }
+  };
 
   useEffect(() => {
-    document.addEventListener('keydown', event)
+    document.addEventListener("keydown", event);
     return () => document.removeEventListener("keydown", event); // cleanup
-  })
+  });
 
   const setUser = (data) => {
     const user = {
       id: data.id,
-      role: data.role
-    }
-    sessionStorage.setItem('user', JSON.stringify(user))
-    reloadPage()
-  }
+      role: data.role,
+    };
+    sessionStorage.setItem("user", JSON.stringify(user));
+    reloadPage();
+  };
 
   const onSubmit = (data) => {
-    fetch('/auth/login', {
+    fetch("/auth/login", {
       method: "POST",
-      body: new URLSearchParams(`email=${data.email}&password=${data.password}`)
+      body: new URLSearchParams(
+        `email=${data.email}&password=${data.password}`
+      ),
     })
-      .then(response => response.json())
-      .then(data => { setUser(data) })
-      .catch(() => setNotification(badMsg(wrongLogin)))
-  }
+      .then((response) => response.json())
+      .then((data) => {
+        setUser(data);
+      })
+      .catch(() => setNotification(badMsg(wrongLogin)));
+  };
 
   const findByCard = (input) => {
-    fetch('/auth/kiosk', {
+    fetch("/auth/kiosk", {
       method: "POST",
-      body: new URLSearchParams(`card=${input}`)
+      body: new URLSearchParams(`card=${input}`),
     })
-      .then(response => response.json())
-      .then(data => { setUser(data) })
-      .catch(() => setNotification(badMsg(wrongCard)))
-  }
+      .then((response) => response.json())
+      .then((data) => {
+        setUser(data);
+      })
+      .catch(() => setNotification(badMsg(wrongCard)));
+  };
 
   if (getUser()) {
-    return <Redirect to="/records-to-sign" />
+    return <Redirect to="/records-to-sign" />;
   }
   return (
     <LoginForm
@@ -106,7 +108,7 @@ const LoginPage = () => {
       setLanguage={setLanguage}
       notification={notification}
     />
-  )
+  );
 };
 
-export default LoginPage
+export default LoginPage;

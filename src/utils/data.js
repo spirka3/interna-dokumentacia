@@ -29,7 +29,7 @@ export const trn_form = {
   employees: "1,2",
 };
 
-export const comboFields = ["cities", "branches", "departments", "divisions"];
-export const comboFieldsSingular = ["city", "branch", "department", "division"];
+export const comboFields = ["branches", "cities", "departments", "divisions"];
+export const comboFieldsSingular = ["branch", "city", "department", "division"];
 
 export const types = ["TPK", "OS", "PP", "PL"];

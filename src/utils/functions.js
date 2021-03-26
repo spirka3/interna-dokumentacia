@@ -1,11 +1,11 @@
 import React from "react";
 import uuid from "react-uuid";
-import {comboFields, comboFieldsSingular} from "./data";
+import { comboFields, comboFieldsSingular } from "./data";
 
 // Tables
 export const buttonColumn = (field = "", text = "") => {
   return {
-    dataField: field,
+    dataField: "" + field,
     text: text,
     sort: true,
     headerStyle: { width: "1%" },
@@ -103,6 +103,44 @@ export const prepareEmployees = (employees) => {
   });
 };
 
+export const prepareFilter = (f) => {
+  return {
+    branch: f.branches.map((v) => v.value).join(","),
+    city: f.cities.map((v) => v.value).join(","),
+    department: f.departments.map((v) => v.value).join(","),
+    division: f.divisions.map((v) => v.value).join(","),
+  };
+};
+
+export const prepareSMData = (docs) => {
+  return docs.map((doc) => {
+    function getState(sign, require_superior) {
+      if (sign.cancel) return "-";
+
+      let state = sign.e_date ? "" : "e";
+      if (require_superior && !sign.s_date) {
+        state += "s";
+      }
+      return state;
+    }
+
+    return {
+      id: doc.id,
+      name: doc.name,
+      require_superior: doc.require_superior,
+      deadline: doc.deadline.Time,
+      employees: doc.signatures
+        .filter((sign) => sign.employee !== null)
+        .map((sign) => {
+          return {
+            id: sign.employee.id,
+            state: getState(sign, doc.require_superior),
+          };
+        }),
+    };
+  });
+};
+
 export const getCombinationsNames = (document, pairs) => {
   if (!document) return [];
 
@@ -111,7 +149,8 @@ export const getCombinationsNames = (document, pairs) => {
     const combination = { id: uuid() };
 
     comboFields.forEach((field, i) => {
-      combination[field] = [{
+      combination[field] = [
+        {
           value: idx[i],
           label: getFieldName(field, idx[i], pairs),
         },
@@ -124,6 +163,19 @@ export const getCombinationsNames = (document, pairs) => {
 
 export const getFieldName = (field, id, pairs) => {
   return pairs[field].find((f) => f.id == id)?.name;
+};
+
+export const getSingularFieldName = (field) => {
+  switch (field) {
+    case "branches":
+      return "branch";
+    case "divisions":
+      return "division";
+    case "departments":
+      return "department";
+    case "cities":
+      return "city";
+  }
 };
 
 export const getEmployeesNames = (formData, employees) => {
@@ -204,8 +256,11 @@ const flatField = (field, combs) => {
 const id = (field) => (field.length ? field[0].value : "x");
 
 const stringify = (combs) => {
-  return combs.map((c) =>
-    `${id(c.branches)}; ${id(c.cities)}; ${id(c.departments)}; ${id(c.divisions)}`
+  return combs.map(
+    (c) =>
+      `${id(c.branches)}; ${id(c.cities)}; ${id(c.departments)}; ${id(
+        c.divisions
+      )}`
   );
 };
 
@@ -226,7 +281,7 @@ export const getFetch = (url) => {
 export const postFetch = (url, body) => {
   return fetch(url, {
     method: "POST",
-    body: body
+    body: body,
   }).then((result) => result.json());
 };
 
