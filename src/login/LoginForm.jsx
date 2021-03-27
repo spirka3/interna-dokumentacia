@@ -10,6 +10,7 @@ const LoginForm = ({ onSubmit, language, setLanguage, notification }) => {
   const active = (id) => language === id;
   const changeLanguage = (e) => setLanguage(e.target.id);
 
+  // TODO https://www.npmjs.com/package/react-i18next
   const { header, login, password, submit } = wording[language].loginPage;
 
   return (

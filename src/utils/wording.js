@@ -1,46 +1,46 @@
 export const wording = {
-  'sk': {
+  sk: {
     loginPage: {
-      header: 'Prihlasovanie',
-      login: 'Login',
-      password: 'Heslo',
-      submit: 'Prihlásiť sa',
+      header: "Prihlasovanie",
+      login: "Login",
+      password: "Heslo",
+      submit: "Prihlásiť sa",
       notification: {
-        wrongLogin: 'Zlé prihlasovacie údaje',
-        wrongCard: 'Nepodarilo sa prihlásenie kartou'
-      }
+        wrongLogin: "Zlé prihlasovacie údaje",
+        wrongCard: "Nepodarilo sa prihlásenie kartou",
+      },
     },
     navigation: {
-      login: 'Prihlasit sa',
-      recordsToSign: 'Na podpísanie',
-      signedRecords: 'Podpísané',
-      addRecord: 'Pridať',
-      savedRecords: 'Uložené',
-      finder: 'Vyhľadávanie',
-      settings: 'Nastavenia',
-      logout: 'Odhlásiť sa',
-    }
+      login: "Prihlasit sa",
+      recordsToSign: "Na podpísanie",
+      signedRecords: "Podpísané",
+      addRecord: "Pridať",
+      savedRecords: "Uložené",
+      finder: "Vyhľadávanie",
+      settings: "Nastavenia",
+      logout: "Odhlásiť sa",
+    },
   },
-  'en': {
+  en: {
     loginPage: {
-      header: 'Login',
-      login: 'Login',
-      password: 'Password',
-      submit: 'Login',
+      header: "Login",
+      login: "Login",
+      password: "Password",
+      submit: "Login",
       notification: {
-        wrongLogin: 'Wrong login input',
-        wrongCard: 'Wrong card input'
-      }
+        wrongLogin: "Wrong login input",
+        wrongCard: "Wrong card input",
+      },
     },
     navigation: {
-      login: 'Login',
-      recordsToSign: 'To sign',
-      signedRecords: 'Signed',
-      addRecord: 'Add new',
-      savedRecords: 'Saved',
-      finder: 'Finder',
-      settings: 'Settings',
-      logout: 'Logout',
-    }
-  }
-}
+      login: "Login",
+      recordsToSign: "To sign",
+      signedRecords: "Signed",
+      addRecord: "Add new",
+      savedRecords: "Saved",
+      finder: "Finder",
+      settings: "Settings",
+      logout: "Logout",
+    },
+  },
+};
