@@ -1,9 +1,9 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 
-const ToggleBtn = (c, row, rowIndex, { anet_id, data, setData, id }) => {
+const ToggleBtn = (c, row, rowIndex, { id, data, setData, i }) => {
   const document = data[rowIndex];
-  let state = document.employees[id]?.state;
+  let state = document.employees[i]?.state;
   const mark = state.includes("X");
   if (mark) state = unMarkState();
 
@@ -23,8 +23,8 @@ const ToggleBtn = (c, row, rowIndex, { anet_id, data, setData, id }) => {
     console.log(stt);
 
     const new_employees = [...document.employees];
-    new_employees[id] = {
-      anet_id: anet_id,
+    new_employees[i] = {
+      ...new_employees[i],
       state: stt,
     };
 

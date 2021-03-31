@@ -35,10 +35,10 @@ const Filter = ({
 
   const resetFilter = () => {
     setFilter(initFilter);
-    bref.current.select.clearValue();
-    diref.current.select.clearValue();
-    deref.current.select.clearValue();
-    cref.current.select.clearValue();
+    // bref.current.select.clearValue();
+    // diref.current.select.clearValue();
+    // cref.current.select.clearValue();
+    // deref.current.select.clearValue();
   };
 
   const resetHalfOfFilter = () => {
@@ -50,13 +50,13 @@ const Filter = ({
         divisions: [],
       };
     });
-    bref.current.select.clearValue();
-    diref.current.select.clearValue();
+    // bref.current.select.clearValue();
+    // diref.current.select.clearValue();
   };
 
   const resetEmployee = () => {
     setEm();
-    eref.current.select.clearValue();
+    // eref.current.select.clearValue();
   };
 
   const handleSelect = (data, { name: field }) => {
@@ -121,6 +121,7 @@ const Filter = ({
     <Col>
       <Select
         isMulti
+        value={filter[name]}
         name={name}
         placeholder={label}
         options={options[name]}
@@ -149,7 +150,7 @@ const Filter = ({
             placeholder="Employee Name"
             options={es}
             onChange={(data) => handleEmployeeSearch(data)}
-            ref={eref}
+            // ref={eref}
           />
         </Col>
         <Col className="text-right pr-0">

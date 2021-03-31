@@ -132,7 +132,6 @@ function getState(sign, require_superior) {
 
 export const prepareSMData = (docs) => {
   return docs.map((doc) => {
-    console.log(doc);
     return {
       id: doc.id,
       name: doc.name,
@@ -153,7 +152,7 @@ export const prepareSMData = (docs) => {
 
 export const getCombinationsNames = (document, pairs) => {
   if (!document) return [];
-
+  // TODO
   return document.assigned_to.split("&").map((e) => {
     const idx = e.split("; ");
     const combination = { id: uuid() };
@@ -241,37 +240,21 @@ const getDateObject = (date) => {
 const getDateString = (date) => date.Time.substr(0, 10);
 
 export const resolveCombinations = (combinations) => {
-  let combs = combinations;
-  comboFields.forEach((field) => {
-    combs = flatField(field, combs);
+  // TODO
+  const n = combinations.map((combination) => {
+    let c_string = comboFields
+      .map((field) => {
+        const values = combination[field];
+        console.log("values", values);
+        if (!values.length) return "x";
+        return values.map((c) => c.value).join(",");
+      })
+      .join("; ");
+    const r_string = combination.removedEmployees.map((c) => c.value).join(",");
+    return `${c_string}#${r_string}#`;
   });
-  return stringify(combs).join("&");
-};
-
-const flatField = (field, combs) => {
-  const res = [];
-  combs.forEach((c) => {
-    if (!c[field].length) res.push(c);
-    else
-      c[field].forEach((b) => {
-        res.push({
-          ...c,
-          [field]: [b],
-        });
-      });
-  });
-  return res;
-};
-
-const id = (field) => (field.length ? field[0].value : "x");
-
-const stringify = (combs) => {
-  return combs.map(
-    (c) =>
-      `${id(c.branches)}; ${id(c.cities)}; ${id(c.departments)}; ${id(
-        c.divisions
-      )}`
-  );
+  console.log(n);
+  return n.join("&");
 };
 
 export const prepareEmployees = (employees, departments) => {
@@ -312,15 +295,6 @@ export const prepareFoundDocs = (found, pairs) => {
     };
   });
 };
-
-// export const prepareFoundRecs = (recs) => {
-//   let trainings = addCompleteness(r.trainings, 0);
-//   setTrainings((prevState) => [...prevState, ...trainings]);
-//
-//   let documents = addCompleteness(r.documents, 0);
-//   documents = prepareFoundDocs(documents);
-//   setDocuments((prevState) => [...prevState, ...documents]);
-// }
 
 // fetch
 export const getFetch = (url) => {

@@ -13,7 +13,6 @@ import MyBootstrapTable from "../../components/Tables/MyBootstrapTable";
 const SkillMatrix = ({ documents: docs }) => {
   const [data, setData] = useState([]);
   const [employees, setEmployees] = useState([]);
-
   useEffect(() => {
     const sample = docs[0];
     if (!sample || !sample.signatures) {
@@ -21,9 +20,7 @@ const SkillMatrix = ({ documents: docs }) => {
       return;
     }
 
-    setEmployees(() =>
-      sample.signatures.map((sign) => sign.employee).filter((em) => em !== null)
-    );
+    setEmployees(() => sample.signatures.map((sign) => sign.employee));
     setData(prepareSMData(docs));
   }, [docs]);
 
@@ -45,19 +42,18 @@ const SkillMatrix = ({ documents: docs }) => {
 
     let counter = 0;
     console.log(data);
-    data[0].employees.forEach((e) => {
-      const name = `${e.first_name} ${e.last_name}`;
+    employees.forEach((e) => {
+      const name = `${e.first_name} ${e.last_name}, ${e.job_title}`;
       columns.push({
         ...buttonColumn(e.id, name),
         // headerFormatter: FormattedEmployee,
         // headerTitle: (col, row) => "e.job",
         formatter: ToggleBtn,
         formatExtraData: {
-          anet_id: e.id,
-          sign_id: e.sign_id,
+          id: e.id,
           data: data,
           setData: setData,
-          id: counter++ % employees.length,
+          i: counter++ % employees.length,
         },
       });
     });
@@ -69,7 +65,7 @@ const SkillMatrix = ({ documents: docs }) => {
     return e.state.includes("X");
   }
 
-  function sing(state) {
+  function sign(state) {
     return state.replace("s", "");
   }
 
@@ -81,41 +77,49 @@ const SkillMatrix = ({ documents: docs }) => {
     return require_superior ? "es" : "s";
   }
 
-  const fetchSign = (url, id) => {
-    return fetch(url, {
-      method: "POST",
-      body: new URLSearchParams(`id=${id}`),
-    });
-  };
-
-  const signAsEmployee = (sign_id) => {
-    console.log(sign_id);
-    fetchSign(`/sign/document`, sign_id).then((res) => {
-      if (successResponse(res)) {
-        console.log(res);
-      }
-    });
-  };
-
-  function updateState(d, e) {
+  function updateState(require_superior, e) {
     if (!changedState(e)) return e;
 
     let state = e.state.replace("X", "");
-    console.log(e);
     if (action === "sign") {
-      signAsEmployee(e.sign_id);
-      state = sing(state);
+      fetch("/sign/document", {
+        method: "POST",
+        body: new URLSearchParams(`id=${e.sign_id}`),
+      }).then((res) => {
+        if (successResponse(res)) state = sign(state);
+      });
     }
-    if (action === "cancelDuty") state = cancelSign();
-    if (action === "trainAgain") state = resetSign(d.require_superior);
+    if (action === "cancelDuty") {
+      fetch("/cancels_resigns", {
+        method: "POST",
+        body: JSON.stringify({
+          cancel: e.sign_id,
+          resign: "",
+        }),
+      }).then((res) => {
+        if (successResponse(res)) state = cancelSign();
+      });
+    }
+    if (action === "trainAgain") {
+      fetch("/cancels_resigns", {
+        method: "POST",
+        body: JSON.stringify({
+          cancel: "",
+          resign: e.sign_id,
+        }),
+      }).then((res) => {
+        if (successResponse(res)) state = resetSign(require_superior);
+      });
+    }
     return { ...e, state: state };
   }
 
   const handleAccept = () => {
     const update = data.map((d) => {
+      console.log(d);
       return {
         ...d,
-        employees: d.employees.map((e) => updateState(d, e)),
+        employees: d.employees.map((e) => updateState(d.require_superior, e)),
       };
     });
     setData(update);

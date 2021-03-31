@@ -4,8 +4,6 @@ import { ExclamationTriangle } from "react-bootstrap-icons";
 import { getSelectOptions } from "../utils/functions";
 
 const SettingsPage = ({ submitError }) => {
-  // TODO:
-
   const import_types = ["import_1", "import_2", "import_3", "import_5"];
   const [selectedType, setSelectedType] = useState();
 

@@ -53,7 +53,6 @@ const FinderPage = () => {
   };
 
   const searchByEmployee = (employee) => {
-    console.log("search");
     if (!employee) return;
 
     setEm(employee);
@@ -95,7 +94,6 @@ const FinderPage = () => {
   };
 
   const matrixBySuperior = (superior) => {
-    console.log(superior);
     setEm(superior);
 
     const id = superior.value;
@@ -116,9 +114,10 @@ const FinderPage = () => {
     });
   }
 
-  if (!cs.length || !es.length) return <FetchLoading />;
-  // console.log(documents);
-  // console.log(trainings);
+  if (!cs.length || !es.length) {
+    return <FetchLoading />;
+  }
+
   return (
     <div style={{ marginTop: "1%" }} className="finder">
       <Filter

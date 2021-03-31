@@ -71,7 +71,7 @@ export const DocumentLabel = (_, row) => {
 export const FormattedEmployee = (_, row) => {
   // const employee = employees[row-1]
   const employee = {};
-  const percentage = 100; // TODO
+  const percentage = 100; // TODO implement
   return (
     <div style={{ fontSize: "12px" }}>
       {employee.name}, {employee.job}, {percentage}%
