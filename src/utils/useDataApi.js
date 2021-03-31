@@ -1,26 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
-const useDataApi = url => {
-
+/** Universal fetch with GET method and error and loading state */
+const useDataApi = (url) => {
   const [data, setData] = useState();
   const [error, setError] = useState();
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    console.log('url', url)
+    console.log("url", url);
     fetch(url, {
-      method: "GET"
+      method: "GET",
     })
-      .then(response => response.json())
-      .then(res => {
+      .then((response) => response.json())
+      .then(
+        (res) => {
           setIsLoaded(true);
-          setData(res)
+          setData(res);
         },
         (error) => {
           setIsLoaded(true);
           setError(error);
         }
-      )
+      );
   }, []); // Runs once
 
   return [data, isLoaded, error];

@@ -3,41 +3,34 @@ import { Button } from "react-bootstrap";
 
 const ToggleBtn = (c, row, rowIndex, { anet_id, data, setData, id }) => {
   const document = data[rowIndex];
-  // console.log(id);
-  // console.log(document.employees);
-  // console.log(document.employees[id]);
-  // console.log(anet_id);
   let state = document.employees[id]?.state;
-  if (!state) {
-    state = "-";
-  }
   const mark = state.includes("X");
   if (mark) state = unMarkState();
 
   function markState() {
-    // console.log("mark")
     return "X" + state;
   }
 
   function unMarkState() {
     // console.log("undo")
+    // if (state.length === 1 && state !== "X") return state;
     if (state.length === 1 && state !== "X") return state;
     return state.substr(1);
   }
 
   const handleClick = () => {
     const stt = mark ? unMarkState() : markState();
+    console.log(stt);
 
     const new_employees = [...document.employees];
     new_employees[id] = {
       anet_id: anet_id,
       state: stt,
     };
-    console.log(stt);
-    const new_data = [...data];
-    new_data[rowIndex] = { ...document, employees: new_employees };
 
-    setData(new_data);
+    const copy = [...data];
+    copy[rowIndex] = { ...document, employees: new_employees };
+    setData(copy);
   };
 
   const getColor = (state) => {
@@ -58,8 +51,6 @@ const ToggleBtn = (c, row, rowIndex, { anet_id, data, setData, id }) => {
     }
   };
 
-  const getTextColor = (state) => (state === "s" ? "black" : "white");
-
   const getLabel = () => {
     const labels = [
       { state: "-", label: "no need" },
@@ -75,7 +66,7 @@ const ToggleBtn = (c, row, rowIndex, { anet_id, data, setData, id }) => {
 
   const styledBtn = {
     backgroundColor: getColor(state),
-    color: getTextColor(state),
+    color: state === "s" ? "black" : "white",
     borderColor: mark ? "black" : "white",
     borderWidth: "5px",
   };

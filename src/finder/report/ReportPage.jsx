@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { buttonColumn, getFetch, orderBy } from "../../utils/functions";
 import MyBootstrapTable from "../../components/Tables/MyBootstrapTable";
-import { formatted } from "../../utils/Formatter";
+import { format_date } from "../../utils/Formatter";
 
 const ReportPage = ({ location: { search } }) => {
   const [record, setRecord] = useState();
   const [employees, setEmployees] = useState([]);
+
+  const getDate = (date) => {
+    const f = format_date(date);
+    if (f === "01.01.0001") {
+      return "-";
+    }
+    return f;
+  };
 
   useEffect(() => {
     const split = search.split("=");
@@ -25,13 +33,14 @@ const ReportPage = ({ location: { search } }) => {
         console.log(r);
         const rec = r.documents[0];
         setRecord(rec);
-
+        console.log(rec);
         setEmployees(
           rec.signatures.map((sign) => {
             const { employee: e } = sign;
             return {
+              id: e.id,
               name: `${e.first_name} ${e.first_name}`,
-              date: formatted(sign.e_date?.Time),
+              date: getDate(sign.e_date?.Time),
             };
           })
         );
@@ -39,6 +48,8 @@ const ReportPage = ({ location: { search } }) => {
   }, []);
 
   if (!record) return null;
+
+  console.log(employees);
 
   const columns = [
     {
@@ -56,7 +67,7 @@ const ReportPage = ({ location: { search } }) => {
     },
   ];
 
-  const title = `${record.name}, ${formatted(record.release_date?.Time)}`;
+  const title = `${record.name}, ${format_date(record.release_date?.Time)}`;
 
   return (
     <MyBootstrapTable

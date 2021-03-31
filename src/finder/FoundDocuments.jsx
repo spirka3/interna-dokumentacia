@@ -3,13 +3,12 @@ import EditBtn from "../components/Buttons/EditBtn";
 import EditRecordModal from "../components/Modals/EditRecordModal";
 import ReportBtn from "./report/ReportBtn";
 import { buttonColumn, orderBy } from "../utils/functions";
-import { FormattedRelease } from "../utils/Formatter";
+import { FormattedRelease, Percentage } from "../utils/Formatter";
 import MyBootstrapTable from "../components/Tables/MyBootstrapTable";
 
 const FoundDocuments = ({ found, setFound }) => {
   const [formData, setFormData] = useState();
-
-  const Percentage = (_, row) => Math.round(row.complete * 100) / 100 + "%";
+  console.log(found);
 
   const columns = [
     {
@@ -70,6 +69,7 @@ const FoundDocuments = ({ found, setFound }) => {
   return (
     <>
       <MyBootstrapTable
+        title="Found documents"
         data={found}
         columns={columns}
         defaultSorted={orderBy("name")}

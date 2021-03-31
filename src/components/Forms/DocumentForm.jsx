@@ -56,7 +56,7 @@ const DocumentForm = ({ setRecords, formData, setFormData, actual }) => {
       setNotification(badMsg("At least one combination is required"));
       return;
     }
-
+    console.log("raw", assignedTo);
     data = correctDocumentFormData(data, assignedTo);
     console.log("data", data);
 
@@ -84,6 +84,7 @@ const DocumentForm = ({ setRecords, formData, setFormData, actual }) => {
     }
   };
   const upsert = (data, action) => {
+    console.log(data);
     return fetch(`/document/${action}`, {
       method: "POST",
       body: JSON.stringify(data),

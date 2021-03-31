@@ -94,16 +94,24 @@ export const prepareCombinations = (combinations) => {
   });
 };
 
-export const prepareEmployees = (employees) => {
-  return employees.map((e) => {
-    return {
-      value: e.id,
-      label: `${e.first_name} ${e.last_name}, [${e.id}]`,
-    };
-  });
+export const getOptionsForSelect = (pairs) => {
+  return {
+    branches: pairs.branches.map((n) => {
+      return { value: n.id, label: n.name };
+    }),
+    divisions: pairs.divisions.map((n) => {
+      return { value: n.id, label: n.name };
+    }),
+    departments: pairs.departments.map((n) => {
+      return { value: n.id, label: n.name };
+    }),
+    cities: pairs.cities.map((n) => {
+      return { value: n.id, label: n.name };
+    }),
+  };
 };
 
-export const prepareFilter = (f) => {
+export const resolveFilter = (f) => {
   return {
     branch: f.branches.map((v) => v.value).join(","),
     city: f.cities.map((v) => v.value).join(","),
@@ -112,18 +120,19 @@ export const prepareFilter = (f) => {
   };
 };
 
+function getState(sign, require_superior) {
+  if (sign.cancel) return "-";
+
+  let state = sign.e_date.Valid ? "" : "e";
+  if (require_superior && !sign.s_date.Valid) {
+    state += "s";
+  }
+  return state;
+}
+
 export const prepareSMData = (docs) => {
   return docs.map((doc) => {
-    function getState(sign, require_superior) {
-      if (sign.cancel) return "-";
-
-      let state = sign.e_date ? "" : "e";
-      if (require_superior && !sign.s_date) {
-        state += "s";
-      }
-      return state;
-    }
-
+    console.log(doc);
     return {
       id: doc.id,
       name: doc.name,
@@ -134,6 +143,7 @@ export const prepareSMData = (docs) => {
         .map((sign) => {
           return {
             id: sign.employee.id,
+            sign_id: sign.id,
             state: getState(sign, doc.require_superior),
           };
         }),
@@ -179,8 +189,8 @@ export const getSingularFieldName = (field) => {
 };
 
 export const getEmployeesNames = (formData, employees) => {
-  if (!formData || !formData.unreleased_id_employees) return [];
-  return formData.unreleased_id_employees
+  if (!formData || !formData.employees) return [];
+  return formData.employees
     .split(",")
     .map((a) => employees.find((e) => e.id == a));
 };
@@ -208,7 +218,7 @@ export const correctTrainingFormData = (data, attendees) => {
     ...data,
     date: getDateObject(data.date),
     deadline: getDateObject(data.deadline),
-    unreleased_id_employees: attendees.map((a) => a.id).join(","),
+    employees: attendees.map((a) => a.id).join(","),
   };
 };
 
@@ -264,12 +274,53 @@ const stringify = (combs) => {
   );
 };
 
-export const getEmployeeLabel = (employee, department) => {
-  const { id, first_name, last_name, departments_id } = employee;
-  const dep = department.find((d) => d.id === departments_id)?.name;
+export const prepareEmployees = (employees, departments) => {
+  return employees.map((e) => {
+    return {
+      value: e.id,
+      label: getEmployeeLabel(e, departments),
+    };
+  });
+};
 
+export const getEmployeeLabel = (employee, departments) => {
+  const { id, first_name, last_name, department_id } = employee;
+  const dep = departments.find((d) => d.id === department_id)?.name;
   return `${first_name} ${last_name} [${id}, ${dep}]`;
 };
+
+export const prepareFoundDocs = (found, pairs) => {
+  if (!found.length) return [];
+
+  function getLabels(cs, field) {
+    const labels = cs.map((c) => c[field].map((f) => f.label));
+    const unique = [...new Set(labels.flat())];
+    // if (unique[0] === undefined) {
+    //   return "*";
+    // }
+    return unique.join(", ");
+  }
+
+  return found.map((doc) => {
+    const doc_cs = getCombinationsNames(doc, pairs);
+    return {
+      ...doc,
+      branches: getLabels(doc_cs, "branches"),
+      cities: getLabels(doc_cs, "cities"),
+      divisions: getLabels(doc_cs, "divisions"),
+      departments: getLabels(doc_cs, "departments"),
+    };
+  });
+};
+
+// export const prepareFoundRecs = (recs) => {
+//   let trainings = addCompleteness(r.trainings, 0);
+//   setTrainings((prevState) => [...prevState, ...trainings]);
+//
+//   let documents = addCompleteness(r.documents, 0);
+//   documents = prepareFoundDocs(documents);
+//   setDocuments((prevState) => [...prevState, ...documents]);
+// }
 
 // fetch
 export const getFetch = (url) => {

@@ -1,24 +1,29 @@
 import React, { useEffect, useState } from "react";
-import BootstrapTable from "react-bootstrap-table-next";
 import ToggleBtn from "./ToggleBtn";
 import ConfirmModal from "../../components/Modals/ConfirmModal";
 import { Legend, RowButtons } from "./SkillMatrixComponents";
-import { buttonColumn, prepareSMData } from "../../utils/functions";
+import {
+  buttonColumn,
+  prepareSMData,
+  successResponse,
+} from "../../utils/functions";
 import { DocumentLabel } from "../../utils/Formatter";
+import MyBootstrapTable from "../../components/Tables/MyBootstrapTable";
 
 const SkillMatrix = ({ documents: docs }) => {
   const [data, setData] = useState([]);
   const [employees, setEmployees] = useState([]);
 
   useEffect(() => {
-    console.log(docs);
     const sample = docs[0];
-    if (!sample) return;
-    console.log(sample.signatures.map((sign) => sign.employee));
+    if (!sample || !sample.signatures) {
+      setData([]);
+      return;
+    }
+
     setEmployees(() =>
       sample.signatures.map((sign) => sign.employee).filter((em) => em !== null)
     );
-    console.log(prepareSMData(docs));
     setData(prepareSMData(docs));
   }, [docs]);
 
@@ -39,8 +44,8 @@ const SkillMatrix = ({ documents: docs }) => {
     ];
 
     let counter = 0;
-
-    employees.forEach((e) => {
+    console.log(data);
+    data[0].employees.forEach((e) => {
       const name = `${e.first_name} ${e.last_name}`;
       columns.push({
         ...buttonColumn(e.id, name),
@@ -49,6 +54,7 @@ const SkillMatrix = ({ documents: docs }) => {
         formatter: ToggleBtn,
         formatExtraData: {
           anet_id: e.id,
+          sign_id: e.sign_id,
           data: data,
           setData: setData,
           id: counter++ % employees.length,
@@ -75,14 +81,34 @@ const SkillMatrix = ({ documents: docs }) => {
     return require_superior ? "es" : "s";
   }
 
+  const fetchSign = (url, id) => {
+    return fetch(url, {
+      method: "POST",
+      body: new URLSearchParams(`id=${id}`),
+    });
+  };
+
+  const signAsEmployee = (sign_id) => {
+    console.log(sign_id);
+    fetchSign(`/sign/document`, sign_id).then((res) => {
+      if (successResponse(res)) {
+        console.log(res);
+      }
+    });
+  };
+
   function updateState(d, e) {
     if (!changedState(e)) return e;
 
     let state = e.state.replace("X", "");
-    if (action === "sign") state = sing(state);
+    console.log(e);
+    if (action === "sign") {
+      signAsEmployee(e.sign_id);
+      state = sing(state);
+    }
     if (action === "cancelDuty") state = cancelSign();
     if (action === "trainAgain") state = resetSign(d.require_superior);
-    return { ...e, state: state }; // updated employee
+    return { ...e, state: state };
   }
 
   const handleAccept = () => {
@@ -99,8 +125,8 @@ const SkillMatrix = ({ documents: docs }) => {
 
   return (
     <>
-      <BootstrapTable
-        keyField="id"
+      <MyBootstrapTable
+        title="SkillMatrix"
         classes="skill-matrix-table"
         data={data}
         columns={columns}
@@ -109,6 +135,7 @@ const SkillMatrix = ({ documents: docs }) => {
         rowClasses="text-nowrap"
       />
       <RowButtons
+        data={data}
         setAction={setAction}
         setModalInfo={setModalInfo}
         setShowModal={setShowModal}

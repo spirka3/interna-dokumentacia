@@ -1,45 +1,49 @@
 import React from "react";
 import { ExclamationTriangle } from "react-bootstrap-icons";
 
-export const FullName = (_, row) => {
-  if (!row.employee) {
-    return;
-  }
+/** Couple of simple formatting functions to displays some cells of table  */
+export const FullName = (_, { employee }) => {
+  if (!employee) return;
+
   return (
     <>
-      {row.employee.first_name} {row.employee.last_name}
+      {employee.first_name} {employee.last_name}
     </>
   );
 };
 
-export const formatted = (date) =>
-  date.substr(0, 10).split("-").reverse().join(".");
+export const format_date = (date) => {
+  const { Time, Valid } = date;
+  if (!Valid) return "-";
+  return Time.substr(0, 10).split("-").reverse().join(".");
+};
 
 export const FormattedDate = (_, row) => {
-  return <>{formatted(row.date.Time)}</>;
+  return <>{format_date(row.date)}</>;
 };
 
 export const FormattedDeadline = (_, row) => {
-  return <>{formatted(row.deadline.Time)}</>;
+  return <>{format_date(row.deadline)}</>;
 };
 
 export const FormattedRelease = (_, row) => {
-  return <>{formatted(row.release_date.Time)}</>;
+  return <>{format_date(row.release_date)}</>;
 };
 
 export const FormattedSuperiorDate = (_, row) => {
-  return <>{formatted(row.s_date.Time)}</>;
+  return <>{format_date(row.s_date)}</>;
 };
 
 export const FormattedTrainingDate = (_, row) => {
-  return <>{formatted(row.signatures[0].date.Time)}</>;
+  return <>{format_date(row.signatures[0].date)}</>;
 };
 
 export const FormattedEmployeeDate = (_, row) => {
-  const date = formatted(row.e_date.Time);
-  if (date === "01.01.0001") return <>-</>; // employee didn't signed-records yet
-  return <>{date}</>;
+  return <>{format_date(row.e_date)}</>;
 };
+
+export const Percentage = (_, row) =>
+  Math.round(row.complete * 100) / 100 + "%";
 
 export const NameWithLink = (_, row) => {
   return (
@@ -50,14 +54,12 @@ export const NameWithLink = (_, row) => {
 };
 
 export const DocumentLabel = (_, row) => {
-  const ExclamationName = () => {
-    return (
-      <h5>
-        <ExclamationTriangle style={{ color: "red", marginBottom: "6px" }} />{" "}
-        {NameWithLink(_, row)}
-      </h5>
-    );
-  };
+  const ExclamationName = () => (
+    <h5>
+      <ExclamationTriangle style={{ color: "red", marginBottom: "6px" }} />{" "}
+      {NameWithLink(_, row)}
+    </h5>
+  );
 
   const expired =
     row.deadline < Date.now() &&

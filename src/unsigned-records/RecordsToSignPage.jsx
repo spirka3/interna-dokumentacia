@@ -117,6 +117,8 @@ const RecordsToSignPage = () => {
     ),
   };
 
+  console.log(data);
+
   return (
     <>
       {/* DOCUMENTS */}

@@ -3,6 +3,7 @@ import { Button, ButtonGroup, Col, Row, Card } from "react-bootstrap";
 import { ExclamationTriangle } from "react-bootstrap-icons";
 
 export const RowButtons = ({
+  data,
   setAction,
   setModalInfo,
   setShowModal,
@@ -23,6 +24,8 @@ export const RowButtons = ({
     }
   };
 
+  const disabled = data.length === 0;
+
   return (
     <Row className="mb-3">
       <Col className="text-left">
@@ -35,16 +38,21 @@ export const RowButtons = ({
       </Col>
       <Col className="text-right">
         <ButtonGroup className="div-btn" onClick={handleClick} size="sm">
-          <Button id="sign" size="sm">
+          <Button id="sign" size="sm" disabled={disabled}>
             Sign
           </Button>
-          <Button id="cancelDuty" size="sm">
+          <Button id="cancelDuty" size="sm" disabled={disabled}>
             Cancel duty
           </Button>
-          <Button id="trainAgain" size="sm">
+          <Button id="trainAgain" size="sm" disabled={disabled}>
             Train again
           </Button>
-          <Button id="cancel" size="sm" onClick={handleClick}>
+          <Button
+            id="cancel"
+            size="sm"
+            onClick={handleClick}
+            disabled={disabled}
+          >
             Cancel
           </Button>
         </ButtonGroup>

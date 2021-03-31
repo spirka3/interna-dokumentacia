@@ -1,58 +1,56 @@
-import React, {createContext, useEffect, useState} from 'react';
+import React, { createContext, useEffect, useState } from "react";
+import { BrowserRouter } from "react-router-dom";
 import Routes from "./Routes";
-import {BrowserRouter} from "react-router-dom";
 
 import Navigation from "./Navigation.jsx";
-import {getUser, removeUser, getFetch, redirectTo} from "./utils/functions";
+import { getUser, removeUser, getFetch, redirectTo } from "./utils/functions";
 import IdleTimer from "./utils/IdleTimer";
-import {TIMEOUT} from "./utils/config/config";
 
-import {comboFields} from "./utils/data";
+import { comboFields, TIMEOUT } from "./utils/data";
 
-export const PairContext = createContext(undefined)
+export const PairContext = createContext(undefined);
 
 function App() {
-
   const [pairs, setPairs] = useState({
     branches: [],
     divisions: [],
     cities: [],
-    departments: []
+    departments: [],
   });
 
-  /** Load all branches, divisions etc. to be able pair ids with names */
+  /** Load all branches, divisions etc. to easily find names for their ids */
   useEffect(() => {
-    const _pairs = {}
-    comboFields.forEach(field => {
-      getFetch(`/${field}`).then(data => _pairs[field] = data)
-    })
-    setPairs(_pairs)
-  },[])
+    const _pairs = {};
+    comboFields.forEach((field) => {
+      getFetch(`/${field}`).then((data) => (_pairs[field] = data));
+    });
+    setPairs(_pairs);
+  }, []);
 
   /** Set timer to logout not active user after TIMEOUT expired
    *  onTimeOut the user will be logout and redirect to /login
-   *  - TIMEOUT can be changed in /config folder */
+   *  - TIMEOUT can be changed in ./utils/data */
   useEffect(() => {
     const timer = new IdleTimer({
       timeout: TIMEOUT,
       onTimeout: () => {
         if (getUser()) {
-          removeUser()
-          redirectTo('/login')
+          removeUser();
+          redirectTo("/login");
         }
-      }
-    })
-    return () => timer.cleanUp()
-  }, [])
+      },
+    });
+    return () => timer.cleanUp();
+  }, []);
 
   return (
-    <PairContext.Provider value={pairs}>
-      <BrowserRouter>
-        <Navigation />
+    <BrowserRouter>
+      <Navigation />
+      <PairContext.Provider value={pairs}>
         <Routes />
-      </BrowserRouter>
-    </PairContext.Provider>
-  )
+      </PairContext.Provider>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;

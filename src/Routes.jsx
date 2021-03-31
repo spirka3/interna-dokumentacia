@@ -1,8 +1,10 @@
 import React from "react";
-import Container from "react-bootstrap/Container";
 import { Route, Switch } from "react-router-dom";
-import { getUser, isAdmin } from "./utils/functions";
 import { Redirect } from "react-router";
+
+import Container from "react-bootstrap/Container";
+import { getUser, isAdmin } from "./utils/functions";
+
 import RecordsToSignPage from "./unsigned-records/RecordsToSignPage";
 import LoginPage from "./login/LoginPage";
 import LogoutPage from "./login/LogoutPage";
@@ -10,9 +12,9 @@ import SignedRecordsPage from "./signed-records/SignedRecordsPage";
 import AddRecordPage from "./add-record/AddRecordPage";
 import SavedRecordsPage from "./saved-records/SavedRecordsPage";
 import SettingsPage from "./settings/SettingsPage";
-import Page404 from "./Page404";
 import FinderPage from "./finder/FinderPage";
 import ReportPage from "./finder/report/ReportPage";
+import Page404 from "./Page404";
 
 const Routes = () => {
   const user = getUser();
@@ -25,7 +27,6 @@ const Routes = () => {
       return <Redirect to="/login" />;
     }
     return <Route {...rest} component={Component} />;
-    // return <Route {...rest} render={props => <Component {...props} />} />
   };
 
   return (

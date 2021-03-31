@@ -23,7 +23,7 @@ const Combinations = ({
 
   const EditIcon = (_, row) => {
     const editCombination = (row) => {
-      console.log(row)
+      console.log(row);
       setPrefill(row);
       openModal();
     };
@@ -41,10 +41,10 @@ const Combinations = ({
           </Tooltip>
         }
       >
-        <Pencil size="25" color="black" onClick={() => editCombination(row)}/>
+        <Pencil size="25" color="black" onClick={() => editCombination(row)} />
       </OverlayTrigger>
     );
-  }
+  };
 
   const DeleteIcon = (_, row) => {
     const deleteCombination = (row) => {
@@ -53,7 +53,9 @@ const Combinations = ({
       });
     };
 
-    return <XSquare size="25" color="red" onClick={() => deleteCombination(row)}/>
+    return (
+      <XSquare size="25" color="red" onClick={() => deleteCombination(row)} />
+    );
   };
 
   const AddIcon = () => (

@@ -5,66 +5,81 @@ import {
 } from "../utils/Formatter";
 import EditBtn from "../components/Buttons/EditBtn";
 import SendBtn from "../components/Buttons/SendBtn";
-import {buttonColumn} from "../utils/functions";
+import { buttonColumn } from "../utils/functions";
 
-export const savedDocumentsColumns = (setFormData, setSavedRec, setNotification) => [
+export const savedDocumentsColumns = (
+  setFormData,
+  setSavedRec,
+  setNotification
+) => [
   {
-    dataField: 'name',
-    text: 'Name',
-    sort: true
-  }, {
-    dataField: 'release_date.Time',
-    text: 'Release',
+    dataField: "name",
+    text: "Name",
+    sort: true,
+  },
+  {
+    dataField: "release_date.Time",
+    text: "Release",
     sort: true,
     formatter: FormattedRelease,
-  }, {
-    dataField: 'deadline.Time',
-    text: 'Deadline',
+  },
+  {
+    dataField: "deadline.Time",
+    text: "Deadline",
     sort: true,
     formatter: FormattedDeadline,
-  }, {
-    ...buttonColumn('EditBtn'),
+  },
+  {
+    ...buttonColumn("EditBtn"),
     formatter: EditBtn,
     formatExtraData: {
       setFormData: setFormData,
-    }
-  }, {
-    ...buttonColumn('SendBtn'),
+    },
+  },
+  {
+    ...buttonColumn("SendBtn"),
     formatter: SendBtn,
     formatExtraData: {
       setNotification: setNotification,
-      setSavedRec: setSavedRec
-    }
-  }
+      setSavedRec: setSavedRec,
+    },
+  },
 ];
 
-
-export const savedTrainingsColumns = (setFormData, setSavedRec, setNotification) => [
+export const savedTrainingsColumns = (
+  setFormData,
+  setSavedRec,
+  setNotification
+) => [
   {
-    dataField: 'name',
-    text: 'Name',
-    sort: true
-  }, {
-    dataField: 'date.Time',
-    text: 'Release',
+    dataField: "name",
+    text: "Name",
     sort: true,
-    formatter: FormattedDate
-  }, {
-    dataField: 'place',
-    text: 'Place',
-    sort: true
-  }, {
-    ...buttonColumn('EditBtn'),
+  },
+  {
+    dataField: "date.Time",
+    text: "Release",
+    sort: true,
+    formatter: FormattedDate,
+  },
+  {
+    dataField: "place",
+    text: "Place",
+    sort: true,
+  },
+  {
+    ...buttonColumn("EditBtn"),
     formatter: EditBtn,
     formatExtraData: {
       setFormData: setFormData,
-    }
-  }, {
-    ...buttonColumn('SendBtn'),
+    },
+  },
+  {
+    ...buttonColumn("SendBtn"),
     formatter: SendBtn,
     formatExtraData: {
       setNotification: setNotification,
-      setSavedRec: setSavedRec
-    }
-  }
+      setSavedRec: setSavedRec,
+    },
+  },
 ];

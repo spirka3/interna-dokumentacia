@@ -76,7 +76,7 @@ const LoginPage = () => {
     fetch("/auth/login", {
       method: "POST",
       body: new URLSearchParams(
-        `email=${data.email}&password=${data.password}`
+        `login=${data.login}&password=${data.password}`
       ),
     })
       .then((response) => response.json())

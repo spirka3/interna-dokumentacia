@@ -7,6 +7,7 @@ import {
   prepareCombinations,
   getCombinationsNames,
   postFetch,
+  prepareFoundDocs,
 } from "../utils/functions";
 import { PairContext } from "../App";
 import FoundRecords from "./FoundRecords";
@@ -21,16 +22,20 @@ const FinderPage = () => {
 
   const [documents, setDocuments] = useState([]);
   const [trainings, setTrainings] = useState([]);
+  const [SMData, setSMData] = useState([]);
+
   const [showSM, setShowSM] = useState();
 
   useEffect(() => {
     getFetch("/combinations").then((res) => setCs(prepareCombinations(res)));
-    getFetch("/employees/all").then((res) => setEs(prepareEmployees(res)));
+    getFetch("/employees/all").then((res) =>
+      setEs(prepareEmployees(res, pairs.departments))
+    );
   }, []);
 
   useEffect(() => {
     getFetch("/document/actual").then((res) =>
-      setDocuments(prepareFoundDocs(res))
+      setDocuments(prepareFoundDocs(res, pairs))
     );
   }, [cs]);
 
@@ -43,11 +48,14 @@ const FinderPage = () => {
     resetTables();
     console.log(filter);
     postFetch(`/document/filter`, JSON.stringify(filter)).then((r) =>
-      setDocuments(prepareFoundDocs(r))
+      setDocuments(prepareFoundDocs(r, pairs))
     );
   };
 
   const searchByEmployee = (employee) => {
+    console.log("search");
+    if (!employee) return;
+
     setEm(employee);
     resetTables();
 
@@ -57,7 +65,7 @@ const FinderPage = () => {
       setTrainings((prevState) => [...prevState, ...trainings]);
 
       let documents = addCompleteness(r.documents, 100);
-      documents = prepareFoundDocs(documents);
+      documents = prepareFoundDocs(documents, pairs);
       setDocuments((prevState) => [...prevState, ...documents]);
     });
 
@@ -66,21 +74,28 @@ const FinderPage = () => {
       setTrainings((prevState) => [...prevState, ...trainings]);
 
       let documents = addCompleteness(r.documents, 0);
-      documents = prepareFoundDocs(documents);
+      documents = prepareFoundDocs(documents, pairs);
       setDocuments((prevState) => [...prevState, ...documents]);
     });
   };
 
   const matrixByFilter = (filter) => {
-    // setDocuments([]);
-
-    getFetch(
-      `/skill/matrix`,
-      new URLSearchParams(`filter=${filter}`)
-    ).then((r) => setDocuments(r.documents));
+    console.log(filter);
+    console.log(`filter=${JSON.stringify(filter)}`);
+    fetch(`skill/matrix`, {
+      method: "POST",
+      // body: new URLSearchParams(`filter=${filter}`),
+      // body: new URLSearchParams(JSON.stringify(filter)),
+    })
+      .then((result) => result.json())
+      .then((r) => {
+        console.log(r);
+        setSMData(r.documents);
+      });
   };
 
   const matrixBySuperior = (superior) => {
+    console.log(superior);
     setEm(superior);
 
     const id = superior.value;
@@ -91,8 +106,7 @@ const FinderPage = () => {
     })
       .then((result) => result.json())
       .then((r) => {
-        console.log(r);
-        setDocuments(r.documents);
+        setSMData(r.documents);
       });
   };
 
@@ -102,35 +116,16 @@ const FinderPage = () => {
     });
   }
 
-  function getLabels(cs, field) {
-    const labels = cs.map((c) => c[field].map((f) => f.label));
-    const unique = [...new Set(labels.flat())];
-    return unique.join(",");
-  }
-
-  const prepareFoundDocs = (found) => {
-    if (!found.length) return [];
-
-    return found.map((doc) => {
-      const doc_cs = getCombinationsNames(doc, pairs);
-      return {
-        ...doc,
-        branches: getLabels(doc_cs, "branches"),
-        cities: getLabels(doc_cs, "cities"),
-        divisions: getLabels(doc_cs, "divisions"),
-        departments: getLabels(doc_cs, "departments"),
-      };
-    });
-  };
-
   if (!cs.length || !es.length) return <FetchLoading />;
-
+  // console.log(documents);
+  // console.log(trainings);
   return (
     <div style={{ marginTop: "1%" }} className="finder">
       <Filter
         cs={cs}
         em={em}
         es={es}
+        setEm={setEm}
         showSM={showSM}
         setShowSM={setShowSM}
         matrixByFilter={matrixByFilter}
@@ -139,7 +134,7 @@ const FinderPage = () => {
         searchByCombination={searchByCombination}
       />
       {showSM ? (
-        <SkillMatrix documents={documents} />
+        <SkillMatrix documents={SMData} />
       ) : (
         <FoundRecords
           documents={documents}

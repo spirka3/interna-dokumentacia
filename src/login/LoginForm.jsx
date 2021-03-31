@@ -13,6 +13,15 @@ const LoginForm = ({ onSubmit, language, setLanguage, notification }) => {
   // TODO https://www.npmjs.com/package/react-i18next
   const { header, login, password, submit } = wording[language].loginPage;
 
+  // jeden subor:
+  // sk[TX_PASS] = "heslo";
+  // druhy subor:
+  // en[TX_PASS] = "password";
+  // treti subor:
+  // const TX_PASS = 1;
+  // vsetky konstanty
+  // var tx = sk;
+
   return (
     <Container className="login-container">
       <Form onSubmit={handleSubmit(onSubmit)}>
