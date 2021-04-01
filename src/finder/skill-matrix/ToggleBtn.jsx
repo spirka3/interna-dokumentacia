@@ -12,8 +12,7 @@ const ToggleBtn = (c, row, rowIndex, { id, data, setData, i }) => {
   }
 
   function unMarkState() {
-    // console.log("undo")
-    // if (state.length === 1 && state !== "X") return state;
+    if (!state.includes("X")) return state;
     if (state.length === 1 && state !== "X") return state;
     return state.substr(1);
   }
@@ -61,7 +60,7 @@ const ToggleBtn = (c, row, rowIndex, { id, data, setData, i }) => {
       { state: "X", label: "bug" },
       { state: "_", label: "not send" },
     ];
-    return labels.find((l) => l.state === state).label;
+    return labels.find((l) => l.state === state)?.label;
   };
 
   const styledBtn = {

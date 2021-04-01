@@ -30,6 +30,11 @@ const Navigation = () => {
 
   const LogoutNav = () => <NavLink href="/login">{x.login}</NavLink>;
 
+  const Name = () => {
+    const name = user ? `${user.first_name} ${user.last_name}` : "";
+    return <span style={{ color: "white" }}>{name}</span>;
+  };
+
   return (
     <Navbar
       expand="md"
@@ -47,6 +52,7 @@ const Navigation = () => {
           className="d-inline-block align-top"
         />
       </Navbar.Brand>
+      <Name />
       <Navbar.Toggle />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav

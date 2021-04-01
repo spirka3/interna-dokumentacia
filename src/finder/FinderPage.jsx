@@ -5,7 +5,6 @@ import {
   prepareEmployees,
   getFetch,
   prepareCombinations,
-  getAssignedTo,
   postFetch,
   prepareFoundDocs,
 } from "../utils/functions";
@@ -54,12 +53,13 @@ const FinderPage = () => {
 
   const searchByEmployee = (employee) => {
     if (!employee) return;
-
+    console.log(employee);
     setEm(employee);
     resetTables();
 
     const id = employee.value;
     getFetch(`/signed/signatures/${id}`).then((r) => {
+      console.log(r);
       let trainings = addCompleteness(r.trainings, 100);
       setTrainings((prevState) => [...prevState, ...trainings]);
 
@@ -69,6 +69,7 @@ const FinderPage = () => {
     });
 
     getFetch(`/unsigned/signatures/${id}`).then((r) => {
+      console.log(r);
       let trainings = addCompleteness(r.trainings, 0);
       setTrainings((prevState) => [...prevState, ...trainings]);
 
@@ -80,11 +81,9 @@ const FinderPage = () => {
 
   const matrixByFilter = (filter) => {
     console.log(filter);
-    console.log(`filter=${JSON.stringify(filter)}`);
     fetch(`skill/matrix`, {
       method: "POST",
       body: new URLSearchParams(`filter=${JSON.stringify(filter)}`),
-      // body: new URLSearchParams(JSON.stringify(filter)),
     })
       .then((result) => result.json())
       .then((r) => {

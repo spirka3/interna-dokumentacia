@@ -103,7 +103,7 @@ const SkillMatrix = ({ documents: docs }) => {
       if (state === "-" || state === "e" || state === "") {
         return { ...e, state: state };
       }
-      fetch("/sign/document", {
+      fetch("/sign/superior", {
         method: "POST",
         body: new URLSearchParams(`id=${e.sign_id}`),
       });

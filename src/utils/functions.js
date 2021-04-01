@@ -122,7 +122,6 @@ export const resolveFilter = (f) => {
 
 function getState(sign, require_superior) {
   if (sign.cancel) return "-";
-  console.log(sign);
   let state = sign.e_date.Valid ? "" : "e";
   if (require_superior && !sign.s_date.Valid) {
     state += "s";

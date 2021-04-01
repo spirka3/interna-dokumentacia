@@ -67,7 +67,10 @@ const LoginPage = () => {
     const user = {
       id: data.id,
       role: data.role,
+      first_name: data.first_name,
+      last_name: data.last_name,
     };
+    // console.log(data);
     sessionStorage.setItem("user", JSON.stringify(user));
     reloadPage();
   };
