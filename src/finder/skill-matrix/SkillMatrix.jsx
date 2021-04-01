@@ -5,6 +5,7 @@ import { Legend, RowButtons } from "./SkillMatrixComponents";
 import {
   buttonColumn,
   prepareSMData,
+  sortByName,
   successResponse,
 } from "../../utils/functions";
 import { DocumentLabel } from "../../utils/Formatter";
@@ -23,17 +24,8 @@ const SkillMatrix = ({ documents: docs }) => {
     }
 
     setEmployees(() => {
-      const ems = sample.signatures.map((sign) => sign.employee);
-      ems.sort(function (a, b) {
-        if (a.last_name < b.last_name) {
-          return -1;
-        }
-        if (a.last_name > b.last_name) {
-          return 1;
-        }
-        return 0;
-      });
-      return ems;
+      let ems = sample.signatures.map((sign) => sign.employee);
+      return sortByName(ems);
     });
     setData(prepareSMData(docs));
   }, [docs]);

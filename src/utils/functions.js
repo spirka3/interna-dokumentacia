@@ -210,6 +210,7 @@ export const getSingularFieldName = (field) => {
 };
 
 export const getEmployeesNames = (formData, employees) => {
+  employees = sortByName(employees);
   if (!formData || !formData.employees) return [];
   return formData.employees
     .split(",")
@@ -279,7 +280,20 @@ export const resolveCombinations = (combinations) => {
   return n.join("&");
 };
 
+export const sortByName = (employees) => {
+  return employees.sort(function (a, b) {
+    if (a.last_name < b.last_name) {
+      return -1;
+    }
+    if (a.last_name > b.last_name) {
+      return 1;
+    }
+    return 0;
+  });
+};
+
 export const prepareEmployees = (employees, departments) => {
+  employees = sortByName(employees);
   return employees.map((e) => {
     return {
       value: e.id,
