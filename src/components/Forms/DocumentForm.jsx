@@ -12,7 +12,7 @@ import {
   getSelectOptions,
   prefillDocumentForm,
   successResponse,
-  getCombinationsNames,
+  getAssignedTo,
   prepareCombinations,
   getFormID,
 } from "../../utils/functions";
@@ -35,7 +35,7 @@ const DocumentForm = ({ setRecords, formData, setFormData, actual }) => {
   const [currentID, setCurrentID] = useState(getFormID(formData));
   const [notification, setNotification] = useState();
   const [combinations, setCombinations] = useState([]);
-  const [assignedTo, setAssignedTo] = useState([]);
+  const [assignedTo, setAssignedTo] = useState(getAssignedTo(formData, pairs));
   const [emptyAssign, setEmptyAssign] = useState([true]);
   useEffect(() => setNotification(undefined), emptyAssign);
 
@@ -46,7 +46,6 @@ const DocumentForm = ({ setRecords, formData, setFormData, actual }) => {
       .then((response) => response.json())
       .then((res) => {
         setCombinations(prepareCombinations(res));
-        setAssignedTo(getCombinationsNames(formData, pairs));
       })
       .catch((e) => console.log(e));
   }, []);

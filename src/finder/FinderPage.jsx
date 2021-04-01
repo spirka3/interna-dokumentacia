@@ -5,7 +5,7 @@ import {
   prepareEmployees,
   getFetch,
   prepareCombinations,
-  getCombinationsNames,
+  getAssignedTo,
   postFetch,
   prepareFoundDocs,
 } from "../utils/functions";

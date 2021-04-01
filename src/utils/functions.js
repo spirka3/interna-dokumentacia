@@ -150,22 +150,34 @@ export const prepareSMData = (docs) => {
   });
 };
 
-export const getCombinationsNames = (document, pairs) => {
+export const getAssignedTo = (document, pairs) => {
   if (!document) return [];
   // TODO
+  console.log(document.assigned_to);
   return document.assigned_to.split("&").map((e) => {
-    const idx = e.split("; ");
+    // const test = e.match("/#[0-9,]*#/");
+    // console.log(e.split("#"));
+    const [comb, rem, _] = e.split("#");
+    console.log(comb);
+    console.log(rem);
+    console.log(_);
+    // console.log("test", test);
+    const values = e.split("; ");
     const combination = { id: uuid() };
-
+    // console.log(values);
     comboFields.forEach((field, i) => {
-      combination[field] = [
-        {
-          value: idx[i],
-          label: getFieldName(field, idx[i], pairs),
-        },
-      ];
+      combination[field] = [];
+      if (values[i] !== "x") {
+        const ids = values[i].split(",");
+        ids.forEach((id) => {
+          combination[field].push({
+            value: id,
+            label: getFieldName(field, id, pairs),
+          });
+        });
+      }
     });
-
+    console.log(combination);
     return combination;
   });
 };
@@ -285,7 +297,7 @@ export const prepareFoundDocs = (found, pairs) => {
   }
 
   return found.map((doc) => {
-    const doc_cs = getCombinationsNames(doc, pairs);
+    const doc_cs = getAssignedTo(doc, pairs);
     return {
       ...doc,
       branches: getLabels(doc_cs, "branches"),

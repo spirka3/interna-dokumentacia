@@ -90,23 +90,17 @@ const SkillMatrix = ({ documents: docs }) => {
       });
     }
     if (action === "cancelDuty") {
-      fetch("/cancels_resigns", {
+      fetch("/cancels", {
         method: "POST",
-        body: JSON.stringify({
-          cancel: e.sign_id,
-          resign: "",
-        }),
+        body: new URLSearchParams(e.sign_id.toString()),
       }).then((res) => {
         if (successResponse(res)) state = cancelSign();
       });
     }
     if (action === "trainAgain") {
-      fetch("/cancels_resigns", {
+      fetch("/resigns", {
         method: "POST",
-        body: JSON.stringify({
-          cancel: "",
-          resign: e.sign_id,
-        }),
+        body: new URLSearchParams(e.sign_id.toString()),
       }).then((res) => {
         if (successResponse(res)) state = resetSign(require_superior);
       });
