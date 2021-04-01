@@ -4,7 +4,7 @@ import MyFormGroup from "./MyFormGroup";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import Combinations from "../Tables/Combinations";
 import { CustomAlert } from "../CustomAlert";
-import { doc_form, types as t } from "../../utils/data";
+import { types as t } from "../../utils/data";
 import {
   badMsg,
   goodMsg,
@@ -35,7 +35,7 @@ const DocumentForm = ({ setRecords, formData, setFormData, actual }) => {
   const [currentID, setCurrentID] = useState(getFormID(formData));
   const [notification, setNotification] = useState();
   const [combinations, setCombinations] = useState([]);
-  const [assignedTo, setAssignedTo] = useState(getAssignedTo(formData, pairs));
+  const [assignedTo, setAssignedTo] = useState([]);
   const [emptyAssign, setEmptyAssign] = useState([true]);
   useEffect(() => setNotification(undefined), emptyAssign);
 
@@ -46,6 +46,15 @@ const DocumentForm = ({ setRecords, formData, setFormData, actual }) => {
       .then((response) => response.json())
       .then((res) => {
         setCombinations(prepareCombinations(res));
+      })
+      .catch((e) => console.log(e));
+
+    fetch("/employees/all", {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((res) => {
+        setAssignedTo(getAssignedTo(formData, pairs, res));
       })
       .catch((e) => console.log(e));
   }, []);

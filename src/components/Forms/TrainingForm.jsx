@@ -15,7 +15,6 @@ import {
   getFormID,
   getEmployeeLabel,
 } from "../../utils/functions";
-import { trn_form } from "../../utils/data";
 import { PairContext } from "../../App";
 
 const TrainingForm = ({ setRecords, formData, setFormData, actual }) => {

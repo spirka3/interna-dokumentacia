@@ -83,7 +83,7 @@ const FinderPage = () => {
     console.log(`filter=${JSON.stringify(filter)}`);
     fetch(`skill/matrix`, {
       method: "POST",
-      // body: new URLSearchParams(`filter=${filter}`),
+      body: new URLSearchParams(`filter=${JSON.stringify(filter)}`),
       // body: new URLSearchParams(JSON.stringify(filter)),
     })
       .then((result) => result.json())

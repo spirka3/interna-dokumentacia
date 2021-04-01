@@ -122,7 +122,7 @@ export const resolveFilter = (f) => {
 
 function getState(sign, require_superior) {
   if (sign.cancel) return "-";
-
+  console.log(sign);
   let state = sign.e_date.Valid ? "" : "e";
   if (require_superior && !sign.s_date.Valid) {
     state += "s";
@@ -150,21 +150,14 @@ export const prepareSMData = (docs) => {
   });
 };
 
-export const getAssignedTo = (document, pairs) => {
+export const getAssignedTo = (document, pairs, employees) => {
   if (!document) return [];
-  // TODO
-  console.log(document.assigned_to);
+
   return document.assigned_to.split("&").map((e) => {
-    // const test = e.match("/#[0-9,]*#/");
-    // console.log(e.split("#"));
-    const [comb, rem, _] = e.split("#");
-    console.log(comb);
-    console.log(rem);
-    console.log(_);
-    // console.log("test", test);
-    const values = e.split("; ");
+    const [combs, remEms, _] = e.split("#");
+    const values = combs.split("; ");
     const combination = { id: uuid() };
-    // console.log(values);
+
     comboFields.forEach((field, i) => {
       combination[field] = [];
       if (values[i] !== "x") {
@@ -177,6 +170,17 @@ export const getAssignedTo = (document, pairs) => {
         });
       }
     });
+    combination.removedEmployees = [];
+    if (!remEms) return combination;
+
+    const e_ids = remEms.split(",");
+    console.log(e_ids);
+    e_ids.forEach((id) => {
+      combination.removedEmployees.push({
+        value: id,
+        label: getEmployeeName(id, employees, pairs.departments),
+      });
+    });
     console.log(combination);
     return combination;
   });
@@ -184,6 +188,13 @@ export const getAssignedTo = (document, pairs) => {
 
 export const getFieldName = (field, id, pairs) => {
   return pairs[field].find((f) => f.id == id)?.name;
+};
+
+export const getEmployeeName = (id, employees, departments) => {
+  if (!employees) return "unknown";
+  const e = employees.find((e) => e.id.toString() === id);
+  if (!e) return "unknown";
+  return getEmployeeLabel(e, departments);
 };
 
 export const getSingularFieldName = (field) => {

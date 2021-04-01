@@ -55,8 +55,8 @@ const Filter = ({
   };
 
   const resetEmployee = () => {
-    setEm();
-    // eref.current.select.clearValue();
+    setEm(undefined);
+    eref.current.select.clearValue();
   };
 
   const handleSelect = (data, { name: field }) => {
@@ -150,7 +150,7 @@ const Filter = ({
             placeholder="Employee Name"
             options={es}
             onChange={(data) => handleEmployeeSearch(data)}
-            // ref={eref}
+            ref={eref}
           />
         </Col>
         <Col className="text-right pr-0">
