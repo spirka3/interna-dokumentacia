@@ -4,7 +4,7 @@ import MyFormGroup from "./MyFormGroup";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import Combinations from "../Tables/Combinations";
 import { CustomAlert } from "../CustomAlert";
-import { types as t } from "../../utils/data";
+import { proxy_url, types as t } from "../../utils/data";
 import {
   badMsg,
   goodMsg,
@@ -40,7 +40,7 @@ const DocumentForm = ({ setRecords, formData, setFormData, actual }) => {
   useEffect(() => setNotification(undefined), emptyAssign);
 
   useEffect(() => {
-    fetch("/combinations", {
+    fetch(proxy_url + "/combinations", {
       method: "GET",
     })
       .then((response) => response.json())
@@ -49,7 +49,7 @@ const DocumentForm = ({ setRecords, formData, setFormData, actual }) => {
       })
       .catch((e) => console.log(e));
 
-    fetch("/employees/all", {
+    fetch(proxy_url + "/employees/all", {
       method: "GET",
     })
       .then((response) => response.json())
@@ -93,7 +93,7 @@ const DocumentForm = ({ setRecords, formData, setFormData, actual }) => {
   };
   const upsert = (data, action) => {
     console.log(data);
-    return fetch(`/document/${action}`, {
+    return fetch(proxy_url + `/document/${action}`, {
       method: "POST",
       body: JSON.stringify(data),
     })
@@ -109,7 +109,7 @@ const DocumentForm = ({ setRecords, formData, setFormData, actual }) => {
   };
   const upsertConfirm = (data, action) => {
     console.log(data);
-    return fetch(`/document/${action}`, {
+    return fetch(proxy_url + `/document/${action}`, {
       method: "POST",
       body: JSON.stringify(data),
     })

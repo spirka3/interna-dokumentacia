@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Form, Row, Alert, Col } from "react-bootstrap";
 import { ExclamationTriangle } from "react-bootstrap-icons";
 import { getSelectOptions } from "../utils/functions";
+import { proxy_url } from "../utils/data";
 
 const SettingsPage = ({ submitError }) => {
   const import_types = ["import_1", "import_2", "import_3", "import_5"];
@@ -56,7 +57,7 @@ const SettingsPage = ({ submitError }) => {
     console.log(cardsFile);
 
     if (cardsFile != null) {
-      fetch("http://localhost:7777/file/upload", {
+      fetch(proxy_url + "http://localhost:7777/file/upload", {
         mode: "no-cors",
         method: "POST",
         body: data,
@@ -92,7 +93,7 @@ const SettingsPage = ({ submitError }) => {
       data.append("name", name);
       data.append("import", selectedType);
 
-      fetch("http://localhost:7777/file/upload", {
+      fetch(proxy_url + "http://localhost:7777/file/upload", {
         mode: "no-cors",
         method: "POST",
         body: data,

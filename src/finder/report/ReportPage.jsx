@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { buttonColumn, getFetch, orderBy } from "../../utils/functions";
 import MyBootstrapTable from "../../components/Tables/MyBootstrapTable";
 import { format_date } from "../../utils/Formatter";
+import { proxy_url } from "../../utils/data";
 
 const ReportPage = ({ location: { search } }) => {
   const [record, setRecord] = useState();
@@ -24,7 +25,7 @@ const ReportPage = ({ location: { search } }) => {
     if (parseInt(id) != id) return null;
 
     // getFetch(`/report/${row.id}`)
-    fetch(`/skill/matrix`, {
+    fetch(proxy_url + `/skill/matrix`, {
       method: "POST",
       body: new URLSearchParams(`document_id=${id}`),
     })

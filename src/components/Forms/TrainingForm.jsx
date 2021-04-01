@@ -16,6 +16,7 @@ import {
   getEmployeeLabel,
 } from "../../utils/functions";
 import { PairContext } from "../../App";
+import { proxy_url } from "../../utils/data";
 
 const TrainingForm = ({ setRecords, formData, setFormData, actual }) => {
   const pairs = useContext(PairContext);
@@ -35,7 +36,7 @@ const TrainingForm = ({ setRecords, formData, setFormData, actual }) => {
   useEffect(() => setNotification(undefined), emptyAttendees);
 
   useEffect(() => {
-    fetch("/employees/all", {
+    fetch(proxy_url + "/employees/all", {
       method: "GET",
     })
       .then((response) => response.json())
@@ -81,7 +82,7 @@ const TrainingForm = ({ setRecords, formData, setFormData, actual }) => {
   };
 
   const upsert = (data, action) => {
-    return fetch(`/training/${action}`, {
+    return fetch(proxy_url + `/training/${action}`, {
       method: "POST",
       body: JSON.stringify(data),
     })
@@ -98,7 +99,7 @@ const TrainingForm = ({ setRecords, formData, setFormData, actual }) => {
 
   const upsertConfirm = (data, action) => {
     console.log(data);
-    return fetch(`/training/${action}`, {
+    return fetch(proxy_url + `/training/${action}`, {
       method: "POST",
       body: JSON.stringify(data),
     })

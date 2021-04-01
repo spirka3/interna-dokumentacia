@@ -15,6 +15,7 @@ import {
 import { FetchError, FetchLoading } from "../components/FetchComponents";
 import useDataApi from "../utils/useDataApi";
 import ConfirmModal from "../components/Modals/ConfirmModal";
+import { proxy_url } from "../utils/data";
 
 const RecordsToSignPage = () => {
   const URL = `/unsigned/signatures/${getUser().id}`;

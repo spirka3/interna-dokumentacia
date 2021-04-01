@@ -3,6 +3,7 @@ import { Redirect } from "react-router";
 import LoginForm from "./LoginForm";
 import { badMsg, getUser, reloadPage } from "../utils/functions";
 import { wording } from "../utils/wording";
+import { proxy_url } from "../utils/data";
 
 const LoginPage = () => {
   const [notification, setNotification] = useState();
@@ -76,7 +77,7 @@ const LoginPage = () => {
   };
 
   const onSubmit = (data) => {
-    fetch("/auth/login", {
+    fetch(proxy_url + "/auth/login", {
       method: "POST",
       body: new URLSearchParams(
         `login=${data.login}&password=${data.password}`
@@ -90,7 +91,7 @@ const LoginPage = () => {
   };
 
   const findByCard = (input) => {
-    fetch("/auth/kiosk", {
+    fetch(proxy_url + "/auth/kiosk", {
       method: "POST",
       body: new URLSearchParams(`card=${input}`),
     })

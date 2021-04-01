@@ -6,11 +6,12 @@ import {
   recordType,
   successResponse,
 } from "../../utils/functions";
+import { proxy_url } from "../../utils/data";
 
 const SendBtn = (cell, row, index, { setSavedRec, setNotification }) => {
   /** Send record to relevant employees */
   const handleClick = () => {
-    fetch(`${recordType(row)}/confirm/${row.id}`, {
+    fetch(proxy_url + `${recordType(row)}/confirm/${row.id}`, {
       method: "GET",
     })
       .then((res) => {

@@ -11,6 +11,7 @@ import {
 import { PairContext } from "../App";
 import FoundRecords from "./FoundRecords";
 import { FetchLoading } from "../components/FetchComponents";
+import { proxy_url } from "../utils/data";
 
 const FinderPage = () => {
   const pairs = useContext(PairContext);
@@ -81,7 +82,7 @@ const FinderPage = () => {
 
   const matrixByFilter = (filter) => {
     console.log(filter);
-    fetch(`skill/matrix`, {
+    fetch(proxy_url + `skill/matrix`, {
       method: "POST",
       body: new URLSearchParams(`filter=${JSON.stringify(filter)}`),
     })
@@ -97,7 +98,7 @@ const FinderPage = () => {
 
     const id = superior.value;
 
-    fetch(`skill/matrix`, {
+    fetch(proxy_url + `skill/matrix`, {
       method: "POST",
       body: new URLSearchParams(`superior_id=${id}`),
     })

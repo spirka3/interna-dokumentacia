@@ -16,7 +16,7 @@
 //     id: undefined
 //   }
 //
-//   fetch(`/document/${action}`, {
+//   fetch(proxy_url + `/document/${action}`, {
 //     method: "POST",
 //     body: JSON.stringify(data)
 //   })
@@ -42,7 +42,7 @@
 // }
 //
 // const upsertConfirm = (data, action) => {
-//   return fetch(`/document/${action}`, {
+//   return fetch(proxy_url + `/document/${action}`, {
 //     method: "POST",
 //     body: JSON.stringify(data)
 //   })

@@ -10,6 +10,7 @@ import {
 } from "../../utils/functions";
 import { DocumentLabel } from "../../utils/Formatter";
 import MyBootstrapTable from "../../components/Tables/MyBootstrapTable";
+import { proxy_url } from "../../utils/data";
 
 const SkillMatrix = ({ documents: docs }) => {
   const [data, setData] = useState([]);
@@ -95,7 +96,7 @@ const SkillMatrix = ({ documents: docs }) => {
       if (state === "-" || state === "e" || state === "") {
         return { ...e, state: state };
       }
-      fetch("/sign/superior", {
+      fetch(proxy_url + "/sign/superior", {
         method: "POST",
         body: new URLSearchParams(`id=${e.sign_id}`),
       });
@@ -107,7 +108,7 @@ const SkillMatrix = ({ documents: docs }) => {
     }
     if (action === "cancelDuty") {
       if (state === "-") return { ...e, state: state };
-      fetch("/cancels", {
+      fetch(proxy_url + "/cancels", {
         method: "POST",
         body: new URLSearchParams(e.sign_id.toString()),
       });
@@ -120,7 +121,7 @@ const SkillMatrix = ({ documents: docs }) => {
     if (action === "trainAgain") {
       if (require_superior && state === "e+s") return { ...e, state: state };
       if (!require_superior && state === "e") return { ...e, state: state };
-      fetch("/resigns", {
+      fetch(proxy_url + "/resigns", {
         method: "POST",
         body: new URLSearchParams(e.sign_id.toString()),
       });
